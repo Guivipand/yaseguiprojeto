@@ -33,7 +33,7 @@ public class LivroController {
     }
 
     @PostMapping("/cadastrarLivro")
-    public String saveLivros(@ModelAttribute Livro livro, @RequestParam("imagem") MultipartFile imagem) throws IOException{
+    public String saveLivros(@ModelAttribute Livro livro, @RequestParam("imagem") MultipartFile imagem) throws IOException {
         String capa_imagem = livroService.salvarImagem(imagem);
         livro.setCapa_imagem(capa_imagem);
         livroRepository.save(livro);
