@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "Aluno")
-public class Aluno  extends Pessoa{
+public class Aluno extends Pessoa {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "id")
@@ -27,7 +27,7 @@ public class Aluno  extends Pessoa{
     @JoinColumn (name = "curso")
     private Curso curso;
 
-    public Aluno () {
+    public Aluno() {
     }
 
     public Aluno(String nome, String cpf, String telefone, String email, String dataNasc, String endereco, int id, String idMatricula, String semestre, Curso curso) {
@@ -45,22 +45,6 @@ public class Aluno  extends Pessoa{
         this.id = id;
     }
 
-    public Curso getCurso() {
-        return curso;
-    }
-
-    public void setCurso(Curso curso) {
-        this.curso = curso;
-    }
-    
-    public String getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
-    }
-
     public String getIdMatricula() {
         return idMatricula;
     }
@@ -69,7 +53,23 @@ public class Aluno  extends Pessoa{
         this.idMatricula = idMatricula;
     }
 
-        public boolean validarIdMatricula() {
+    public String getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public boolean validarIdMatricula() {
         return idMatricula != null && !idMatricula.trim().isEmpty();
     }
 
@@ -88,5 +88,4 @@ public class Aluno  extends Pessoa{
             && validarSemestre()
             && validarCurso();
     }
-    
 }

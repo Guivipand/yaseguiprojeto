@@ -10,7 +10,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table (name = "Professor")
 public class Professor extends Pessoa {
-
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "id")
@@ -22,14 +21,13 @@ public class Professor extends Pessoa {
     @Column (name = "formacao")
     private String formacao;
 
+    public Professor() {
+    }
+
     public Professor(String nome, String cpf, String telefone, String email, String dataNasc, String endereco, String prontuario, String formacao, int id) {
         super(nome, cpf, telefone, email, dataNasc, endereco, id);
         this.prontuario = prontuario;
         this.formacao = formacao;
-    }
-
-
-    public Professor() {
     }
 
     public int getId() {
@@ -51,6 +49,7 @@ public class Professor extends Pessoa {
     public String getFormacao() {
         return formacao;
     }
+
     public void setFormacao(String formacao) {
         this.formacao = formacao;
     }
@@ -69,5 +68,4 @@ public class Professor extends Pessoa {
             && validarProntuario()
             && validarFormacao();
     }
-
 }

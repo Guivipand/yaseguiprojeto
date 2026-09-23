@@ -17,10 +17,11 @@ public class Curso {
 
     @Column (name = "titulo")
     private String titulo;
+
     @Column (name = "qntSemestre")
     private String qntSemestre;
 
-    public Curso () {
+    public Curso() {
     }
 
     public Curso(String titulo, String qntSemestre) {
@@ -31,18 +32,23 @@ public class Curso {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getTitulo() {
         return titulo;
     }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+
     public String getQntSemestre() {
         return qntSemestre;
     }
+
     public void setQntSemestre(String qntSemestre) {
         this.qntSemestre = qntSemestre;
     }
@@ -59,5 +65,4 @@ public class Curso {
         return validarTitulo()
             && validarQntSemestre();
     }
-
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+}

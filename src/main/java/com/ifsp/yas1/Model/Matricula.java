@@ -17,14 +17,6 @@ public class Matricula {
     @Column (name = "id")
     private int id;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @ManyToOne
     @JoinColumn (name = "aluno")
     private Aluno aluno;
@@ -44,6 +36,14 @@ public class Matricula {
         this.aluno = aluno;
         this.curso = curso;
         this.ofertaDisciplina = ofertaDisciplina;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Aluno getAluno() {
@@ -87,5 +87,4 @@ public class Matricula {
             && validarCurso()
             && validarOfertaDisciplina();
     }
-
 }

@@ -1,4 +1,5 @@
 package com.ifsp.yas1.Model;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,16 +17,9 @@ public class Disciplina {
     @Column (name = "id")
     private int id;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
     @Column (name = "materia")
     private String materia;
-    
+
     @Column (name = "semestre")
     private String semestre;
 
@@ -33,33 +27,45 @@ public class Disciplina {
     @JoinColumn (name = "curso")
     private Curso curso;
 
+    public Disciplina() {
+    }
+
+    public Disciplina(String materia, String semestre, Curso curso) {
+        this.materia = materia;
+        this.semestre = semestre;
+        this.curso = curso;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getMateria() {
+        return materia;
+    }
+
+    public void setMateria(String materia) {
+        this.materia = materia;
+    }
+
+    public String getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
+    }
+
     public Curso getCurso() {
         return curso;
     }
 
     public void setCurso(Curso curso) {
         this.curso = curso;
-    }
-
-    public Disciplina () {
-    }
-
-    public Disciplina(String materia, String semestre, Curso curso) {
-        this.curso = curso;
-        this.materia = materia;
-        this.semestre = semestre;
-    }
-    public String getMateria() {
-        return materia;
-    }
-    public void setMateria(String materia) {
-        this.materia = materia;
-    }
-    public String getSemestre() {
-        return semestre;
-    }
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
     }
 
     public boolean validarMateria() {

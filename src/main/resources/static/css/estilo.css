@@ -1,0 +1,99 @@
+/* ===== Global ===== */
+body {
+    background-color: #f4f6f9;
+}
+
+/* ===== Início (index) ===== */
+.pagina-inicio .navbar-brand {
+    font-weight: 600;
+}
+
+.card-entidade {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border: none;
+    border-radius: 14px;
+}
+
+.card-entidade:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+}
+
+/* ===== Listas ===== */
+.table-hover tbody tr:hover {
+    background-color: #f0f4ff;
+}
+
+.btn-icon {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+/* ===== Formulários, edição e detalhes ===== */
+.pagina-form .container {
+    max-width: 760px;
+    margin-top: 40px;
+}
+
+.pagina-form .card-header {
+    background-color: #3457D5;
+    color: #fff;
+}
+
+.info {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.info:last-child {
+    border-bottom: none;
+}
+
+.label {
+    font-weight: bold;
+    color: #555;
+}
+
+.capa-livro {
+    display: block;
+    max-width: 100%;
+    max-height: 400px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+/* ===== Sucesso no cadastro ===== */
+body.pagina-sucesso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.pagina-sucesso .card {
+    max-width: 480px;
+    text-align: center;
+    padding: 40px 30px;
+}
+
+.icone-sucesso {
+    font-size: 64px;
+    color: #198754;
+    margin-bottom: 16px;
+}

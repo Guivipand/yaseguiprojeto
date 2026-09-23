@@ -17,14 +17,6 @@ public class OfertaDisciplina {
     @Column (name = "id")
     private int id;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @ManyToOne
     @JoinColumn (name = "disciplina")
     private Disciplina disciplina;
@@ -33,12 +25,28 @@ public class OfertaDisciplina {
     @JoinColumn (name = "professor")
     private Professor professor;
 
-     public OfertaDisciplina () {
+    public OfertaDisciplina() {
     }
 
     public OfertaDisciplina(Disciplina disciplina, Professor professor) {
         this.disciplina = disciplina;
         this.professor = professor;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
     }
 
     public Professor getProfessor() {
@@ -47,15 +55,6 @@ public class OfertaDisciplina {
 
     public void setProfessor(Professor professor) {
         this.professor = professor;
-    }
-
-
-    public Disciplina getDisciplina() {
-        return disciplina;
-    }
-
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
     }
 
     public boolean validarDisciplina() {

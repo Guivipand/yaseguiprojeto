@@ -13,7 +13,6 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table (name = "Pessoa")
 public class Pessoa {
-
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     @Column (name = "id")
@@ -36,7 +35,7 @@ public class Pessoa {
 
     @Column (name = "endereco")
     private String endereco;
-    
+
     public Pessoa() {
     }
 
@@ -54,72 +53,59 @@ public class Pessoa {
         return id;
     }
 
-
     public void setId(int id) {
         this.id = id;
     }
-
 
     public String getNome() {
         return nome;
     }
 
-
     public void setNome(String nome) {
         this.nome = nome;
     }
-
 
     public String getCpf() {
         return cpf;
     }
 
-
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-
 
     public String getTelefone() {
         return telefone;
     }
 
-
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-
 
     public String getEmail() {
         return email;
     }
 
-
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     public String getDataNasc() {
         return dataNasc;
     }
 
-
     public void setDataNasc(String dataNasc) {
         this.dataNasc = dataNasc;
     }
-
 
     public String getEndereco() {
         return endereco;
     }
 
-
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
 
-        public boolean validarNome() {
+    public boolean validarNome() {
         return nome != null && !nome.trim().isEmpty();
     }
 
@@ -164,10 +150,10 @@ public class Pessoa {
     }
 
     public boolean validarEmail() {
-    return email != null
-        && email.contains("@")
-        && email.contains(".")
-        && !email.contains(" ");
+        return email != null
+            && email.contains("@")
+            && email.contains(".")
+            && !email.contains(" ");
     }
 
     public boolean validarDataNasc() {
@@ -186,5 +172,4 @@ public class Pessoa {
             && validarDataNasc()
             && validarEndereco();
     }
-    
 }
