@@ -1,37 +1,37 @@
 package com.ifsp.yas1.Service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
+import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class LivroService {
 
-    // Pasta "uploads" dentro do projeto, separada de onde o usuário escolhe o arquivo
-    public static final Path endereco_armazenamento_arquivo = Paths.get("uploads").toAbsolutePath().normalize();
-    // Recebimento de dados de arquivo para salvar no computador
+    public static final String endereco_armazenamento_arquivo = new File("src/main/resources/static/uploads").getAbsolutePath();
 
     public String salvarImagem(MultipartFile arquivo) throws IOException {
-        if (arquivo == null || arquivo.isEmpty()) {
+        if (arquivo == null) {
             throw new NullPointerException("Arquivo da Imagem do Livro está vazio");
         }
 
-        Files.createDirectories(endereco_armazenamento_arquivo);
+        var enderecoArquivo = new File(endereco_armazenamento_arquivo + File.separator + arquivo.getOriginalFilename());
+        System.out.println("Endereço do arquivo: " + enderecoArquivo.getAbsolutePath());
+        System.out.println("Nome do arquivo Parent: " + enderecoArquivo.getParent());
+        System.out.println("Endereço de armazenamento: " + endereco_armazenamento_arquivo);
 
-        // Nome único para não sobrescrever (nem travar) arquivos já existentes
-        String nomeArquivo = UUID.randomUUID() + "_" + Paths.get(arquivo.getOriginalFilename()).getFileName();
-        Path enderecoArquivo = endereco_armazenamento_arquivo.resolve(nomeArquivo).normalize();
-
-        if (!enderecoArquivo.getParent().equals(endereco_armazenamento_arquivo)) {
-            throw new SecurityException("Nome do arquivo não é válido!");
+        if (!Objects.equals(enderecoArquivo.getParent(), endereco_armazenamento_arquivo)) {
+            throw new SecurityException("Nome do arquivo não é viável!");
         }
 
-        Files.copy(arquivo.getInputStream(), enderecoArquivo);
+        Files.copy(arquivo.getInputStream(), enderecoArquivo.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-        return nomeArquivo;
+        String endereco = new String();
+        endereco = "uploads/" + arquivo.getOriginalFilename();
+        return endereco;
     }
 }

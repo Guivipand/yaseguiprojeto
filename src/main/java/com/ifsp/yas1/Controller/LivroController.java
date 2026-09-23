@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ifsp.yas1.Model.Aluno;
 import com.ifsp.yas1.Model.Livro;
 import com.ifsp.yas1.Repository.LivroRepository;
 import com.ifsp.yas1.Service.LivroService;
