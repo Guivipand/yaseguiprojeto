@@ -1,0 +1,148 @@
+<mxfile host="65bd71144e">
+    <diagram id="TKK5Ezym2YpVS8n1J_na" name="Page-1">
+        <mxGraphModel dx="2128" dy="791" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Aluno" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-680" y="270" width="310" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="- id: int                     &lt;br&gt;- idMatricula: String        &lt;br&gt;- semestre: String        &lt;br&gt;- curso: Curso               " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="2">
+                    <mxGeometry y="26" width="310" height="74" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="2">
+                    <mxGeometry y="100" width="310" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="+ Aluno()&lt;br&gt;+ Aluno(nome: String, cpf: String, telefone: String, email: String, dataNasc: String, endereco: String, id: int, idMatricula: String, semestre: String, curso: Curso)&lt;br&gt;+ getId(): int&lt;br&gt;+ setId(id: int): void&lt;br&gt;+ getCurso(): Curso&lt;br&gt;+ setCurso(curso: Curso): void&lt;br&gt;+ getSemestre(): String&lt;br&gt;+ setSemestre(semestre: String): void&lt;br&gt;+ getIdMatricula(): String&lt;br&gt;+ setIdMatricula(idMatricula: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="2">
+                    <mxGeometry y="108" width="310" height="192" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Professor" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="340" width="340" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="- id: int&lt;br&gt;- prontuario: String&lt;br&gt;- formacao: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6">
+                    <mxGeometry y="26" width="340" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="6">
+                    <mxGeometry y="90" width="340" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="+ Professor()&lt;br&gt;    + Professor(nome: String, cpf: String, telefone: String, email: String, dataNasc: String, endereco: String, prontuario: String, formacao: String, id: int)&lt;br&gt;    + getId(): int&lt;br&gt;    + setId(id: int): void&lt;br&gt;    + getProntuario(): String&lt;br&gt;    + setProntuario(prontuario: String): void&lt;br&gt;    + getFormacao(): String&lt;br&gt;    + setFormacao(formacao: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6">
+                    <mxGeometry y="98" width="340" height="162" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Pessoa" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-210" y="70" width="460" height="410" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="- id: int&lt;br&gt;    - nome: String&lt;br&gt;    - cpf: String&lt;br&gt;    - telefone: String&lt;br&gt;    - email: String&lt;br&gt;    - dataNasc: String&lt;br&gt;    - endereco: String&lt;br&gt;&lt;br&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="10">
+                    <mxGeometry y="26" width="460" height="114" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="10">
+                    <mxGeometry y="140" width="460" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="+ Pessoa()&lt;br&gt;    + Pessoa(nome: String, cpf: String, telefone: String, email: String, dataNasc: String, endereco: String, id: int)&lt;br&gt;    + getId(): int&lt;br&gt;    + setId(id: int): void&lt;br&gt;    + getNome(): String&lt;br&gt;    + setNome(nome: String): void&lt;br&gt;    + getCpf(): String&lt;br&gt;    + setCpf(cpf: String): void&lt;br&gt;    + getTelefone(): String&lt;br&gt;    + setTelefone(telefone: String): void&lt;br&gt;    + getEmail(): String&lt;br&gt;    + setEmail(email: String): void&lt;br&gt;    + getDataNasc(): String&lt;br&gt;    + setDataNasc(dataNasc: String): void&lt;br&gt;    + getEndereco(): String&lt;br&gt;    + setEndereco(endereco: String): void&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="10">
+                    <mxGeometry y="148" width="460" height="262" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="endArrow=block;endSize=16;endFill=0;html=1;" edge="1" parent="1" source="6" target="10">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="80" y="310" as="sourcePoint"/>
+                        <mxPoint x="240" y="310" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="17" value="" style="endArrow=block;endSize=16;endFill=0;html=1;" edge="1" parent="1" source="2" target="10">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="460" y="416" as="sourcePoint"/>
+                        <mxPoint x="330" y="368" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="18" value="Curso" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-700" y="710" width="280" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="- id: int&lt;br&gt;- titulo: String&lt;br&gt;- qntSemestre: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=default;" vertex="1" parent="18">
+                    <mxGeometry y="26" width="280" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="18">
+                    <mxGeometry y="90" width="280" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="+ Curso()&lt;br&gt;+ Curso(titulo: String, qntSemestre: String)&lt;br&gt;+ getId(): int&lt;br&gt;+ setId(id: int): void&lt;br&gt;+ getTitulo(): String&lt;br&gt;+ setTitulo(titulo: String): void&lt;br&gt;+ getQntSemestre(): String&lt;br&gt;+ setQntSemestre(qntSemestre: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="18">
+                    <mxGeometry y="98" width="280" height="132" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="18" target="2">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="-420" y="590" as="sourcePoint"/>
+                        <mxPoint x="-340" y="590" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="Matricula" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-310" y="570" width="430" height="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="- id: int&lt;br&gt;- aluno: Aluno&lt;br&gt;- curso: Curso&lt;br&gt;- ofertaDisciplina: OfertaDisciplina" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="25">
+                    <mxGeometry y="26" width="430" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;whiteSpace=wrap;html=1;" vertex="1" parent="25">
+                    <mxGeometry y="90" width="430" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="+ Matricula()&lt;br&gt;+ Matricula(aluno: Aluno, curso: Curso, ofertaDisciplina: OfertaDisciplina)&lt;br&gt;+ getId(): int&lt;br&gt;+ setId(id: int): void&lt;br&gt;+ getAluno(): Aluno&lt;br&gt;+ setAluno(aluno: Aluno): void&lt;br&gt;+ getCurso(): Curso&lt;br&gt;+ setCurso(curso: Curso): void&lt;br&gt;+ getOfertaDisciplina(): OfertaDisciplina&lt;br&gt;+ setOfertaDisciplina(ofertaDisciplina: OfertaDisciplina): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="25">
+                    <mxGeometry y="98" width="430" height="172" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="2" target="25">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="-540" y="720" as="sourcePoint"/>
+                        <mxPoint x="-528" y="580" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="30" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="18" target="25">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="-530" y="730" as="sourcePoint"/>
+                        <mxPoint x="-518" y="590" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="31" value="Disciplina" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-180" y="920" width="270" height="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="- id: int&lt;br&gt;  - materia: String&lt;br&gt;  - semestre: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="31">
+                    <mxGeometry y="26" width="270" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="31">
+                    <mxGeometry y="90" width="270" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="+ Disciplina()&lt;br/&gt;  + Disciplina(materia: String, semestre: String)&lt;br/&gt;  + getId(): int&lt;br/&gt;  + setId(id: int): void&lt;br/&gt;  + getMateria(): String&lt;br/&gt;  + setMateria(materia: String): void&lt;br/&gt;  + getSemestre(): String&lt;br/&gt;  + setSemestre(semestre: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="31">
+                    <mxGeometry y="98" width="270" height="142" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="OfertaDisciplina" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="710" width="370" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="- id: int&lt;br/&gt;  - disciplina: Disciplina&lt;br/&gt;  - professor: Professor" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="36">
+                    <mxGeometry y="26" width="370" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="36">
+                    <mxGeometry y="80" width="370" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value=" + OfertaDisciplina()&lt;br&gt;  + OfertaDisciplina(disciplina: Disciplina, professor: Professor)&lt;br&gt;  + getId(): int&lt;br&gt;  + setId(id: int): void&lt;br&gt;  + getDisciplina(): Disciplina&lt;br&gt;  + setDisciplina(disciplina: Disciplina): void&lt;br&gt;  + getProfessor(): Professor&lt;br&gt;  + setProfessor(professor: Professor): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="36">
+                    <mxGeometry y="88" width="370" height="142" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="31" target="36">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="-410" y="796" as="sourcePoint"/>
+                        <mxPoint x="-300" y="765" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="41" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="36" target="25">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="80" y="1030" as="sourcePoint"/>
+                        <mxPoint x="150" y="780" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="42" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="6" target="36">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="90" y="1040" as="sourcePoint"/>
+                        <mxPoint x="220" y="1001" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="43" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="18" target="31">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="-410" y="799" as="sourcePoint"/>
+                        <mxPoint x="-300" y="770" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

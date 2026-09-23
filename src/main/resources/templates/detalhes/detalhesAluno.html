@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detalhes do Aluno</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .container {
+            max-width: 760px;
+            margin-top: 40px;
+        }
+
+        .card-header {
+            background-color: #3457D5;
+            color: #fff;
+        }
+
+        .info {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark mb-5">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">
+            <i class="bi bi-mortarboard-fill me-2"></i>
+            Sistema de Matrícula
+        </a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header">
+            <h4 class="mb-0">
+                <i class="bi bi-person-fill me-2"></i>
+                Detalhes do Aluno
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <div class="info">
+                <span class="label">ID:</span>
+                <span th:text="${aluno.id}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">Matrícula:</span>
+                <span th:text="${aluno.idMatricula}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">Nome:</span>
+                <span th:text="${aluno.nome}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">Endereço:</span>
+                <span th:text="${aluno.endereco}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">CPF:</span>
+                <span th:text="${aluno.cpf}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">E-mail:</span>
+                <span th:text="${aluno.email}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">Telefone:</span>
+                <span th:text="${aluno.telefone}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">Data de Nascimento:</span>
+                <span th:text="${aluno.dataNasc}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">Semestre:</span>
+                <span th:text="${aluno.semestre}"></span>
+            </div>
+
+            <div class="info">
+                <span class="label">Curso:</span>
+                <span th:text="${aluno.curso != null ? aluno.curso.titulo : 'Sem curso'}"></span>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+
+                <a th:href="@{/listaAlunos}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Retornar
+                </a>
+
+                <a th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-primary">
+                    <i class="bi bi-pencil-fill me-1"></i>
+                    Editar
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
