@@ -1,56 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Editar professor')}"></head>
-<body class="pagina-form">
+<body class="pagina-form tema-professor">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-person-badge-fill me-2"></i>Editar professor</h4>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaProfessores}">Professores</a></li>
+                <li aria-current="page">Editar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>
+            <div>
+                <h1>Editar professor</h1>
+                <p>Atualize os dados e salve as alterações.</p>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="alert alert-danger" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Verifique os campos: todos são obrigatórios e o CPF e o e-mail precisam ser válidos.</div>
-            <form th:action="@{/atualizarProfessor}" th:object="${professor}" method="post">
-                <input type="hidden" th:field="*{id}">
-                <div class="mb-3">
-                    <label class="form-label" for="prontuario">Prontuário</label>
-                    <input type="text" class="form-control" th:field="*{prontuario}" placeholder="Digite o prontuário" required>
+    </header>
+    <form class="painel" th:action="@{/atualizarProfessor}" th:object="${professor}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Verifique os campos: todos são obrigatórios e o CPF e o e-mail precisam ser válidos.</span></div>
+            <fieldset class="grupo-campos">
+                <legend>Identificação</legend>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label" for="prontuario">Prontuário</label>
+                        <input type="text" class="form-control" th:field="*{prontuario}" placeholder="Digite o prontuário" required>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label" for="nome">Nome</label>
+                        <input type="text" class="form-control" th:field="*{nome}" placeholder="Digite o nome completo" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="cpf">CPF</label>
+                        <input type="text" class="form-control" th:field="*{cpf}" placeholder="000.000.000-00" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="dataNasc">Data de Nascimento</label>
+                        <input type="date" class="form-control" th:field="*{dataNasc}" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="formacao">Formação</label>
+                        <input type="text" class="form-control" th:field="*{formacao}" placeholder="Digite a formação" required>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="nome">Nome</label>
-                    <input type="text" class="form-control" th:field="*{nome}" placeholder="Digite o nome completo" required>
+            </fieldset>
+            <fieldset class="grupo-campos">
+                <legend>Contato</legend>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="email">E-mail</label>
+                        <input type="email" class="form-control" th:field="*{email}" placeholder="nome@exemplo.com" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="telefone">Telefone</label>
+                        <input type="tel" class="form-control" th:field="*{telefone}" placeholder="(00) 00000-0000" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="endereco">Endereço</label>
+                        <input type="text" class="form-control" th:field="*{endereco}" placeholder="Digite o endereço" required>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="endereco">Endereço</label>
-                    <input type="text" class="form-control" th:field="*{endereco}" placeholder="Digite o endereço" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="cpf">CPF</label>
-                    <input type="text" class="form-control" th:field="*{cpf}" placeholder="000.000.000-00" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="email">E-mail</label>
-                    <input type="email" class="form-control" th:field="*{email}" placeholder="nome@exemplo.com" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="telefone">Telefone</label>
-                    <input type="tel" class="form-control" th:field="*{telefone}" placeholder="(00) 00000-0000" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="dataNasc">Data de Nascimento</label>
-                    <input type="date" class="form-control" th:field="*{dataNasc}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="formacao">Formação</label>
-                    <input type="text" class="form-control" th:field="*{formacao}" placeholder="Digite a formação" required>
-                </div>
-                <div class="d-flex justify-content-end gap-2">
-                    <a th:href="@{/listaProfessores}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar alterações</button>
-                </div>
-            </form>
+            </fieldset>
         </div>
-    </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaProfessores}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar alterações</button>
+        </div>
+    </form>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

@@ -1,31 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Cadastrar curso')}"></head>
-<body class="pagina-form">
+<body class="pagina-form tema-curso">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-mortarboard-fill me-2"></i>Cadastrar curso</h4>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaCursos}">Cursos</a></li>
+                <li aria-current="page">Cadastrar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>
+            <div>
+                <h1>Cadastrar curso</h1>
+                <p>Preencha os dados abaixo. Todos os campos são obrigatórios.</p>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="alert alert-danger" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Informe o título e a quantidade de semestres do curso.</div>
-            <form th:action="@{/cadastrarCurso}" th:object="${curso}" method="post">
-                <div class="mb-3">
+    </header>
+    <form class="painel" th:action="@{/cadastrarCurso}" th:object="${curso}" method="post">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe o título e a quantidade de semestres do curso.</span></div>
+            <div class="row g-3">
+                <div class="col-md-8">
                     <label class="form-label" for="titulo">Título</label>
                     <input type="text" class="form-control" th:field="*{titulo}" placeholder="Ex.: Bacharelado em Ciência da Computação" required>
                 </div>
-                <div class="mb-3">
+                <div class="col-md-4">
                     <label class="form-label" for="qntSemestre">Quantidade de Semestres</label>
                     <input type="number" class="form-control" th:field="*{qntSemestre}" placeholder="Ex.: 8" min="1" step="1" required>
                 </div>
-                <div class="d-flex justify-content-end gap-2">
-                    <a th:href="@{/listaCursos}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaCursos}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar</button>
+        </div>
+    </form>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

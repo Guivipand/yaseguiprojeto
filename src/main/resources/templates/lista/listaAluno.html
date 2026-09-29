@@ -1,48 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Alunos')}"></head>
-<body>
+<body class="pagina-lista tema-aluno">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-0">Alunos</h2>
-            <p class="text-muted mb-0">Alunos cadastrados.</p>
+<main id="conteudo" class="container conteudo">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li aria-current="page">Alunos</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-linha">
+            <div class="cabecalho-titulo">
+                <span class="selo-entidade" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
+                <div>
+                    <h1>Alunos</h1>
+                    <p>Alunos cadastrados.</p>
+                </div>
+            </div>
+            <a th:href="@{/formularioAluno}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo aluno</a>
         </div>
-        <a th:href="@{/formularioAluno}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Novo aluno</a>
+    </header>
+    <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
     </div>
-    <div class="alert alert-danger" th:if="${erroExclusao}">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>Não foi possível excluir: existem outros registros vinculados a este item.
-    </div>
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0 table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
+    <div class="painel-tabela">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle tabela">
+                <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>Matrícula</th>
-                    <th>Semestre</th>
-                    <th>Curso</th>
-                    <th class="text-end">Ações</th>
+                    <th scope="col" class="col-id">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Matrícula</th>
+                    <th scope="col">Semestre</th>
+                    <th scope="col">Curso</th>
+                    <th scope="col" class="col-acoes text-end">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="aluno : ${alunos}">
-                    <td th:text="${aluno.id}"></td>
-                    <td th:text="${aluno.nome}"></td>
-                    <td th:text="${aluno.idMatricula}"></td>
-                    <td th:text="${aluno.semestre}"></td>
-                    <td th:text="${aluno.curso != null ? aluno.curso.titulo : 'Sem curso'}"></td>
-                    <td class="text-end text-nowrap">
-                        <a th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-outline-secondary btn-icon" title="Editar"><i class="bi bi-pencil-fill"></i></a>
-                        <a th:href="@{/detalhesAluno(id=${aluno.id})}" class="btn btn-outline-info btn-icon" title="Detalhes"><i class="bi bi-info-circle-fill"></i></a>
-                        <a th:href="@{/excluirAluno(id=${aluno.id})}" class="btn btn-outline-danger btn-icon" title="Excluir"
-                           onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash-fill"></i></a>
+                    <td data-label="Nº" class="col-id" th:text="${aluno.id}"></td>
+                    <td data-label="Nome" class="celula-principal" th:text="${aluno.nome}"></td>
+                    <td data-label="Matrícula" class="numero" th:text="${aluno.idMatricula}"></td>
+                    <td data-label="Semestre" class="numero" th:text="${aluno.semestre}"></td>
+                    <td data-label="Curso" th:text="${aluno.curso != null ? aluno.curso.titulo : 'Sem curso'}"></td>
+                    <td class="col-acoes">
+                        <div class="acoes">
+                            <a th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a th:href="@{/detalhesAluno(id=${aluno.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                            <a th:href="@{/excluirAluno(id=${aluno.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                               onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
+                        </div>
                     </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(alunos)}">
-                    <td colspan="6" class="text-center text-muted py-4">Nenhum aluno cadastrado ainda.</td>
+                <tr class="linha-vazia" th:if="${#lists.isEmpty(alunos)}">
+                    <td colspan="6">
+                        <div class="vazio">
+                            <span class="vazio-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
+                            <p class="vazio-titulo">Nenhum aluno cadastrado ainda.</p>
+                            <p class="vazio-texto">Use o botão “Novo aluno” para fazer o primeiro cadastro.</p>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>

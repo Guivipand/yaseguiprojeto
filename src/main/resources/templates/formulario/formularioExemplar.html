@@ -1,34 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Cadastrar exemplar')}"></head>
-<body class="pagina-form">
+<body class="pagina-form tema-exemplar">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-upc-scan me-2"></i>Cadastrar exemplar</h4>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaExemplares}">Exemplares</a></li>
+                <li aria-current="page">Cadastrar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>
+            <div>
+                <h1>Cadastrar exemplar</h1>
+                <p>Preencha os dados abaixo. Todos os campos são obrigatórios.</p>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="alert alert-danger" th:if="${erroExemplar}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Selecione um livro e informe o tombo do exemplar.</div>
-            <form th:action="@{/cadastrarExemplar}" th:object="${exemplar}" method="post">
-                <div class="mb-3">
+    </header>
+    <form class="painel" th:action="@{/cadastrarExemplar}" th:object="${exemplar}" method="post">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroExemplar}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione um livro e informe o tombo do exemplar.</span></div>
+            <div class="row g-3">
+                <div class="col-md-8">
                     <label class="form-label" for="livro">Livro</label>
                     <select class="form-select" th:field="*{livro}" required>
                         <option value="">Selecione o livro</option>
                         <option th:each="livro : ${livros}" th:value="${livro.id}" th:text="${livro.titulo}"></option>
                     </select>
                 </div>
-                <div class="mb-3">
+                <div class="col-md-4">
                     <label class="form-label" for="tombo">Tombo</label>
                     <input type="text" class="form-control" th:field="*{tombo}" placeholder="Código de patrimônio do exemplar" required>
                 </div>
-                <div class="d-flex justify-content-end gap-2">
-                    <a th:href="@{/listaExemplares}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaExemplares}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar</button>
+        </div>
+    </form>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

@@ -1,48 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Cadastrar empréstimo')}"></head>
-<body class="pagina-form">
+<body class="pagina-form tema-emprestimo">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-arrow-left-right me-2"></i>Cadastrar empréstimo</h4>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaEmprestimos}">Empréstimos</a></li>
+                <li aria-current="page">Cadastrar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>
+            <div>
+                <h1>Cadastrar empréstimo</h1>
+                <p>Preencha os dados abaixo. Todos os campos são obrigatórios.</p>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="alert alert-danger" th:if="${erroDataRetirada}"><i class="bi bi-exclamation-triangle-fill me-2"></i>A data de retirada deve ser hoje ou uma data futura.</div>
-            <div class="alert alert-danger" th:if="${erroDataPrevista}"><i class="bi bi-exclamation-triangle-fill me-2"></i>A devolução prevista deve ser entre a data de retirada e até uma semana depois.</div>
-            <div class="alert alert-danger" th:if="${erroExemplarIndisponivel}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Selecione um exemplar disponível.</div>
-            <div class="alert alert-danger" th:if="${erroCamposEmprestimo}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Informe exemplar e aluno.</div>
-            <form th:action="@{/cadastrarEmprestimo}" th:object="${emprestimo}" method="post">
-                <div class="mb-3">
-                    <label class="form-label" for="exemplar">Exemplar</label>
-                    <select class="form-select" th:field="*{exemplar}" required>
-                        <option value="">Selecione o exemplar</option>
-                        <option th:each="exemplar : ${exemplares}" th:value="${exemplar.id}" th:text="${exemplar.tombo + ' - ' + exemplar.livro.titulo}"></option>
-                    </select>
+    </header>
+    <form class="painel" th:action="@{/cadastrarEmprestimo}" th:object="${emprestimo}" method="post">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroDataRetirada}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>A data de retirada deve ser hoje ou uma data futura.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroDataPrevista}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>A devolução prevista deve ser entre a data de retirada e até uma semana depois.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroExemplarIndisponivel}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione um exemplar disponível.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroCamposEmprestimo}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe exemplar e aluno.</span></div>
+            <fieldset class="grupo-campos">
+                <legend>Exemplar e aluno</legend>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label" for="exemplar">Exemplar</label>
+                        <select class="form-select" th:field="*{exemplar}" required>
+                            <option value="">Selecione o exemplar</option>
+                            <option th:each="exemplar : ${exemplares}" th:value="${exemplar.id}" th:text="${exemplar.tombo + ' - ' + exemplar.livro.titulo}"></option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="aluno">Aluno</label>
+                        <select class="form-select" th:field="*{aluno}" required>
+                            <option value="">Selecione o aluno</option>
+                            <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
+                        </select>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="aluno">Aluno</label>
-                    <select class="form-select" th:field="*{aluno}" required>
-                        <option value="">Selecione o aluno</option>
-                        <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
-                    </select>
+            </fieldset>
+            <fieldset class="grupo-campos">
+                <legend>Prazo</legend>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="data_retirada">Data de retirada</label>
+                        <input type="date" class="form-control" th:field="*{data_retirada}" th:attr="min=${dataMinima}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="data_prevista">Data prevista para devolução</label>
+                        <input type="date" class="form-control" th:field="*{data_prevista}" aria-describedby="ajudaPrevista" required>
+                        <div class="form-text" id="ajudaPrevista">Sugerida com 7 dias após a retirada. Pode ser ajustada dentro desse prazo.</div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="data_retirada">Data de retirada</label>
-                    <input type="date" class="form-control" th:field="*{data_retirada}" th:attr="min=${dataMinima}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="data_prevista">Data prevista para devolução</label>
-                    <input type="date" class="form-control" th:field="*{data_prevista}" required>
-                </div>
-                <div class="d-flex justify-content-end gap-2">
-                    <a th:href="@{/listaEmprestimos}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar</button>
-                </div>
-            </form>
+            </fieldset>
         </div>
-    </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaEmprestimos}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar</button>
+        </div>
+    </form>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 <script>
