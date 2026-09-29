@@ -3,12 +3,14 @@ package com.ifsp.yas1.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ifsp.yas1.Model.Exemplar;
 import com.ifsp.yas1.Repository.ExemplarRepository;
@@ -80,9 +82,13 @@ public class ExemplarController {
 	}
 
 	@GetMapping("/excluirExemplar")
-	public String excluirExemplar(@RequestParam int id) {
+	public String excluirExemplar(@RequestParam int id, RedirectAttributes redirect) {
 		Exemplar exemplar = exemplarRepository.findById(id).orElseThrow();
-		exemplarRepository.delete(exemplar);
+		try {
+			exemplarRepository.delete(exemplar);
+		} catch (DataIntegrityViolationException e) {
+			redirect.addFlashAttribute("erroExclusao", true);
+		}
 		return "redirect:/listaExemplares";
 	}
 }

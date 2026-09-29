@@ -2,6 +2,8 @@ package com.ifsp.yas1.Model;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,12 +29,15 @@ public class Emprestimo {
     @JoinColumn (name = "aluno")
     private Aluno aluno;
 
+    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE)
     @Column (name = "data_retirada")
     private LocalDate data_retirada;
 
+    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE)
     @Column (name = "data_prevista")
     private LocalDate data_prevista;
 
+    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE)
     @Column (name = "devolucao")
     private LocalDate data_devolucao;
 

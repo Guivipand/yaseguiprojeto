@@ -14,7 +14,7 @@ import com.ifsp.yas1.Model.Matricula;
 import com.ifsp.yas1.Repository.AlunoRepository;
 import com.ifsp.yas1.Repository.CursoRepository;
 import com.ifsp.yas1.Repository.MatriculaRepository;
-import com.ifsp.yas1.Repository.LivroRepository;
+import com.ifsp.yas1.Repository.OfertaDisciplinaRepository;
 
 @Controller
 public class MatriculaController {
@@ -29,20 +29,24 @@ public class MatriculaController {
     private CursoRepository cursoRepository;
 
     @Autowired
-    private LivroRepository LivroRepository;
+    private OfertaDisciplinaRepository ofertaDisciplinaRepository;
 
     @GetMapping("/formularioMatricula")
     public String formularioMatricula(Model model) {
         model.addAttribute("matricula", new Matricula());
         model.addAttribute("alunos", alunoRepository.findAll());
         model.addAttribute("cursos", cursoRepository.findAll());
-        model.addAttribute("ofertasDisciplina", LivroRepository.findAll());
+        model.addAttribute("ofertasDisciplina", ofertaDisciplinaRepository.findAll());
         return "formulario/formularioMatricula";
     }
 
     @PostMapping("/cadastrarMatricula")
-    public String saveMatriculas(@ModelAttribute Matricula matricula) {
+    public String saveMatriculas(@ModelAttribute Matricula matricula, Model model) {
         if (!matricula.validar()) {
+            model.addAttribute("erroValidacao", true);
+            model.addAttribute("alunos", alunoRepository.findAll());
+            model.addAttribute("cursos", cursoRepository.findAll());
+            model.addAttribute("ofertasDisciplina", ofertaDisciplinaRepository.findAll());
             return "formulario/formularioMatricula";
         }
         matriculaRepository.save(matricula);
@@ -62,13 +66,17 @@ public class MatriculaController {
         model.addAttribute("matricula", matricula);
         model.addAttribute("alunos", alunoRepository.findAll());
         model.addAttribute("cursos", cursoRepository.findAll());
-        model.addAttribute("ofertasDisciplina", LivroRepository.findAll());
+        model.addAttribute("ofertasDisciplina", ofertaDisciplinaRepository.findAll());
         return "editar/editarMatricula";
     }
 
     @PostMapping("/atualizarMatricula")
-    public String atualizarMatricula(@ModelAttribute Matricula matricula) {
+    public String atualizarMatricula(@ModelAttribute Matricula matricula, Model model) {
         if (!matricula.validar()) {
+            model.addAttribute("erroValidacao", true);
+            model.addAttribute("alunos", alunoRepository.findAll());
+            model.addAttribute("cursos", cursoRepository.findAll());
+            model.addAttribute("ofertasDisciplina", ofertaDisciplinaRepository.findAll());
             return "editar/editarMatricula";
         }
         matriculaRepository.save(matricula);

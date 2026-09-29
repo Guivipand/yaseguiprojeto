@@ -1,62 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de livro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/estilo.css}">
-</head>
+<head th:replace="~{fragments/layout :: head('Cadastrar livro')}"></head>
 <body class="pagina-form">
-<div class="container">
-    <div class="card shadow-sm">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container pb-5">
+    <div class="card shadow-sm border-0">
         <div class="card-header">
-            <h4 class="mb-0">Cadastrar Livro</h4>
+            <h4 class="mb-0"><i class="bi bi-book-fill me-2"></i>Cadastrar livro</h4>
         </div>
         <div class="card-body">
-            <div class="alert alert-danger" th:if="${erroIsbn}">Informe um ISBN-10 ou ISBN-13 válido.</div>
-            <div class="alert alert-danger" th:if="${erroAno}">O ano deve ser maior que zero e não pode ser futuro.</div>
-            <div class="alert alert-danger" th:if="${erroImagem}">Selecione a imagem da capa.</div>
+            <div class="alert alert-danger" th:if="${erroIsbn}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Informe um ISBN-10 ou ISBN-13 válido.</div>
+            <div class="alert alert-danger" th:if="${erroAno}"><i class="bi bi-exclamation-triangle-fill me-2"></i>O ano deve ser maior que zero e não pode ser futuro.</div>
+            <div class="alert alert-danger" th:if="${erroImagem}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Selecione a imagem da capa.</div>
             <form th:action="@{/cadastrarLivro}" th:object="${livro}" enctype="multipart/form-data" method="post">
                 <div class="mb-3">
-                    <label class="form-label">Título</label>
+                    <label class="form-label" for="titulo">Título</label>
                     <input type="text" class="form-control" th:field="*{titulo}" placeholder="Digite o título do livro" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Autor</label>
+                    <label class="form-label" for="autor">Autor</label>
                     <input type="text" class="form-control" th:field="*{autor}" placeholder="Digite o nome do autor" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Editora</label>
+                    <label class="form-label" for="editora">Editora</label>
                     <input type="text" class="form-control" th:field="*{editora}" placeholder="Digite o nome da editora" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">ISBN</label>
+                    <label class="form-label" for="isbn">ISBN</label>
                     <input type="text" class="form-control" th:field="*{isbn}" placeholder="ISBN-10 ou ISBN-13" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Edição</label>
-                    <input type="text" class="form-control" th:field="*{edicao}" placeholder="Digite a edição" required>
+                    <label class="form-label" for="edicao">Edição</label>
+                    <input type="text" class="form-control" th:field="*{edicao}" placeholder="Ex.: 3ª edição" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Ano</label>
-                    <input type="number" min="1" th:attr="max=${T(java.time.Year).now().value}" step="1" class="form-control" th:field="*{ano}" placeholder="Digite o ano" required>
+                    <label class="form-label" for="ano">Ano</label>
+                    <input type="number" class="form-control" th:field="*{ano}" placeholder="Ex.: 2020" min="1" step="1" th:max="${#temporals.year(#temporals.createNow())}" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Sinopse</label>
+                    <label class="form-label" for="sinopse">Sinopse</label>
                     <input type="text" class="form-control" th:field="*{sinopse}" placeholder="Escreva a sinopse do livro" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Imagem</label>
-                    <input type="file" class="form-control" name="imagem" required>
+                    <label class="form-label" for="imagem">Capa</label>
+                    <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*" required>
                 </div>
                 <div class="d-flex justify-content-end gap-2">
-                    <a th:href="@{/listaLivros}" class="btn btn-secondary">Retornar</a>
-                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a th:href="@{/listaLivros}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar</button>
                 </div>
             </form>
         </div>
     </div>
-</div>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>
 </html>

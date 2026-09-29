@@ -122,8 +122,13 @@ public class EmprestimoController {
     }
 
     @GetMapping("/excluirEmprestimo")
+    @Transactional
     public String excluirEmprestimo(@RequestParam int id) {
         Emprestimo registro = repository.findById(id).orElseThrow();
+        if (registro.getData_devolucao() == null && registro.getExemplar() != null) {
+            registro.getExemplar().setStatus("Disponível");
+            exemplarRepository.save(registro.getExemplar());
+        }
         repository.delete(registro);
         return "redirect:/listaEmprestimos";
     }

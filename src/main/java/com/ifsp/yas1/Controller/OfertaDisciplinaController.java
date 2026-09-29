@@ -3,12 +3,14 @@ package com.ifsp.yas1.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ifsp.yas1.Model.OfertaDisciplina;
 import com.ifsp.yas1.Repository.DisciplinaRepository;
@@ -36,8 +38,11 @@ public class OfertaDisciplinaController {
     }
 
     @PostMapping("/cadastrarOfertaDisciplina")
-    public String saveOfertaDisciplinas(@ModelAttribute OfertaDisciplina ofertaDisciplina) {
+    public String saveOfertaDisciplinas(@ModelAttribute OfertaDisciplina ofertaDisciplina, Model model) {
         if (!ofertaDisciplina.validar()) {
+            model.addAttribute("erroValidacao", true);
+            model.addAttribute("disciplinas", disciplinaRepository.findAll());
+            model.addAttribute("professores", professorRepository.findAll());
             return "formulario/formularioOfertaDisciplina";
         }
         ofertaDisciplinaRepository.save(ofertaDisciplina);
@@ -61,8 +66,11 @@ public class OfertaDisciplinaController {
     }
 
     @PostMapping("/atualizarOfertaDisciplina")
-    public String atualizarOfertaDisciplina(@ModelAttribute OfertaDisciplina ofertaDisciplina) {
+    public String atualizarOfertaDisciplina(@ModelAttribute OfertaDisciplina ofertaDisciplina, Model model) {
         if (!ofertaDisciplina.validar()) {
+            model.addAttribute("erroValidacao", true);
+            model.addAttribute("disciplinas", disciplinaRepository.findAll());
+            model.addAttribute("professores", professorRepository.findAll());
             return "editar/editarOfertaDisciplina";
         }
         ofertaDisciplinaRepository.save(ofertaDisciplina);
@@ -70,9 +78,13 @@ public class OfertaDisciplinaController {
     }
 
     @GetMapping("/excluirOfertaDisciplina")
-    public String excluirOfertaDisciplina(@RequestParam int id) {
+    public String excluirOfertaDisciplina(@RequestParam int id, RedirectAttributes redirect) {
         OfertaDisciplina ofertaDisciplina = ofertaDisciplinaRepository.findById(id).orElseThrow();
-        ofertaDisciplinaRepository.delete(ofertaDisciplina);
+        try {
+            ofertaDisciplinaRepository.delete(ofertaDisciplina);
+        } catch (DataIntegrityViolationException e) {
+            redirect.addFlashAttribute("erroExclusao", true);
+        }
         return "redirect:/listaOfertaDisciplinas";
     }
 }

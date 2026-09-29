@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,7 +17,7 @@ public class Exemplar {
     @Column (name = "id")
     private int id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn (name = "livro")
     private Livro livro;
 

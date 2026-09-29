@@ -1,20 +1,19 @@
 package com.ifsp.yas1.Model;
 
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table (name = "Pessoa")
+@MappedSuperclass
 public class Pessoa {
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "id")
     private int id;
 
@@ -30,8 +29,9 @@ public class Pessoa {
     @Column (name = "email")
     private String email;
 
+    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE)
     @Column (name = "dataNasc")
-    private String dataNasc;
+    private LocalDate dataNasc;
 
     @Column (name = "endereco")
     private String endereco;
@@ -39,7 +39,7 @@ public class Pessoa {
     public Pessoa() {
     }
 
-    public Pessoa(String nome, String cpf, String telefone, String email, String dataNasc, String endereco, int id) {
+    public Pessoa(String nome, String cpf, String telefone, String email, LocalDate dataNasc, String endereco, int id) {
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
@@ -89,11 +89,11 @@ public class Pessoa {
         this.email = email;
     }
 
-    public String getDataNasc() {
+    public LocalDate getDataNasc() {
         return dataNasc;
     }
 
-    public void setDataNasc(String dataNasc) {
+    public void setDataNasc(LocalDate dataNasc) {
         this.dataNasc = dataNasc;
     }
 
@@ -157,7 +157,7 @@ public class Pessoa {
     }
 
     public boolean validarDataNasc() {
-        return dataNasc != null && !dataNasc.trim().isEmpty();
+        return dataNasc != null;
     }
 
     public boolean validarEndereco() {
