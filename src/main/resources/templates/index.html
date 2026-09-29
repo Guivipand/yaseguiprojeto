@@ -137,6 +137,54 @@
             </div>
         </div>
 
+        <!-- DisciplinaLivro -->
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card card-entidade h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="icon-wrap bg-success-subtle text-success">
+                        <i class="bi bi-journal-bookmark-fill"></i>
+                    </div>
+                    <h5 class="card-title">Referências</h5>
+                    <p class="card-text text-muted">Relacionar livros de referência às disciplinas.</p>
+                    <a th:href="@{/listaDisciplinaLivros}" class="btn btn-success btn-sm">
+                        <i class="bi bi-list-ul me-1"></i>Gerenciar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplar -->
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card card-entidade h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="icon-wrap bg-primary-subtle text-primary">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h5 class="card-title">Exemplar</h5>
+                    <p class="card-text text-muted">Gerenciar um exemplar, com CRUD completo.</p>
+                    <a th:href="@{/listaExemplares}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-list-ul me-1"></i>Gerenciar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empréstimo -->
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card card-entidade h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="icon-wrap bg-primary-subtle text-primary">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h5 class="card-title">Empréstimo</h5>
+                    <p class="card-text text-muted">Gerenciar um empréstimo, com CRUD completo.</p>
+                    <a th:href="@{/listaEmprestimos}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-list-ul me-1"></i>Gerenciar
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

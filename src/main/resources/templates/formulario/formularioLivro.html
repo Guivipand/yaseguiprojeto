@@ -14,6 +14,9 @@
             <h4 class="mb-0">Cadastrar Livro</h4>
         </div>
         <div class="card-body">
+            <div class="alert alert-danger" th:if="${erroIsbn}">Informe um ISBN-10 ou ISBN-13 válido.</div>
+            <div class="alert alert-danger" th:if="${erroAno}">O ano deve ser maior que zero e não pode ser futuro.</div>
+            <div class="alert alert-danger" th:if="${erroImagem}">Selecione a imagem da capa.</div>
             <form th:action="@{/cadastrarLivro}" th:object="${livro}" enctype="multipart/form-data" method="post">
                 <div class="mb-3">
                     <label class="form-label">Título</label>
@@ -29,7 +32,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">ISBN</label>
-                    <input type="text" class="form-control" th:field="*{isbn}" placeholder="Digite o ISBN" required>
+                    <input type="text" class="form-control" th:field="*{isbn}" placeholder="ISBN-10 ou ISBN-13" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Edição</label>
@@ -37,7 +40,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Ano</label>
-                    <input type="number" step="1" class="form-control" th:field="*{ano}" placeholder="Digite o ano" required>
+                    <input type="number" min="1" th:attr="max=${T(java.time.Year).now().value}" step="1" class="form-control" th:field="*{ano}" placeholder="Digite o ano" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Sinopse</label>

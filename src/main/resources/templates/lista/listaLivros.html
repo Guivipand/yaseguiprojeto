@@ -29,6 +29,8 @@
                     <th>#</th>
                     <th>Título</th>
                     <th>Autor</th>
+                    <th>Editora</th>
+                    <th>ISBN</th>
                     <th class="text-end">Ações</th>
                 </tr>
                 </thead>
@@ -37,6 +39,8 @@
                     <td th:text="${livro.id}"></td>
                     <td th:text="${livro.titulo}"></td>
                     <td th:text="${livro.autor}"></td>
+                    <td th:text="${livro.editora}"></td>
+                    <td th:text="${livro.isbn}"></td>
                     <td class="text-end">
                         <a th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-outline-secondary btn-icon" title="Editar"><i class="bi bi-pencil-fill"></i></a>
                         <a th:href="@{/detalhesLivro(id=${livro.id})}" class="btn btn-outline-info btn-icon" title="Detalhes"><i class="bi bi-info-circle-fill"></i></a>
@@ -44,7 +48,7 @@
                     </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(livros)}">
-                    <td colspan="4" class="text-center text-muted py-4">Nenhum livro cadastrado ainda.</td>
+                    <td colspan="6" class="text-center text-muted py-4">Nenhum livro cadastrado ainda.</td>
                 </tr>
                 </tbody>
             </table>

@@ -1,5 +1,8 @@
 package com.ifsp.yas1.Model;
 
+import java.time.Year;
+import java.util.Locale;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -124,5 +127,39 @@ public class Livro {
 
     public void setCapa_imagem(String capa_imagem) {
         this.capa_imagem = capa_imagem;
+    }
+
+    public boolean validarIsbn() {
+        if (isbn == null) {
+            return false;
+        }
+
+        String isbnNormalizado = isbn.replaceAll("[-\\s]", "").toUpperCase(Locale.ROOT);
+        if (isbnNormalizado.matches("\\d{13}")) {
+            int soma = 0;
+            for (int i = 0; i < 12; i++) {
+                int peso = i % 2 == 0 ? 1 : 3;
+                soma += Character.getNumericValue(isbnNormalizado.charAt(i)) * peso;
+            }
+            int digitoVerificador = (10 - soma % 10) % 10;
+            return digitoVerificador == Character.getNumericValue(isbnNormalizado.charAt(12));
+        }
+
+        if (isbnNormalizado.matches("\\d{9}[\\dX]")) {
+            int soma = 0;
+            for (int i = 0; i < 10; i++) {
+                int digito = isbnNormalizado.charAt(i) == 'X'
+                        ? 10
+                        : Character.getNumericValue(isbnNormalizado.charAt(i));
+                soma += digito * (10 - i);
+            }
+            return soma % 11 == 0;
+        }
+
+        return false;
+    }
+
+    public boolean validarAno() {
+        return ano > 0 && ano <= Year.now().getValue();
     }
 }

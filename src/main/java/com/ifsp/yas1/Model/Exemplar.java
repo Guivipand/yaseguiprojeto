@@ -67,4 +67,14 @@ public class Exemplar {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public boolean validar() {
+        return livro != null
+                && tombo != null
+                && !tombo.trim().isEmpty();
+    }
+
+    public boolean validarDisponibilidade() {
+        return "Disponível".equals(status);
+    }
 }

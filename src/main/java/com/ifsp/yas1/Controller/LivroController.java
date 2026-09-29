@@ -32,9 +32,17 @@ public class LivroController {
     }
 
     @PostMapping("/cadastrarLivro")
-    public String saveLivros(@ModelAttribute Livro livro, @RequestParam("imagem") MultipartFile imagem) throws IOException {
-        String capa_imagem = livroService.salvarImagem(imagem);
-        livro.setCapa_imagem(capa_imagem);
+    public String saveLivros(@ModelAttribute Livro livro,
+            @RequestParam(value = "imagem", required = false) MultipartFile imagem, Model model) throws IOException {
+        if (!livro.validarIsbn() || !livro.validarAno()) {
+            adicionarErrosValidacao(model, livro);
+            return "formulario/formularioLivro";
+        }
+        if (imagem == null || imagem.isEmpty()) {
+            model.addAttribute("erroImagem", true);
+            return "formulario/formularioLivro";
+        }
+        livro.setCapa_imagem(livroService.salvarImagem(imagem));
         livroRepository.save(livro);
         return "redirect:/sucessCad";
     }
@@ -56,14 +64,22 @@ public class LivroController {
     @GetMapping("/editarLivro")
     public String editarLivro(@RequestParam int id, Model model) {
         Livro livro = livroRepository.findById(id).orElseThrow();
-        model.addAttribute("Livro", livro);
+        model.addAttribute("livro", livro);
         return "editar/editarLivro";
     }
 
     @PostMapping("/atualizarLivro")
-    public String atualizarLivro(@ModelAttribute Livro livro, @RequestParam("imagem") MultipartFile imagem) throws IOException{
-        String capa_imagem = livroService.salvarImagem(imagem);
-        livro.setCapa_imagem(capa_imagem);
+    public String atualizarLivro(@ModelAttribute Livro livro,
+            @RequestParam(value = "imagem", required = false) MultipartFile imagem, Model model) throws IOException {
+        Livro livroExistente = livroRepository.findById(livro.getId()).orElseThrow();
+        livro.setCapa_imagem(livroExistente.getCapa_imagem());
+        if (!livro.validarIsbn() || !livro.validarAno()) {
+            adicionarErrosValidacao(model, livro);
+            return "editar/editarLivro";
+        }
+        if (imagem != null && !imagem.isEmpty()) {
+            livro.setCapa_imagem(livroService.salvarImagem(imagem));
+        }
         livroRepository.save(livro);
         return "redirect:/listaLivros";
     }
@@ -73,5 +89,11 @@ public class LivroController {
         Livro livro = livroRepository.findById(id).orElseThrow();
         livroRepository.delete(livro);
         return "redirect:/listaLivros";
+    }
+
+    private void adicionarErrosValidacao(Model model, Livro livro) {
+        model.addAttribute("livro", livro);
+        model.addAttribute("erroIsbn", !livro.validarIsbn());
+        model.addAttribute("erroAno", !livro.validarAno());
     }
 }
