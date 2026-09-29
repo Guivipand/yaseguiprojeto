@@ -23,7 +23,7 @@
     <form class="painel" th:action="@{/atualizarDisciplina}" th:object="${disciplina}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="painel-corpo">
-            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe a matéria, o semestre e selecione o curso.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe a matéria, um semestre entre 1 e 12 e selecione o curso.</span></div>
             <div class="row g-3">
                 <div class="col-md-8">
                     <label class="form-label" for="materia">Matéria</label>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="semestre">Semestre</label>
-                    <input type="number" class="form-control" th:field="*{semestre}" placeholder="Ex.: 1" min="1" step="1" required>
+                    <input type="number" class="form-control" th:field="*{semestre}" placeholder="Ex.: 1" min="1" max="12" step="1" required>
                 </div>
                 <div class="col-12">
                     <label class="form-label" for="curso">Curso</label>

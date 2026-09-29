@@ -22,7 +22,7 @@
     </header>
     <form class="painel" th:action="@{/cadastrarAluno}" th:object="${aluno}" method="post">
         <div class="painel-corpo">
-            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Verifique os campos: todos são obrigatórios e o CPF e o e-mail precisam ser válidos.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Verifique os campos: todos são obrigatórios, o CPF e o e-mail precisam ser válidos e o semestre deve estar entre 1 e 12.</span></div>
             <fieldset class="grupo-campos">
                 <legend>Identificação</legend>
                 <div class="row g-3">
@@ -73,7 +73,7 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label" for="semestre">Semestre</label>
-                        <input type="number" class="form-control" th:field="*{semestre}" placeholder="Ex.: 1" min="1" step="1" required>
+                        <input type="number" class="form-control" th:field="*{semestre}" placeholder="Ex.: 1" min="1" max="12" step="1" required>
                     </div>
                 </div>
             </fieldset>

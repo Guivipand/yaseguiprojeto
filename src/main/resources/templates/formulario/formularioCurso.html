@@ -22,7 +22,7 @@
     </header>
     <form class="painel" th:action="@{/cadastrarCurso}" th:object="${curso}" method="post">
         <div class="painel-corpo">
-            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe o título e a quantidade de semestres do curso.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe o título e uma quantidade de semestres entre 1 e 12.</span></div>
             <div class="row g-3">
                 <div class="col-md-8">
                     <label class="form-label" for="titulo">Título</label>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="qntSemestre">Quantidade de Semestres</label>
-                    <input type="number" class="form-control" th:field="*{qntSemestre}" placeholder="Ex.: 8" min="1" step="1" required>
+                    <input type="number" class="form-control" th:field="*{qntSemestre}" placeholder="Ex.: 8" min="1" max="12" step="1" required>
                 </div>
             </div>
         </div>
