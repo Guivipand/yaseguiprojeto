@@ -74,6 +74,12 @@ public class Pessoa implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+    public PessoaRole getRole() {
+        return role;
+    }
+    public void setRole(PessoaRole role) {
+        this.role = role;
+    }
 
     // Métodos da interface UserDetails
     @Override

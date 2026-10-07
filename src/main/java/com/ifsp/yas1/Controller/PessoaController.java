@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ifsp.yas1.Model.Pessoa;
 import com.ifsp.yas1.Repository.PessoaRepository;
+import com.ifsp.yas1.Service.PessoaRole;
 
 @Controller
 public class PessoaController {
@@ -32,11 +33,12 @@ public class PessoaController {
     }
 
     @PostMapping("/register")
-    public String cadastrar(@RequestParam String username, @RequestParam String password, Model model) throws Exception{
+    public String cadastrar(@RequestParam String username, @RequestParam String password, @RequestParam PessoaRole role, Model model) throws Exception{
         if (repositorio.findByUsername(username)==null) {
             Pessoa pessoa = new Pessoa();
             pessoa.setUsername(username);
             pessoa.setPassword(passwordEncoder.encode(password));
+            pessoa.setRole(role);
             repositorio.save(pessoa);
             System.out.println("Usuário " + username + " criado com sucesso!");
             model.addAttribute("mensagemSucesso", "Usuário criado com sucesso!");

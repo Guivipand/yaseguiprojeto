@@ -12,6 +12,19 @@
         </header>
         <form class="painel" th:action="@{/register}" method="post">
             <div class="painel-corpo">
+                <fieldset class="campo-papel">
+                    <legend class="form-label">Tipo de perfil:</legend>
+                    <div class="escolha-papel">
+                        <input type="radio" class="btn-check" name="role" id="perfilProfessor" value="PROFESSOR" required>
+                        <label class="opcao-papel tema-professor" for="perfilProfessor">
+                            <span class="menu-icone" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>Professor
+                        </label>
+                        <input type="radio" class="btn-check" name="role" id="perfilAluno" value="ALUNO" checked>
+                        <label class="opcao-papel tema-aluno" for="perfilAluno">
+                            <span class="menu-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>Aluno
+                        </label>
+                    </div>
+                </fieldset>
                 <div class="row g-3">
                     <div class="col-12">
                         <label class="form-label" for="username">Login:</label>

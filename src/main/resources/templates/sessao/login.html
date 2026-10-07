@@ -12,6 +12,7 @@
         </header>
         <form class="painel" th:action="@{/login}" method="post">
             <div class="painel-corpo">
+                <div class="alert alert-sucesso" role="status" th:if="${param.logout}"><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Você saiu do sistema.</span></div>
                 <div class="alert alert-danger" role="alert" th:if="${param.error}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Login ou senha inválidos.</span></div>
                 <div class="row g-3">
                     <div class="col-12">
