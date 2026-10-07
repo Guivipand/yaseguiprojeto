@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cadastrar Usuário')}"></head>
+<body class="pagina-sessao">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo">
+    <section class="cartao-sessao">
+        <header class="sessao-cabecalho">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-person-plus-fill"></i></span>
+            <h1>Cadastrar Usuário</h1>
+            <p>Escolha um login e uma senha para acessar o sistema.</p>
+        </header>
+        <form class="painel" th:action="@{/register}" method="post">
+            <div class="painel-corpo">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label" for="username">Login:</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Digite o login" autocomplete="username" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="password">Senha:</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Digite a senha" autocomplete="new-password" required>
+                    </div>
+                </div>
+
+                <!-- ✅ Alertas de sucesso ou erro -->
+                <div th:if="${mensagemSucesso}"
+                     style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+                            padding: 10px; border-radius: 5px; margin-top: 15px;">
+                    <p th:text="${mensagemSucesso}"></p>
+                </div>
+
+                <div th:if="${erroUsuario}"
+                     style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+                            padding: 10px; border-radius: 5px; margin-top: 15px;">
+                    <p th:text="${erroUsuario}"></p>
+                </div>
+            </div>
+            <div class="painel-acoes">
+                <a th:href="@{/login}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+                <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Cadastrar</button>
+            </div>
+        </form>
+        <p class="sessao-rodape">Já tem conta? <a th:href="@{/login}">Entrar</a></p>
+    </section>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

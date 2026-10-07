@@ -1,21 +1,39 @@
 package com.ifsp.yas1.Model;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.ifsp.yas1.Service.PessoaRole;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 
-@MappedSuperclass
-public class Pessoa {
+// Pessoa é o usuário do sistema: vira entidade (tabela "pessoa") e Professor/Aluno
+// herdam dela em tabelas próprias ligadas pelo id (herança JOINED)
+@Entity
+@Table (name = "pessoa")
+@Inheritance (strategy = InheritanceType.JOINED)
+public class Pessoa implements UserDetails {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "id")
     private int id;
+
+    private String username;
+    private String password;
+    private PessoaRole role;
 
     @Column (name = "nome")
     private String nome;
@@ -47,6 +65,54 @@ public class Pessoa {
         this.dataNasc = dataNasc;
         this.endereco = endereco;
         this.id = id;
+    }
+
+    // Construtores, Getters e Setters
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // Métodos da interface UserDetails
+    @Override
+    // Controle das roles (papéis no sistema)
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == PessoaRole.PROFESSOR)
+            return List.of(new SimpleGrantedAuthority("ROLE_PROFESSOR"), new SimpleGrantedAuthority("ROLE_ALUNO"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_ALUNO"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // A conta não expirou
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // A conta não está bloqueada
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // As credenciais não expiraram
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // O usuário está ativo
     }
 
     public int getId() {

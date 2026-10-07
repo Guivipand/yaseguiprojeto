@@ -10,6 +10,12 @@ public class HomeController {
         return "index";
     }
 
+    // Destino do .defaultSuccessUrl("/menu", true) depois do login
+    @GetMapping("/menu")
+    public String menu() {
+        return "index";
+    }
+
     @GetMapping("/sucessCad")
     public String sucessoCad() {
         return "sucessCad";

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Entrar')}"></head>
+<body class="pagina-sessao">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo">
+    <section class="cartao-sessao">
+        <header class="sessao-cabecalho">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-box-arrow-in-right"></i></span>
+            <h1>Entrar</h1>
+            <p>Acesse o sistema com seu login e senha.</p>
+        </header>
+        <form class="painel" th:action="@{/login}" method="post">
+            <div class="painel-corpo">
+                <div class="alert alert-danger" role="alert" th:if="${param.error}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Login ou senha inválidos.</span></div>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label" for="username">Login:</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu login" autocomplete="username" required autofocus>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="password">Senha:</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha" autocomplete="current-password" required>
+                    </div>
+                </div>
+            </div>
+            <div class="painel-acoes">
+                <button type="submit" class="btn btn-tema"><i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Entrar</button>
+            </div>
+        </form>
+        <p class="sessao-rodape">Ainda não tem conta? <a th:href="@{/register}">Cadastrar usuário</a></p>
+    </section>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
