@@ -1,30 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Detalhes do aluno')}"></head>
-<body class="pagina-form">
+<body class="pagina-detalhes tema-aluno">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-people-fill me-2"></i>Detalhes do aluno</h4>
-        </div>
-        <div class="card-body">
-            <div class="info"><span class="label">ID:</span> <span th:text="${aluno.id}"></span></div>
-            <div class="info"><span class="label">Matrícula:</span> <span th:text="${aluno.idMatricula}"></span></div>
-            <div class="info"><span class="label">Nome:</span> <span th:text="${aluno.nome}"></span></div>
-            <div class="info"><span class="label">Endereço:</span> <span th:text="${aluno.endereco}"></span></div>
-            <div class="info"><span class="label">CPF:</span> <span th:text="${aluno.cpf}"></span></div>
-            <div class="info"><span class="label">E-mail:</span> <span th:text="${aluno.email}"></span></div>
-            <div class="info"><span class="label">Telefone:</span> <span th:text="${aluno.telefone}"></span></div>
-            <div class="info"><span class="label">Data de Nascimento:</span> <span th:text="${aluno.dataNasc != null ? #temporals.format(aluno.dataNasc, 'dd/MM/yyyy') : '-'}"></span></div>
-            <div class="info"><span class="label">Semestre:</span> <span th:text="${aluno.semestre}"></span></div>
-            <div class="info"><span class="label">Curso:</span> <span th:text="${aluno.curso != null ? aluno.curso.titulo : 'Sem curso'}"></span></div>
-            <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
-                <a th:href="@{/listaAlunos}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                <a th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-primary"><i class="bi bi-pencil-fill me-1"></i>Editar</a>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaAlunos}">Alunos</a></li>
+                <li aria-current="page">Detalhes</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
+            <div>
+                <h1>Detalhes do aluno</h1>
+                <p>Ficha cadastral completa do estudante.</p>
             </div>
         </div>
-    </div>
+    </header>
+    <section class="painel" aria-labelledby="ficha-nome">
+        <div class="painel-corpo">
+            <div class="ficha-topo">
+                <div>
+                    <p class="ficha-sobre">Aluno</p>
+                    <h2 class="ficha-nome" id="ficha-nome" th:text="${aluno.nome}"></h2>
+                </div>
+                <span class="ficha-registro">Registro nº <span th:text="${aluno.id}"></span></span>
+            </div>
+            <dl class="ficha-dados">
+                <div><dt>Matrícula</dt><dd class="numero" th:text="${aluno.idMatricula}"></dd></div>
+                <div><dt>CPF</dt><dd class="numero" th:text="${aluno.cpf}"></dd></div>
+                <div><dt>Data de Nascimento</dt><dd class="numero" th:text="${aluno.dataNasc != null ? #temporals.format(aluno.dataNasc, 'dd/MM/yyyy') : '-'}"></dd></div>
+                <div><dt>Telefone</dt><dd class="numero" th:text="${aluno.telefone}"></dd></div>
+                <div class="largo"><dt>E-mail</dt><dd th:text="${aluno.email}"></dd></div>
+                <div class="largo"><dt>Endereço</dt><dd th:text="${aluno.endereco}"></dd></div>
+                <div><dt>Curso</dt><dd th:text="${aluno.curso != null ? aluno.curso.titulo : 'Sem curso'}"></dd></div>
+                <div><dt>Semestre</dt><dd class="numero" th:text="${aluno.semestre}"></dd></div>
+            </dl>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaAlunos}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <a th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+        </div>
+    </section>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

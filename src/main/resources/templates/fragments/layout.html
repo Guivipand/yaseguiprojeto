@@ -3,44 +3,52 @@
 <head th:fragment="head(titulo)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#141b2a">
     <title th:text="${titulo} + ' | Sistema de Matrícula'">Sistema de Matrícula</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/estilo.css}">
 </head>
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark navbar-sistema" aria-label="Navegação principal">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/}"><i class="bi bi-mortarboard-fill me-2"></i>Sistema de Matrícula</a>
+        <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
+        <a class="navbar-brand marca" th:href="@{/}">
+            <span class="marca-selo" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>
+            <span>Sistema de Matrícula</span>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
                 aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menu">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="menuPrincipal">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" th:href="@{/}"><i class="bi bi-house-door-fill me-1"></i>Início</a></li>
+            <ul class="navbar-nav ms-auto gap-lg-1">
+                <li class="nav-item"><a class="nav-link nav-inicio" th:href="@{/}"><i class="bi bi-house-door" aria-hidden="true"></i>Início</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-building me-1"></i>Acadêmico
+                    <a class="nav-link dropdown-toggle nav-academico" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-building" aria-hidden="true"></i>Acadêmico
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" th:href="@{/listaCursos}"><i class="bi bi-mortarboard-fill me-2"></i>Cursos</a></li>
-                        <li><a class="dropdown-item" th:href="@{/listaDisciplinas}"><i class="bi bi-journal-text me-2"></i>Disciplinas</a></li>
-                        <li><a class="dropdown-item" th:href="@{/listaProfessores}"><i class="bi bi-person-badge-fill me-2"></i>Professores</a></li>
-                        <li><a class="dropdown-item" th:href="@{/listaAlunos}"><i class="bi bi-people-fill me-2"></i>Alunos</a></li>
-                        <li><a class="dropdown-item" th:href="@{/listaOfertaDisciplinas}"><i class="bi bi-calendar-week-fill me-2"></i>Ofertas de disciplina</a></li>
-                        <li><a class="dropdown-item" th:href="@{/listaMatriculas}"><i class="bi bi-clipboard2-check-fill me-2"></i>Matrículas</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end menu-entidades">
+                        <li class="tema-curso"><a class="dropdown-item" th:href="@{/listaCursos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>Cursos</a></li>
+                        <li class="tema-disciplina"><a class="dropdown-item" th:href="@{/listaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-journal-text"></i></span>Disciplinas</a></li>
+                        <li class="tema-professor"><a class="dropdown-item" th:href="@{/listaProfessores}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>Professores</a></li>
+                        <li class="tema-aluno"><a class="dropdown-item" th:href="@{/listaAlunos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>Alunos</a></li>
+                        <li class="tema-oferta"><a class="dropdown-item" th:href="@{/listaOfertaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-calendar-week-fill"></i></span>Ofertas de disciplina</a></li>
+                        <li class="tema-matricula"><a class="dropdown-item" th:href="@{/listaMatriculas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>Matrículas</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-bookshelf me-1"></i>Biblioteca
+                    <a class="nav-link dropdown-toggle nav-biblioteca" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bookshelf" aria-hidden="true"></i>Biblioteca
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" th:href="@{/listaLivros}"><i class="bi bi-book-fill me-2"></i>Livros</a></li>
-                        <li><a class="dropdown-item" th:href="@{/listaExemplares}"><i class="bi bi-upc-scan me-2"></i>Exemplares</a></li>
-                        <li><a class="dropdown-item" th:href="@{/listaDisciplinaLivros}"><i class="bi bi-bookmark-star-fill me-2"></i>Referências</a></li>
-                        <li><a class="dropdown-item" th:href="@{/listaEmprestimos}"><i class="bi bi-arrow-left-right me-2"></i>Empréstimos</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end menu-entidades">
+                        <li class="tema-livro"><a class="dropdown-item" th:href="@{/listaLivros}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-book-fill"></i></span>Livros</a></li>
+                        <li class="tema-exemplar"><a class="dropdown-item" th:href="@{/listaExemplares}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>Exemplares</a></li>
+                        <li class="tema-referencia"><a class="dropdown-item" th:href="@{/listaDisciplinaLivros}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>Referências</a></li>
+                        <li class="tema-emprestimo"><a class="dropdown-item" th:href="@{/listaEmprestimos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>Empréstimos</a></li>
                     </ul>
                 </li>
             </ul>

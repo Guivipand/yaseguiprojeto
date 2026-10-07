@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "src/main/resources/templates/index.html"
+        ],
+        "createdAt": "2026-09-29T01:20:07.356Z",
+        "reason": "Claude verified: .abertura h1 is clamp(2.1rem..3rem) vs 1.075rem body (~2x) and section h2 1.45rem vs card title 1.05rem (1.38x); detector does not resolve clamp()"
+      }
+    ]
+  }
+}

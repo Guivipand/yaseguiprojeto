@@ -60,7 +60,15 @@ public class Aluno extends Pessoa {
     }
 
     public boolean validarSemestre() {
-        return semestre != null && !semestre.trim().isEmpty();
+        if (semestre == null || semestre.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            int valor = Integer.parseInt(semestre.trim());
+            return valor >= 1 && valor <= 12;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public boolean validarCurso() {

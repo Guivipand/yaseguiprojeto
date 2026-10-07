@@ -1,48 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Editar empréstimo')}"></head>
-<body class="pagina-form">
+<body class="pagina-form tema-emprestimo">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-arrow-left-right me-2"></i>Editar empréstimo</h4>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaEmprestimos}">Empréstimos</a></li>
+                <li aria-current="page">Editar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>
+            <div>
+                <h1>Editar empréstimo</h1>
+                <p>Atualize os dados e salve as alterações.</p>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="alert alert-danger" th:if="${erroDataPrevista}"><i class="bi bi-exclamation-triangle-fill me-2"></i>A devolução prevista ultrapassa o prazo permitido para as renovações.</div>
-            <div class="alert alert-danger" th:if="${erroCamposEmprestimo}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Informe o aluno.</div>
-            <form th:action="@{/atualizarEmprestimo}" th:object="${emprestimo}" method="post">
-                <input type="hidden" th:field="*{id}">
-                <div class="mb-3">
-                    <label class="form-label">Exemplar</label>
-                    <div class="form-control-plaintext" th:text="${emprestimo.exemplar.tombo + ' - ' + emprestimo.exemplar.livro.titulo}"></div>
+    </header>
+    <form class="painel" th:action="@{/atualizarEmprestimo}" th:object="${emprestimo}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroDataPrevista}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>A devolução prevista ultrapassa o prazo permitido para as renovações.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroCamposEmprestimo}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe o aluno.</span></div>
+            <fieldset class="grupo-campos">
+                <legend>Exemplar e aluno</legend>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <span class="form-label rotulo-leitura">Exemplar</span>
+                        <div class="campo-leitura" th:text="${emprestimo.exemplar.tombo + ' - ' + emprestimo.exemplar.livro.titulo}"></div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="aluno">Aluno</label>
+                        <select class="form-select" th:field="*{aluno}" required>
+                            <option value="">Selecione o aluno</option>
+                            <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
+                        </select>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="aluno">Aluno</label>
-                    <select class="form-select" th:field="*{aluno}" required>
-                        <option value="">Selecione o aluno</option>
-                        <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
-                    </select>
+            </fieldset>
+            <fieldset class="grupo-campos">
+                <legend>Prazo</legend>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="data_retirada">Data de retirada</label>
+                        <input type="date" class="form-control" th:field="*{data_retirada}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="data_prevista">Data prevista para devolução</label>
+                        <input type="date" class="form-control" th:field="*{data_prevista}" aria-describedby="ajudaPrevista" required>
+                        <div class="form-text" id="ajudaPrevista">Ao mudar a retirada, a devolução é sugerida com 7 dias de prazo.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="form-label rotulo-leitura">Renovações</span>
+                        <div class="campo-leitura" th:text="${emprestimo.renovacoes + ' de 3'}"></div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="data_retirada">Data de retirada</label>
-                    <input type="date" class="form-control" th:field="*{data_retirada}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="data_prevista">Data prevista para devolução</label>
-                    <input type="date" class="form-control" th:field="*{data_prevista}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Renovações</label>
-                    <div class="form-control-plaintext" th:text="${emprestimo.renovacoes + ' de 3'}"></div>
-                </div>
-                <div class="d-flex justify-content-end gap-2">
-                    <a th:href="@{/listaEmprestimos}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar alterações</button>
-                </div>
-            </form>
+            </fieldset>
         </div>
-    </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaEmprestimos}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar alterações</button>
+        </div>
+    </form>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 <script>

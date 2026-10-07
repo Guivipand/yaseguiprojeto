@@ -3,147 +3,109 @@
 <head th:replace="~{fragments/layout :: head('Painel Principal')}"></head>
 <body class="pagina-inicio">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="mb-4">
-        <h2 class="fw-bold">Painel Principal</h2>
-        <p class="text-muted mb-0">Selecione uma entidade para gerenciar seus cadastros.</p>
-    </div>
+<main id="conteudo" class="container conteudo">
+    <header class="abertura">
+        <h1>Painel Principal</h1>
+        <p>Selecione uma entidade para gerenciar seus cadastros.</p>
+    </header>
 
-    <h3 class="secao-titulo h5"><i class="bi bi-building me-2"></i>Gestão acadêmica</h3>
-    <div class="row g-4 mb-5">
-        <div class="col-12 col-sm-6 col-lg-4 tema-curso">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-mortarboard-fill"></i></div>
-                    <h4 class="card-title h5">Cursos</h4>
-                    <p class="card-text text-muted">Cursos oferecidos e a duração de cada um em semestres.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaCursos}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
+    <section class="grupo" aria-labelledby="grupo-academico">
+        <div class="grupo-cabecalho">
+            <h2 id="grupo-academico"><i class="bi bi-building" aria-hidden="true"></i>Gestão acadêmica</h2>
+            <p>Cursos, pessoas e a organização das turmas.</p>
+        </div>
+        <div class="row g-3 g-lg-4">
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-curso">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>
+                    <h3>Cursos</h3>
+                    <p>Cursos oferecidos e a duração de cada um em semestres.</p>
+                    <a th:href="@{/listaCursos}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> cursos</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-disciplina">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
+                    <h3>Disciplinas</h3>
+                    <p>Matérias da matriz curricular, organizadas por curso e semestre.</p>
+                    <a th:href="@{/listaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> disciplinas</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-professor">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>
+                    <h3>Professores</h3>
+                    <p>Docentes com prontuário, formação e dados de contato.</p>
+                    <a th:href="@{/listaProfessores}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> professores</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-aluno">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
+                    <h3>Alunos</h3>
+                    <p>Estudantes vinculados a um curso e ao semestre em que estão.</p>
+                    <a th:href="@{/listaAlunos}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> alunos</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-oferta">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-calendar-week-fill"></i></span>
+                    <h3>Ofertas de disciplina</h3>
+                    <p>Qual professor ministra cada disciplina.</p>
+                    <a th:href="@{/listaOfertaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> ofertas de disciplina</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-matricula">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>
+                    <h3>Matrículas</h3>
+                    <p>Inscrição de alunos nas ofertas de disciplina do seu curso.</p>
+                    <a th:href="@{/listaMatriculas}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> matrículas</span></a>
+                </article>
             </div>
         </div>
+    </section>
 
-        <div class="col-12 col-sm-6 col-lg-4 tema-disciplina">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-journal-text"></i></div>
-                    <h4 class="card-title h5">Disciplinas</h4>
-                    <p class="card-text text-muted">Matérias da matriz curricular, organizadas por curso e semestre.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaDisciplinas}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
+    <section class="grupo" aria-labelledby="grupo-biblioteca">
+        <div class="grupo-cabecalho">
+            <h2 id="grupo-biblioteca"><i class="bi bi-bookshelf" aria-hidden="true"></i>Biblioteca</h2>
+            <p>Acervo, bibliografia das disciplinas e circulação de exemplares.</p>
+        </div>
+        <div class="row g-3 g-lg-4">
+            <div class="col-12 col-md-6">
+                <article class="card-entidade horizontal tema-livro">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-book-fill"></i></span>
+                    <h3>Livros</h3>
+                    <p>Títulos do acervo com ISBN, edição e capa.</p>
+                    <a th:href="@{/listaLivros}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> livros</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-md-6">
+                <article class="card-entidade horizontal tema-exemplar">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>
+                    <h3>Exemplares</h3>
+                    <p>Cópias físicas de cada livro, identificadas pelo tombo.</p>
+                    <a th:href="@{/listaExemplares}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> exemplares</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-md-6">
+                <article class="card-entidade horizontal tema-referencia">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>
+                    <h3>Referências</h3>
+                    <p>Livros indicados como bibliografia de cada disciplina.</p>
+                    <a th:href="@{/listaDisciplinaLivros}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> referências</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-md-6">
+                <article class="card-entidade horizontal tema-emprestimo">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>
+                    <h3>Empréstimos</h3>
+                    <p>Retirada, renovação e devolução de exemplares.</p>
+                    <a th:href="@{/listaEmprestimos}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> empréstimos</span></a>
+                </article>
             </div>
         </div>
-
-        <div class="col-12 col-sm-6 col-lg-4 tema-professor">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-person-badge-fill"></i></div>
-                    <h4 class="card-title h5">Professores</h4>
-                    <p class="card-text text-muted">Docentes com prontuário, formação e dados de contato.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaProfessores}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4 tema-aluno">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-people-fill"></i></div>
-                    <h4 class="card-title h5">Alunos</h4>
-                    <p class="card-text text-muted">Estudantes vinculados a um curso e ao semestre em que estão.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaAlunos}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4 tema-oferta">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-calendar-week-fill"></i></div>
-                    <h4 class="card-title h5">Ofertas de disciplina</h4>
-                    <p class="card-text text-muted">Qual professor ministra cada disciplina.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaOfertaDisciplinas}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-4 tema-matricula">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-clipboard2-check-fill"></i></div>
-                    <h4 class="card-title h5">Matrículas</h4>
-                    <p class="card-text text-muted">Inscrição de alunos nas ofertas de disciplina do seu curso.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaMatriculas}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <h3 class="secao-titulo h5"><i class="bi bi-bookshelf me-2"></i>Biblioteca</h3>
-    <div class="row g-4">
-        <div class="col-12 col-sm-6 col-lg-3 tema-livro">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-book-fill"></i></div>
-                    <h4 class="card-title h5">Livros</h4>
-                    <p class="card-text text-muted">Títulos do acervo com ISBN, edição e capa.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaLivros}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-3 tema-exemplar">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-upc-scan"></i></div>
-                    <h4 class="card-title h5">Exemplares</h4>
-                    <p class="card-text text-muted">Cópias físicas de cada livro, identificadas pelo tombo.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaExemplares}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-3 tema-referencia">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-bookmark-star-fill"></i></div>
-                    <h4 class="card-title h5">Referências</h4>
-                    <p class="card-text text-muted">Livros indicados como bibliografia de cada disciplina.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaDisciplinaLivros}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-lg-3 tema-emprestimo">
-            <div class="card card-entidade h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <div class="icon-wrap"><i class="bi bi-arrow-left-right"></i></div>
-                    <h4 class="card-title h5">Empréstimos</h4>
-                    <p class="card-text text-muted">Retirada, renovação e devolução de exemplares.</p>
-                    <div class="mt-auto">
-                        <a th:href="@{/listaEmprestimos}" class="btn btn-tema btn-sm"><i class="bi bi-list-ul me-1"></i>Gerenciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

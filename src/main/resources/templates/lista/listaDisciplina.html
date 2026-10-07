@@ -1,45 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Disciplinas')}"></head>
-<body>
+<body class="pagina-lista tema-disciplina">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-0">Disciplinas</h2>
-            <p class="text-muted mb-0">Disciplinas da matriz curricular de cada curso.</p>
+<main id="conteudo" class="container conteudo">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li aria-current="page">Disciplinas</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-linha">
+            <div class="cabecalho-titulo">
+                <span class="selo-entidade" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
+                <div>
+                    <h1>Disciplinas</h1>
+                    <p>Disciplinas da matriz curricular de cada curso.</p>
+                </div>
+            </div>
+            <a th:href="@{/formularioDisciplina}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Nova disciplina</a>
         </div>
-        <a th:href="@{/formularioDisciplina}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Nova disciplina</a>
+    </header>
+    <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
     </div>
-    <div class="alert alert-danger" th:if="${erroExclusao}">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>Não foi possível excluir: existem outros registros vinculados a este item.
-    </div>
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0 table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
+    <div class="painel-tabela">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle tabela">
+                <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Matéria</th>
-                    <th>Semestre</th>
-                    <th>Curso</th>
-                    <th class="text-end">Ações</th>
+                    <th scope="col" class="col-id">#</th>
+                    <th scope="col">Matéria</th>
+                    <th scope="col">Semestre</th>
+                    <th scope="col">Curso</th>
+                    <th scope="col" class="col-acoes text-end">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="disciplina : ${disciplinas}">
-                    <td th:text="${disciplina.id}"></td>
-                    <td th:text="${disciplina.materia}"></td>
-                    <td th:text="${disciplina.semestre}"></td>
-                    <td th:text="${disciplina.curso != null ? disciplina.curso.titulo : 'Sem curso'}"></td>
-                    <td class="text-end text-nowrap">
-                        <a th:href="@{/editarDisciplina(id=${disciplina.id})}" class="btn btn-outline-secondary btn-icon" title="Editar"><i class="bi bi-pencil-fill"></i></a>
-                        <a th:href="@{/excluirDisciplina(id=${disciplina.id})}" class="btn btn-outline-danger btn-icon" title="Excluir"
-                           onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash-fill"></i></a>
+                    <td data-label="Nº" class="col-id" th:text="${disciplina.id}"></td>
+                    <td data-label="Matéria" class="celula-principal" th:text="${disciplina.materia}"></td>
+                    <td data-label="Semestre" class="numero" th:text="${disciplina.semestre}"></td>
+                    <td data-label="Curso" th:text="${disciplina.curso != null ? disciplina.curso.titulo : 'Sem curso'}"></td>
+                    <td class="col-acoes">
+                        <div class="acoes">
+                            <a th:href="@{/editarDisciplina(id=${disciplina.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a th:href="@{/excluirDisciplina(id=${disciplina.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                               onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
+                        </div>
                     </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(disciplinas)}">
-                    <td colspan="5" class="text-center text-muted py-4">Nenhuma disciplina cadastrada ainda.</td>
+                <tr class="linha-vazia" th:if="${#lists.isEmpty(disciplinas)}">
+                    <td colspan="5">
+                        <div class="vazio">
+                            <span class="vazio-icone" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
+                            <p class="vazio-titulo">Nenhuma disciplina cadastrada ainda.</p>
+                            <p class="vazio-texto">Use o botão “Nova disciplina” para fazer o primeiro cadastro.</p>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>

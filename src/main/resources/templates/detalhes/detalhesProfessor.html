@@ -1,29 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Detalhes do professor')}"></head>
-<body class="pagina-form">
+<body class="pagina-detalhes tema-professor">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-person-badge-fill me-2"></i>Detalhes do professor</h4>
-        </div>
-        <div class="card-body">
-            <div class="info"><span class="label">ID:</span> <span th:text="${professor.id}"></span></div>
-            <div class="info"><span class="label">Prontuário:</span> <span th:text="${professor.prontuario}"></span></div>
-            <div class="info"><span class="label">Nome:</span> <span th:text="${professor.nome}"></span></div>
-            <div class="info"><span class="label">Endereço:</span> <span th:text="${professor.endereco}"></span></div>
-            <div class="info"><span class="label">CPF:</span> <span th:text="${professor.cpf}"></span></div>
-            <div class="info"><span class="label">E-mail:</span> <span th:text="${professor.email}"></span></div>
-            <div class="info"><span class="label">Telefone:</span> <span th:text="${professor.telefone}"></span></div>
-            <div class="info"><span class="label">Data de Nascimento:</span> <span th:text="${professor.dataNasc != null ? #temporals.format(professor.dataNasc, 'dd/MM/yyyy') : '-'}"></span></div>
-            <div class="info"><span class="label">Formação:</span> <span th:text="${professor.formacao}"></span></div>
-            <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
-                <a th:href="@{/listaProfessores}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                <a th:href="@{/editarProfessor(id=${professor.id})}" class="btn btn-primary"><i class="bi bi-pencil-fill me-1"></i>Editar</a>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaProfessores}">Professores</a></li>
+                <li aria-current="page">Detalhes</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>
+            <div>
+                <h1>Detalhes do professor</h1>
+                <p>Ficha cadastral completa do docente.</p>
             </div>
         </div>
-    </div>
+    </header>
+    <section class="painel" aria-labelledby="ficha-nome">
+        <div class="painel-corpo">
+            <div class="ficha-topo">
+                <div>
+                    <p class="ficha-sobre">Professor</p>
+                    <h2 class="ficha-nome" id="ficha-nome" th:text="${professor.nome}"></h2>
+                </div>
+                <span class="ficha-registro">Registro nº <span th:text="${professor.id}"></span></span>
+            </div>
+            <dl class="ficha-dados">
+                <div><dt>Prontuário</dt><dd class="numero" th:text="${professor.prontuario}"></dd></div>
+                <div><dt>Formação</dt><dd th:text="${professor.formacao}"></dd></div>
+                <div><dt>CPF</dt><dd class="numero" th:text="${professor.cpf}"></dd></div>
+                <div><dt>Data de Nascimento</dt><dd class="numero" th:text="${professor.dataNasc != null ? #temporals.format(professor.dataNasc, 'dd/MM/yyyy') : '-'}"></dd></div>
+                <div><dt>E-mail</dt><dd th:text="${professor.email}"></dd></div>
+                <div><dt>Telefone</dt><dd class="numero" th:text="${professor.telefone}"></dd></div>
+                <div class="largo"><dt>Endereço</dt><dd th:text="${professor.endereco}"></dd></div>
+            </dl>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaProfessores}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <a th:href="@{/editarProfessor(id=${professor.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+        </div>
+    </section>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

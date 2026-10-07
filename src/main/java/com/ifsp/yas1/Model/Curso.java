@@ -58,7 +58,15 @@ public class Curso {
     }
 
     public boolean validarQntSemestre() {
-        return qntSemestre != null && !qntSemestre.trim().isEmpty();
+        if (qntSemestre == null || qntSemestre.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            int valor = Integer.parseInt(qntSemestre.trim());
+            return valor >= 1 && valor <= 12;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public boolean validar() {

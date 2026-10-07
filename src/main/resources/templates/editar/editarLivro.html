@@ -1,58 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Editar livro')}"></head>
-<body class="pagina-form">
+<body class="pagina-form tema-livro">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-book-fill me-2"></i>Editar livro</h4>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaLivros}">Livros</a></li>
+                <li aria-current="page">Editar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-book-fill"></i></span>
+            <div>
+                <h1>Editar livro</h1>
+                <p>Atualize os dados e salve as alterações.</p>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="alert alert-danger" th:if="${erroIsbn}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Informe um ISBN-10 ou ISBN-13 válido.</div>
-            <div class="alert alert-danger" th:if="${erroAno}"><i class="bi bi-exclamation-triangle-fill me-2"></i>O ano deve ser maior que zero e não pode ser futuro.</div>
-            <form th:action="@{/atualizarLivro}" th:object="${livro}" enctype="multipart/form-data" method="post">
-                <input type="hidden" th:field="*{id}">
-                <div class="mb-3">
-                    <label class="form-label" for="titulo">Título</label>
-                    <input type="text" class="form-control" th:field="*{titulo}" placeholder="Digite o título do livro" required>
+    </header>
+    <form class="painel" th:action="@{/atualizarLivro}" th:object="${livro}" enctype="multipart/form-data" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroIsbn}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe um ISBN-10 ou ISBN-13 válido.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroAno}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>O ano deve ser maior que zero e não pode ser futuro.</span></div>
+            <fieldset class="grupo-campos">
+                <legend>Obra</legend>
+                <div class="row g-3">
+                    <div class="col-md-7">
+                        <label class="form-label" for="titulo">Título</label>
+                        <input type="text" class="form-control" th:field="*{titulo}" placeholder="Digite o título do livro" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label" for="autor">Autor</label>
+                        <input type="text" class="form-control" th:field="*{autor}" placeholder="Digite o nome do autor" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="sinopse">Sinopse</label>
+                        <textarea class="form-control" th:field="*{sinopse}" rows="4" placeholder="Escreva a sinopse do livro" required></textarea>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="autor">Autor</label>
-                    <input type="text" class="form-control" th:field="*{autor}" placeholder="Digite o nome do autor" required>
+            </fieldset>
+            <fieldset class="grupo-campos">
+                <legend>Publicação</legend>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="editora">Editora</label>
+                        <input type="text" class="form-control" th:field="*{editora}" placeholder="Digite o nome da editora" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="isbn">ISBN</label>
+                        <input type="text" class="form-control" th:field="*{isbn}" placeholder="ISBN-10 ou ISBN-13" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="edicao">Edição</label>
+                        <input type="text" class="form-control" th:field="*{edicao}" placeholder="Ex.: 3ª edição" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="ano">Ano</label>
+                        <input type="number" class="form-control" th:field="*{ano}" placeholder="Ex.: 2020" min="1" step="1" th:max="${#temporals.year(#temporals.createNow())}" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="imagem">Capa</label>
+                        <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*" aria-describedby="ajudaCapa">
+                        <div class="form-text" id="ajudaCapa">Deixe em branco para manter a capa atual.</div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="editora">Editora</label>
-                    <input type="text" class="form-control" th:field="*{editora}" placeholder="Digite o nome da editora" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="isbn">ISBN</label>
-                    <input type="text" class="form-control" th:field="*{isbn}" placeholder="ISBN-10 ou ISBN-13" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="edicao">Edição</label>
-                    <input type="text" class="form-control" th:field="*{edicao}" placeholder="Ex.: 3ª edição" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="ano">Ano</label>
-                    <input type="number" class="form-control" th:field="*{ano}" placeholder="Ex.: 2020" min="1" step="1" th:max="${#temporals.year(#temporals.createNow())}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="sinopse">Sinopse</label>
-                    <input type="text" class="form-control" th:field="*{sinopse}" placeholder="Escreva a sinopse do livro" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="imagem">Capa</label>
-                    <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
-                    <div class="form-text">Deixe em branco para manter a capa atual.</div>
-                </div>
-                <div class="d-flex justify-content-end gap-2">
-                    <a th:href="@{/listaLivros}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar alterações</button>
-                </div>
-            </form>
+            </fieldset>
         </div>
-    </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaLivros}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar alterações</button>
+        </div>
+    </form>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

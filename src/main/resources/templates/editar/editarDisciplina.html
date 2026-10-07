@@ -1,39 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Editar disciplina')}"></head>
-<body class="pagina-form">
+<body class="pagina-form tema-disciplina">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-journal-text me-2"></i>Editar disciplina</h4>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaDisciplinas}">Disciplinas</a></li>
+                <li aria-current="page">Editar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
+            <div>
+                <h1>Editar disciplina</h1>
+                <p>Atualize os dados e salve as alterações.</p>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="alert alert-danger" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill me-2"></i>Informe a matéria, o semestre e selecione o curso.</div>
-            <form th:action="@{/atualizarDisciplina}" th:object="${disciplina}" method="post">
-                <input type="hidden" th:field="*{id}">
-                <div class="mb-3">
+    </header>
+    <form class="painel" th:action="@{/atualizarDisciplina}" th:object="${disciplina}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe a matéria, um semestre entre 1 e 12 e selecione o curso.</span></div>
+            <div class="row g-3">
+                <div class="col-md-8">
                     <label class="form-label" for="materia">Matéria</label>
                     <input type="text" class="form-control" th:field="*{materia}" placeholder="Digite o nome da disciplina" required>
                 </div>
-                <div class="mb-3">
+                <div class="col-md-4">
                     <label class="form-label" for="semestre">Semestre</label>
-                    <input type="number" class="form-control" th:field="*{semestre}" placeholder="Ex.: 1" min="1" step="1" required>
+                    <input type="number" class="form-control" th:field="*{semestre}" placeholder="Ex.: 1" min="1" max="12" step="1" required>
                 </div>
-                <div class="mb-3">
+                <div class="col-12">
                     <label class="form-label" for="curso">Curso</label>
                     <select class="form-select" th:field="*{curso}" required>
                         <option value="">Selecione o curso</option>
                         <option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.titulo}"></option>
                     </select>
                 </div>
-                <div class="d-flex justify-content-end gap-2">
-                    <a th:href="@{/listaDisciplinas}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar alterações</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaDisciplinas}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar alterações</button>
+        </div>
+    </form>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

@@ -1,32 +1,54 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Detalhes do livro')}"></head>
-<body class="pagina-form">
+<body class="pagina-detalhes tema-livro">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-book-fill me-2"></i>Detalhes do livro</h4>
-        </div>
-        <div class="card-body">
-            <div class="info"><span class="label">ID:</span> <span th:text="${livro.id}"></span></div>
-            <div class="info"><span class="label">Título:</span> <span th:text="${livro.titulo}"></span></div>
-            <div class="info"><span class="label">Autor:</span> <span th:text="${livro.autor}"></span></div>
-            <div class="info"><span class="label">Editora:</span> <span th:text="${livro.editora}"></span></div>
-            <div class="info"><span class="label">ISBN:</span> <span th:text="${livro.isbn}"></span></div>
-            <div class="info"><span class="label">Edição:</span> <span th:text="${livro.edicao}"></span></div>
-            <div class="info"><span class="label">Ano:</span> <span th:text="${livro.ano}"></span></div>
-            <div class="info"><span class="label">Sinopse:</span> <span th:text="${livro.sinopse}"></span></div>
-            <div class="info" th:if="${livro.capa_imagem != null}">
-                <span class="label">Capa:</span>
-                <img th:src="@{'/' + ${livro.capa_imagem}}" th:alt="${'Capa de ' + livro.titulo}" class="capa-livro mt-2">
-            </div>
-            <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
-                <a th:href="@{/listaLivros}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                <a th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-primary"><i class="bi bi-pencil-fill me-1"></i>Editar</a>
+<main id="conteudo" class="container conteudo conteudo-medio">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaLivros}">Livros</a></li>
+                <li aria-current="page">Detalhes</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-book-fill"></i></span>
+            <div>
+                <h1>Detalhes do livro</h1>
+                <p>Dados catalográficos do título no acervo.</p>
             </div>
         </div>
-    </div>
+    </header>
+    <section class="painel" aria-labelledby="ficha-nome">
+        <div class="painel-corpo ficha-corpo">
+            <figure class="ficha-capa" th:if="${livro.capa_imagem != null}">
+                <img th:src="@{'/' + ${livro.capa_imagem}}" th:alt="${'Capa de ' + livro.titulo}" class="capa-livro">
+            </figure>
+            <div>
+                <div class="ficha-topo">
+                    <div>
+                        <p class="ficha-sobre" th:text="${livro.autor}"></p>
+                        <h2 class="ficha-nome" id="ficha-nome" th:text="${livro.titulo}"></h2>
+                    </div>
+                    <span class="ficha-registro">Registro nº <span th:text="${livro.id}"></span></span>
+                </div>
+                <dl class="ficha-dados">
+                    <div><dt>Título</dt><dd th:text="${livro.titulo}"></dd></div>
+                    <div><dt>Autor</dt><dd th:text="${livro.autor}"></dd></div>
+                    <div><dt>Editora</dt><dd th:text="${livro.editora}"></dd></div>
+                    <div><dt>ISBN</dt><dd class="numero" th:text="${livro.isbn}"></dd></div>
+                    <div><dt>Edição</dt><dd th:text="${livro.edicao}"></dd></div>
+                    <div><dt>Ano</dt><dd class="numero" th:text="${livro.ano}"></dd></div>
+                    <div class="largo"><dt>Sinopse</dt><dd class="texto-longo" th:text="${livro.sinopse}"></dd></div>
+                </dl>
+            </div>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaLivros}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <a th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+        </div>
+    </section>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

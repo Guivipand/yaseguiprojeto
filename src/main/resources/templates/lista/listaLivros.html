@@ -1,48 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Livros')}"></head>
-<body>
+<body class="pagina-lista tema-livro">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-0">Livros</h2>
-            <p class="text-muted mb-0">Acervo de títulos da biblioteca.</p>
+<main id="conteudo" class="container conteudo">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li aria-current="page">Livros</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-linha">
+            <div class="cabecalho-titulo">
+                <span class="selo-entidade" aria-hidden="true"><i class="bi bi-book-fill"></i></span>
+                <div>
+                    <h1>Livros</h1>
+                    <p>Acervo de títulos da biblioteca.</p>
+                </div>
+            </div>
+            <a th:href="@{/formularioLivro}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo livro</a>
         </div>
-        <a th:href="@{/formularioLivro}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Novo livro</a>
+    </header>
+    <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
     </div>
-    <div class="alert alert-danger" th:if="${erroExclusao}">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>Não foi possível excluir: existem outros registros vinculados a este item.
-    </div>
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0 table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
+    <div class="painel-tabela">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle tabela">
+                <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Título</th>
-                    <th>Autor</th>
-                    <th>Editora</th>
-                    <th>ISBN</th>
-                    <th class="text-end">Ações</th>
+                    <th scope="col" class="col-id">#</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Editora</th>
+                    <th scope="col">ISBN</th>
+                    <th scope="col" class="col-acoes text-end">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="livro : ${livros}">
-                    <td th:text="${livro.id}"></td>
-                    <td th:text="${livro.titulo}"></td>
-                    <td th:text="${livro.autor}"></td>
-                    <td th:text="${livro.editora}"></td>
-                    <td th:text="${livro.isbn}"></td>
-                    <td class="text-end text-nowrap">
-                        <a th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-outline-secondary btn-icon" title="Editar"><i class="bi bi-pencil-fill"></i></a>
-                        <a th:href="@{/detalhesLivro(id=${livro.id})}" class="btn btn-outline-info btn-icon" title="Detalhes"><i class="bi bi-info-circle-fill"></i></a>
-                        <a th:href="@{/excluirLivro(id=${livro.id})}" class="btn btn-outline-danger btn-icon" title="Excluir"
-                           onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash-fill"></i></a>
+                    <td data-label="Nº" class="col-id" th:text="${livro.id}"></td>
+                    <td data-label="Título" class="celula-principal" th:text="${livro.titulo}"></td>
+                    <td data-label="Autor" th:text="${livro.autor}"></td>
+                    <td data-label="Editora" th:text="${livro.editora}"></td>
+                    <td data-label="ISBN" class="numero" th:text="${livro.isbn}"></td>
+                    <td class="col-acoes">
+                        <div class="acoes">
+                            <a th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a th:href="@{/detalhesLivro(id=${livro.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                            <a th:href="@{/excluirLivro(id=${livro.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                               onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
+                        </div>
                     </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(livros)}">
-                    <td colspan="6" class="text-center text-muted py-4">Nenhum livro cadastrado ainda.</td>
+                <tr class="linha-vazia" th:if="${#lists.isEmpty(livros)}">
+                    <td colspan="6">
+                        <div class="vazio">
+                            <span class="vazio-icone" aria-hidden="true"><i class="bi bi-book-fill"></i></span>
+                            <p class="vazio-titulo">Nenhum livro cadastrado ainda.</p>
+                            <p class="vazio-texto">Use o botão “Novo livro” para fazer o primeiro cadastro.</p>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>

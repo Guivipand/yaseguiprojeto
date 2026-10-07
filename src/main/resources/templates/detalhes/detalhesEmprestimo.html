@@ -1,36 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Detalhes do empréstimo')}"></head>
-<body class="pagina-form">
+<body class="pagina-detalhes tema-emprestimo">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
-<main class="container pb-5">
-    <div class="card shadow-sm border-0">
-        <div class="card-header">
-            <h4 class="mb-0"><i class="bi bi-arrow-left-right me-2"></i>Detalhes do empréstimo</h4>
-        </div>
-        <div class="card-body">
-            <div class="info"><span class="label">ID:</span> <span th:text="${emprestimo.id}"></span></div>
-            <div class="info"><span class="label">Exemplar:</span> <span th:text="${emprestimo.exemplar.tombo + ' - ' + emprestimo.exemplar.livro.titulo}"></span></div>
-            <div class="info"><span class="label">Aluno:</span> <span th:text="${emprestimo.aluno.nome}"></span></div>
-            <div class="info"><span class="label">Data de retirada:</span> <span th:text="${emprestimo.data_retirada != null ? #temporals.format(emprestimo.data_retirada, 'dd/MM/yyyy') : '-'}"></span></div>
-            <div class="info"><span class="label">Data prevista para devolução:</span> <span th:text="${emprestimo.data_prevista != null ? #temporals.format(emprestimo.data_prevista, 'dd/MM/yyyy') : '-'}"></span></div>
-            <div class="info"><span class="label">Data de devolução:</span> <span th:text="${emprestimo.data_devolucao != null ? #temporals.format(emprestimo.data_devolucao, 'dd/MM/yyyy') : '-'}"></span></div>
-            <div class="info"><span class="label">Status:</span> <span class="badge text-bg-danger" th:if="${emprestimo.data_devolucao == null and emprestimo.data_prevista != null and emprestimo.data_prevista.isBefore(#temporals.createToday())}">Atrasado</span><span class="badge" th:unless="${emprestimo.data_devolucao == null and emprestimo.data_prevista != null and emprestimo.data_prevista.isBefore(#temporals.createToday())}" th:classappend="${emprestimo.data_devolucao == null} ? 'text-bg-primary' : 'text-bg-success'" th:text="${emprestimo.status}"></span></div>
-            <div class="info"><span class="label">Renovações:</span> <span th:text="${emprestimo.renovacoes + ' de 3'}"></span></div>
-            <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
-                <a th:href="@{/listaEmprestimos}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Retornar</a>
-                <a th:href="@{/editarEmprestimo(id=${emprestimo.id})}" class="btn btn-primary" th:if="${emprestimo.data_devolucao == null}"><i class="bi bi-pencil-fill me-1"></i>Editar</a>
-                <form th:if="${emprestimo.podeRenovar()}" th:action="@{/renovarEmprestimo}" method="post">
-                    <input type="hidden" name="id" th:value="${emprestimo.id}">
-                    <button type="submit" class="btn btn-warning"><i class="bi bi-arrow-clockwise me-1"></i>Renovar prazo</button>
-                </form>
-                <form th:if="${emprestimo.data_devolucao == null}" th:action="@{/devolverEmprestimo}" method="post">
-                    <input type="hidden" name="id" th:value="${emprestimo.id}">
-                    <button type="submit" class="btn btn-success"><i class="bi bi-box-arrow-in-down me-1"></i>Registrar devolução</button>
-                </form>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaEmprestimos}">Empréstimos</a></li>
+                <li aria-current="page">Detalhes</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>
+            <div>
+                <h1>Detalhes do empréstimo</h1>
+                <p>Prazos, renovações e situação da retirada.</p>
             </div>
         </div>
-    </div>
+    </header>
+    <section class="painel" aria-labelledby="ficha-nome">
+        <div class="painel-corpo">
+            <div class="ficha-topo">
+                <div>
+                    <p class="ficha-sobre" th:text="${'Tombo ' + emprestimo.exemplar.tombo}"></p>
+                    <h2 class="ficha-nome" id="ficha-nome" th:text="${emprestimo.exemplar.livro.titulo}"></h2>
+                </div>
+                <span class="ficha-registro">Registro nº <span th:text="${emprestimo.id}"></span></span>
+            </div>
+            <dl class="ficha-dados">
+                <div class="largo"><dt>Exemplar</dt><dd th:text="${emprestimo.exemplar.tombo + ' - ' + emprestimo.exemplar.livro.titulo}"></dd></div>
+                <div><dt>Aluno</dt><dd th:text="${emprestimo.aluno.nome}"></dd></div>
+                <div><dt>Status</dt><dd><span class="selo selo-alerta" th:if="${emprestimo.data_devolucao == null and emprestimo.data_prevista != null and emprestimo.data_prevista.isBefore(#temporals.createToday())}">Atrasado</span><span class="selo" th:unless="${emprestimo.data_devolucao == null and emprestimo.data_prevista != null and emprestimo.data_prevista.isBefore(#temporals.createToday())}" th:classappend="${emprestimo.data_devolucao == null} ? 'selo-ativo' : 'selo-ok'" th:text="${emprestimo.status}"></span></dd></div>
+                <div><dt>Data de retirada</dt><dd class="numero" th:text="${emprestimo.data_retirada != null ? #temporals.format(emprestimo.data_retirada, 'dd/MM/yyyy') : '-'}"></dd></div>
+                <div><dt>Data prevista para devolução</dt><dd class="numero" th:text="${emprestimo.data_prevista != null ? #temporals.format(emprestimo.data_prevista, 'dd/MM/yyyy') : '-'}"></dd></div>
+                <div><dt>Data de devolução</dt><dd class="numero" th:text="${emprestimo.data_devolucao != null ? #temporals.format(emprestimo.data_devolucao, 'dd/MM/yyyy') : '-'}"></dd></div>
+                <div>
+                    <dt>Renovações</dt>
+                    <dd class="renovacoes">
+                        <span class="renovacoes-trilho" aria-hidden="true"><span th:each="i : ${#numbers.sequence(1, 3)}" th:classappend="${i le emprestimo.renovacoes} ? 'usada'"></span></span>
+                        <span class="numero" th:text="${emprestimo.renovacoes + ' de 3'}"></span>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaEmprestimos}" class="btn btn-quieto acao-esquerda"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <a th:href="@{/editarEmprestimo(id=${emprestimo.id})}" class="btn btn-quieto" th:if="${emprestimo.data_devolucao == null}"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+            <form th:if="${emprestimo.podeRenovar()}" th:action="@{/renovarEmprestimo}" method="post">
+                <input type="hidden" name="id" th:value="${emprestimo.id}">
+                <button type="submit" class="btn btn-contorno-tema"><i class="bi bi-arrow-clockwise me-2" aria-hidden="true"></i>Renovar prazo</button>
+            </form>
+            <form th:if="${emprestimo.data_devolucao == null}" th:action="@{/devolverEmprestimo}" method="post">
+                <input type="hidden" name="id" th:value="${emprestimo.id}">
+                <button type="submit" class="btn btn-tema"><i class="bi bi-box-arrow-in-down me-2" aria-hidden="true"></i>Registrar devolução</button>
+            </form>
+        </div>
+    </section>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>
