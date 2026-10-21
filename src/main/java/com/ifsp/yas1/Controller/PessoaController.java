@@ -21,7 +21,6 @@ public class PessoaController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Página usada pelo .loginPage("/login") do WebSecurityConfig
     @GetMapping("/login")
     public String login() {
         return "sessao/login.html";

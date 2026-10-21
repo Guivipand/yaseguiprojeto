@@ -7,6 +7,5 @@ import com.ifsp.yas1.Model.Pessoa;
 
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Integer>{
-    // O Spring Data JPA cria a consulta automaticamente a partir do nome do método
     UserDetails findByUsername(String username);
 }
