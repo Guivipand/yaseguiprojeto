@@ -10,6 +10,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/menu")
+    public String menu() {
+        return "index";
+    }
+
     @GetMapping("/sucessCad")
     public String sucessoCad() {
         return "sucessCad";

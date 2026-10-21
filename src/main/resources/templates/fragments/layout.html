@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head(titulo)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,6 +50,39 @@
                         <li class="tema-referencia"><a class="dropdown-item" th:href="@{/listaDisciplinaLivros}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>Referências</a></li>
                         <li class="tema-emprestimo"><a class="dropdown-item" th:href="@{/listaEmprestimos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>Empréstimos</a></li>
                     </ul>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()"
+                    th:with="pessoa=${#authentication.principal}, professor=${#authentication.principal.role?.name() == 'PROFESSOR'}">
+                    <a class="nav-link dropdown-toggle nav-perfil" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Perfil">
+                        <span class="perfil-avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></span><span class="d-lg-none">Perfil</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end menu-entidades menu-perfil" th:classappend="${professor} ? 'tema-professor' : 'tema-aluno'">
+                        <div class="perfil-topo">
+                            <span class="menu-icone perfil-icone" aria-hidden="true"><i class="bi" th:classappend="${professor} ? 'bi-person-badge-fill' : 'bi-people-fill'"></i></span>
+                            <div class="perfil-identidade">
+                                <p class="perfil-nome" th:text="${pessoa.nome != null ? pessoa.nome : pessoa.username}">Nome</p>
+                                <span class="perfil-papel" th:text="${professor} ? 'Professor' : 'Aluno'">Aluno</span>
+                            </div>
+                        </div>
+                        <dl class="perfil-dados">
+                            <div>
+                                <dt>Login</dt>
+                                <dd th:text="${pessoa.username}">login</dd>
+                            </div>
+                            <div th:if="${pessoa.email != null}">
+                                <dt>E-mail</dt>
+                                <dd th:text="${pessoa.email}">email</dd>
+                            </div>
+                            <div>
+                                <dt>Permissões</dt>
+                                <dd th:text="${professor} ? 'Professor e aluno' : 'Aluno'">Aluno</dd>
+                            </div>
+                        </dl>
+                        <hr class="dropdown-divider">
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="dropdown-item item-sair"><span class="menu-icone" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>Sair</button>
+                        </form>
+                    </div>
                 </li>
             </ul>
         </div>
