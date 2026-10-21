@@ -20,8 +20,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
-// Pessoa é o usuário do sistema: vira entidade (tabela "pessoa") e Professor/Aluno
-// herdam dela em tabelas próprias ligadas pelo id (herança JOINED)
 @Entity
 @Table (name = "pessoa")
 @Inheritance (strategy = InheritanceType.JOINED)
@@ -67,7 +65,6 @@ public class Pessoa implements UserDetails {
         this.id = id;
     }
 
-    // Construtores, Getters e Setters
     public void setUsername(String username) {
         this.username = username;
     }
@@ -81,9 +78,7 @@ public class Pessoa implements UserDetails {
         this.role = role;
     }
 
-    // Métodos da interface UserDetails
     @Override
-    // Controle das roles (papéis no sistema)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role == PessoaRole.PROFESSOR)
             return List.of(new SimpleGrantedAuthority("ROLE_PROFESSOR"), new SimpleGrantedAuthority("ROLE_ALUNO"));
@@ -103,22 +98,22 @@ public class Pessoa implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // A conta não expirou
+        return true; 
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // A conta não está bloqueada
+        return true; 
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // As credenciais não expiraram
+        return true; 
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // O usuário está ativo
+        return true; 
     }
 
     public int getId() {
