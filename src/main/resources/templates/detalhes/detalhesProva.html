@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalhes da prova')}"></head>
+<body class="pagina-detalhes tema-prova">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaProvas}">Provas</a></li>
+                <li aria-current="page">Detalhes</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>
+            <div>
+                <h1>Detalhes da prova</h1>
+                <p>Conteúdo cobrado e alunos que já estudaram para ela.</p>
+            </div>
+        </div>
+    </header>
+    <section class="painel" aria-labelledby="ficha-nome">
+        <div class="painel-corpo">
+            <div class="ficha-topo">
+                <div>
+                    <p class="ficha-sobre" th:text="${prova.ofertaDisciplina.professor.nome}"></p>
+                    <h2 class="ficha-nome" id="ficha-nome" th:text="${prova.ofertaDisciplina.disciplina.materia}"></h2>
+                </div>
+                <span class="ficha-registro">Registro nº <span th:text="${prova.id}"></span></span>
+            </div>
+            <dl class="ficha-dados">
+                <div><dt>Data</dt><dd class="numero" th:text="${prova.data != null ? #temporals.format(prova.data, 'dd/MM/yyyy') : '-'}"></dd></div>
+                <div><dt>Peso</dt><dd class="numero" th:text="${#numbers.formatDecimal(prova.peso, 1, 'POINT', 2, 'COMMA')}"></dd></div>
+                <div class="largo"><dt>Conteúdo cobrado</dt><dd class="texto-longo" th:text="${prova.conteudo}"></dd></div>
+            </dl>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaProvas}" class="btn btn-quieto acao-esquerda"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/editarProva(id=${prova.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+        </div>
+    </section>
+
+    <section class="painel mt-4" aria-labelledby="titulo-estudos">
+        <div class="painel-corpo">
+            <h2 class="h5 mb-1" id="titulo-estudos">Estudo para a prova</h2>
+            <th:block th:if="${usuarioAluno}">
+                <p class="text-body-secondary mb-3">Você pode marcar a prova como estudada depois de pegar emprestado um livro da bibliografia desta disciplina.</p>
+                <div class="alert alert-danger" role="alert" th:if="${erroRegra != null}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span><strong>Não foi possível marcar.</strong> <span th:text="${erroRegra}"></span></span></div>
+                <div class="alert alert-sucesso" role="status" th:if="${estudoRegistrado}"><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Prova marcada como estudada.</span></div>
+                <form th:unless="${estudou}" th:action="@{/marcarProvaEstudada}" method="post">
+                    <input type="hidden" name="id" th:value="${prova.id}">
+                    <button type="submit" class="btn btn-tema"><i class="bi bi-journal-check me-2" aria-hidden="true"></i>Marcar como estudada</button>
+                </form>
+                <form th:if="${estudou}" class="d-flex flex-wrap align-items-center gap-3" th:action="@{/desmarcarProvaEstudada}" method="post">
+                    <span class="selo selo-ok">Você já estudou para esta prova</span>
+                    <input type="hidden" name="id" th:value="${prova.id}">
+                    <button type="submit" class="btn btn-quieto"><i class="bi bi-arrow-counterclockwise me-2" aria-hidden="true"></i>Desmarcar</button>
+                </form>
+            </th:block>
+            <th:block th:unless="${usuarioAluno}">
+                <p class="text-body-secondary mb-3">Alunos que marcaram esta prova como estudada.</p>
+                <ul class="list-unstyled mb-0" th:unless="${#lists.isEmpty(prova.alunosQueEstudaram)}">
+                    <li class="py-1" th:each="aluno : ${prova.alunosQueEstudaram}" th:text="${aluno.nome}"></li>
+                </ul>
+                <p class="text-body-secondary mb-0" th:if="${#lists.isEmpty(prova.alunosQueEstudaram)}">Nenhum aluno marcou esta prova como estudada ainda.</p>
+            </th:block>
+        </div>
+    </section>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

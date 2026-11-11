@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Provas')}"></head>
+<body class="pagina-lista tema-prova">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li aria-current="page">Provas</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-linha">
+            <div class="cabecalho-titulo">
+                <span class="selo-entidade" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>
+                <div>
+                    <h1>Provas</h1>
+                    <p>Avaliações das ofertas de disciplina e o conteúdo cobrado.</p>
+                </div>
+            </div>
+            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/formularioProva}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Nova prova</a>
+        </div>
+    </header>
+    <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
+    </div>
+    <form th:replace="~{fragments/layout :: busca('/listaProvas', 'Buscar por conteúdo ou disciplina')}"></form>
+    <div class="painel-tabela">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle tabela">
+                <thead>
+                <tr>
+                    <th scope="col" class="col-id">#</th>
+                    <th scope="col">Oferta</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Conteúdo</th>
+                    <th scope="col">Peso</th>
+                    <th scope="col" class="col-acoes text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="prova : ${provas}">
+                    <td data-label="Nº" class="col-id" th:text="${prova.id}"></td>
+                    <td data-label="Oferta"><span class="celula-principal" th:text="${prova.ofertaDisciplina.disciplina.materia}"></span><span class="celula-sec" th:text="${prova.ofertaDisciplina.professor.nome}"></span></td>
+                    <td data-label="Data" class="numero" th:text="${prova.data != null ? #temporals.format(prova.data, 'dd/MM/yyyy') : '-'}"></td>
+                    <td data-label="Conteúdo" th:text="${prova.conteudo}"></td>
+                    <td data-label="Peso" class="numero" th:text="${#numbers.formatDecimal(prova.peso, 1, 'POINT', 2, 'COMMA')}"></td>
+                    <td class="col-acoes">
+                        <div class="acoes">
+                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/editarProva(id=${prova.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a th:href="@{/detalhesProva(id=${prova.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/excluirProva(id=${prova.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                               onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="linha-vazia" th:if="${#lists.isEmpty(provas)}">
+                    <td colspan="6">
+                        <div class="vazio">
+                            <span class="vazio-icone" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhuma prova cadastrada ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                            <p class="vazio-texto" th:if="${#strings.isEmpty(q)}">Use o botão “Nova prova” para fazer o primeiro cadastro.</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaProvas')}"></nav>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

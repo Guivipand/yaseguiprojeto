@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Nova reserva')}"></head>
+<body class="pagina-form tema-reserva">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaReservas}">Reservas</a></li>
+                <li aria-current="page">Nova reserva</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>
+            <div>
+                <h1>Nova reserva</h1>
+                <p>Coloca o aluno na fila de um título sem exemplar disponível. Quando um exemplar voltar, o 1º da fila tem 48 h para retirá-lo.</p>
+            </div>
+        </div>
+    </header>
+    <form class="painel" th:action="@{/cadastrarReserva}" th:object="${reserva}" method="post">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroRegra != null}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span><strong>Não foi possível reservar.</strong> <span th:text="${erroRegra}"></span></span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroCampos}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione o livro e o aluno.</span></div>
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="livro">Livro</label>
+                    <select class="form-select" th:field="*{livro}" required>
+                        <option value="">Selecione o livro</option>
+                        <option th:each="livro : ${livros}" th:value="${livro.id}" th:text="${livro.titulo + ' - ' + livro.autor}"></option>
+                    </select>
+                </div>
+                <div class="col-12" th:unless="${usuarioAluno}">
+                    <label class="form-label" for="aluno">Aluno</label>
+                    <select class="form-select" th:field="*{aluno}" required>
+                        <option value="">Selecione o aluno</option>
+                        <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
+                    </select>
+                </div>
+                <div class="col-12" th:if="${usuarioAluno}">
+                    <span class="form-label d-block">Aluno</span>
+                    <p class="form-control-plaintext" th:text="${alunoLogado != null ? alunoLogado.nome : 'Usuário sem aluno ligado'}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaReservas}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Entrar na fila</button>
+        </div>
+    </form>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

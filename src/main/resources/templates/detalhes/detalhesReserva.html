@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalhes da reserva')}"></head>
+<body class="pagina-detalhes tema-reserva">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaReservas}">Reservas</a></li>
+                <li aria-current="page">Detalhes</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>
+            <div>
+                <h1>Detalhes da reserva</h1>
+                <p>Situação da reserva e a fila do título.</p>
+            </div>
+        </div>
+    </header>
+    <section class="painel" aria-labelledby="ficha-nome">
+        <div class="painel-corpo">
+            <div class="alert alert-sucesso" role="status" th:if="${reserva.status == 'Notificada'}">
+                <i class="bi bi-bell-fill" aria-hidden="true"></i>
+                <span>O exemplar <strong th:text="${reserva.exemplar.tombo}"></strong> está separado para este aluno até
+                    <strong th:text="${#temporals.format(reserva.prazo_retirada, 'dd/MM/yyyy HH:mm')}"></strong>. Registre o empréstimo dentro do prazo.</span>
+            </div>
+            <div class="ficha-topo">
+                <div>
+                    <p class="ficha-sobre" th:text="${reserva.livro.autor}"></p>
+                    <h2 class="ficha-nome" id="ficha-nome" th:text="${reserva.livro.titulo}"></h2>
+                </div>
+                <span class="ficha-registro">Registro nº <span th:text="${reserva.id}"></span></span>
+            </div>
+            <dl class="ficha-dados">
+                <div><dt>Aluno</dt><dd th:text="${reserva.aluno.nome}"></dd></div>
+                <div><dt>Status</dt><dd><span class="selo" th:classappend="${reserva.status == 'Notificada'} ? 'selo-ok' : (${reserva.status == 'Aguardando'} ? 'selo-ativo' : (${reserva.status == 'Expirada'} ? 'selo-alerta' : 'selo-neutro'))" th:text="${reserva.status}"></span></dd></div>
+                <div><dt>Reservado em</dt><dd class="numero" th:text="${#temporals.format(reserva.data_reserva, 'dd/MM/yyyy HH:mm')}"></dd></div>
+                <div><dt>Posição na fila</dt><dd class="numero" th:text="${reserva.posicao_fila != null ? reserva.posicao_fila + 'º' : '-'}"></dd></div>
+            </dl>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaReservas}" class="btn btn-quieto acao-esquerda"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <a th:if="${reserva.status == 'Notificada'}" th:href="@{/formularioEmprestimo}" class="btn btn-contorno-tema"><i class="bi bi-arrow-left-right me-2" aria-hidden="true"></i>Registrar empréstimo</a>
+            <form th:if="${reserva.pendente}" th:action="@{/cancelarReserva}" method="post"
+                  onsubmit="return confirm('Deseja cancelar esta reserva? O aluno perde a posição na fila.')">
+                <input type="hidden" name="id" th:value="${reserva.id}">
+                <button type="submit" class="btn btn-tema"><i class="bi bi-x-lg me-2" aria-hidden="true"></i>Cancelar reserva</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="painel mt-4" aria-labelledby="titulo-fila">
+        <div class="painel-corpo">
+            <h2 class="h5 mb-3" id="titulo-fila">Fila do título</h2>
+            <ol class="fila-reservas" th:unless="${#lists.isEmpty(fila)}">
+                <li th:each="item : ${fila}" th:classappend="${item.id == reserva.id} ? 'atual'">
+                    <span class="fila-posicao" th:text="${item.status == 'Notificada' ? '!' : item.posicao_fila}"></span>
+                    <span>
+                        <span th:text="${item.aluno.nome}"></span>
+                        <span class="celula-sec" th:if="${item.status == 'Notificada'}" th:text="${'Exemplar separado até ' + #temporals.format(item.prazo_retirada, 'dd/MM HH:mm')}"></span>
+                        <span class="celula-sec" th:unless="${item.status == 'Notificada'}" th:text="${'Desde ' + #temporals.format(item.data_reserva, 'dd/MM/yyyy')}"></span>
+                    </span>
+                </li>
+            </ol>
+            <p class="text-body-secondary mb-0" th:if="${#lists.isEmpty(fila)}">Ninguém aguardando este título.</p>
+        </div>
+    </section>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
