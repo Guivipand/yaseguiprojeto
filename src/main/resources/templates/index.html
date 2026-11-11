@@ -120,6 +120,14 @@
                     <a th:href="@{/listaReservas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> reservas</span></a>
                 </article>
             </div>
+            <div class="col-12 col-md-6" sec:authorize="hasRole('ADMIN')">
+                <article class="card-entidade horizontal tema-bibliotecario">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>
+                    <h3>Bibliotecários</h3>
+                    <p>Equipe da biblioteca, com prontuário e registro CRB.</p>
+                    <a th:href="@{/listaBibliotecarios}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> bibliotecários</span></a>
+                </article>
+            </div>
         </div>
     </section>
 </main>

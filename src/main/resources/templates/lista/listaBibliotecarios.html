@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Bibliotecários')}"></head>
+<body class="pagina-lista tema-bibliotecario">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li aria-current="page">Bibliotecários</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-linha">
+            <div class="cabecalho-titulo">
+                <span class="selo-entidade" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>
+                <div>
+                    <h1>Bibliotecários</h1>
+                    <p>Bibliotecários cadastrados.</p>
+                </div>
+            </div>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/formularioBibliotecario}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo bibliotecário</a>
+        </div>
+    </header>
+    <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
+    </div>
+    <form th:replace="~{fragments/layout :: busca('/listaBibliotecarios', 'Buscar por nome ou prontuário')}"></form>
+    <div class="painel-tabela">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle tabela">
+                <thead>
+                <tr>
+                    <th scope="col" class="col-id">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Prontuário</th>
+                    <th scope="col">Registro CRB</th>
+                    <th scope="col" class="col-acoes text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="bibliotecario : ${bibliotecarios}">
+                    <td data-label="Nº" class="col-id" th:text="${bibliotecario.id}"></td>
+                    <td data-label="Nome" class="celula-principal" th:text="${bibliotecario.nome}"></td>
+                    <td data-label="Prontuário" class="numero" th:text="${bibliotecario.prontuario}"></td>
+                    <td data-label="Registro CRB" th:text="${bibliotecario.crb}"></td>
+                    <td class="col-acoes">
+                        <div class="acoes">
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/editarBibliotecario(id=${bibliotecario.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a th:href="@{/detalhesBibliotecario(id=${bibliotecario.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/excluirBibliotecario(id=${bibliotecario.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                               onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="linha-vazia" th:if="${#lists.isEmpty(bibliotecarios)}">
+                    <td colspan="5">
+                        <div class="vazio">
+                            <span class="vazio-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhum bibliotecário cadastrado ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                            <p class="vazio-texto" th:if="${#strings.isEmpty(q)}">Use o botão “Novo bibliotecário” para fazer o primeiro cadastro.</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaBibliotecarios')}"></nav>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

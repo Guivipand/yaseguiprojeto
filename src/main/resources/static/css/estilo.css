@@ -49,6 +49,7 @@
 .tema-emprestimo { --cor: #c2410c; --cor-suave: #ffedd5; }
 .tema-prova { --cor: #4d7c0f; --cor-suave: #ecfccb; }
 .tema-reserva { --cor: #0e7490; --cor-suave: #cffafe; }
+.tema-bibliotecario { --cor: #a21caf; --cor-suave: #fae8ff; }
 .tema-sucesso { --cor: #15803d; --cor-suave: #dcfce7; }
 
 :root,
@@ -64,6 +65,7 @@
 .tema-emprestimo,
 .tema-prova,
 .tema-reserva,
+.tema-bibliotecario,
 .tema-sucesso {
     --cor-forte: color-mix(in oklch, var(--cor), #000 24%);
     --cor-borda: color-mix(in oklch, var(--cor) 32%, #fff);
@@ -192,13 +194,13 @@ h3,
 
 .pagina-inicio .nav-inicio,
 body:is(.tema-curso, .tema-disciplina, .tema-professor, .tema-aluno, .tema-oferta, .tema-matricula, .tema-prova) .nav-academico,
-body:is(.tema-livro, .tema-exemplar, .tema-referencia, .tema-emprestimo, .tema-reserva) .nav-biblioteca {
+body:is(.tema-livro, .tema-exemplar, .tema-referencia, .tema-emprestimo, .tema-reserva, .tema-bibliotecario) .nav-biblioteca {
     color: #fff;
 }
 
 .pagina-inicio .nav-inicio::after,
 body:is(.tema-curso, .tema-disciplina, .tema-professor, .tema-aluno, .tema-oferta, .tema-matricula, .tema-prova) .nav-academico::before,
-body:is(.tema-livro, .tema-exemplar, .tema-referencia, .tema-emprestimo, .tema-reserva) .nav-biblioteca::before {
+body:is(.tema-livro, .tema-exemplar, .tema-referencia, .tema-emprestimo, .tema-reserva, .tema-bibliotecario) .nav-biblioteca::before {
     content: "";
     position: absolute;
     left: 0.8rem;
@@ -266,7 +268,8 @@ body.tema-exemplar .menu-entidades .tema-exemplar > .dropdown-item,
 body.tema-referencia .menu-entidades .tema-referencia > .dropdown-item,
 body.tema-emprestimo .menu-entidades .tema-emprestimo > .dropdown-item,
 body.tema-prova .menu-entidades .tema-prova > .dropdown-item,
-body.tema-reserva .menu-entidades .tema-reserva > .dropdown-item {
+body.tema-reserva .menu-entidades .tema-reserva > .dropdown-item,
+body.tema-bibliotecario .menu-entidades .tema-bibliotecario > .dropdown-item {
     background: var(--cor-suave);
     color: var(--cor-forte);
     font-weight: 600;

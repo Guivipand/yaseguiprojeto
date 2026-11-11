@@ -51,6 +51,7 @@
                         <li class="tema-referencia"><a class="dropdown-item" th:href="@{/listaDisciplinaLivros}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>Referências</a></li>
                         <li class="tema-emprestimo"><a class="dropdown-item" th:href="@{/listaEmprestimos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>Empréstimos</a></li>
                         <li class="tema-reserva"><a class="dropdown-item" th:href="@{/listaReservas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>Reservas</a></li>
+                        <li class="tema-bibliotecario" sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/listaBibliotecarios}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>Bibliotecários</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()"
@@ -58,9 +59,9 @@
                     <a class="nav-link dropdown-toggle nav-perfil" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Perfil">
                         <span class="perfil-avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></span><span class="d-lg-none">Perfil</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end menu-entidades menu-perfil" th:classappend="${admin} ? 'tema-curso' : (${bibliotecario} ? 'tema-livro' : (${professor} ? 'tema-professor' : 'tema-aluno'))">
+                    <div class="dropdown-menu dropdown-menu-end menu-entidades menu-perfil" th:classappend="${admin} ? 'tema-curso' : (${bibliotecario} ? 'tema-bibliotecario' : (${professor} ? 'tema-professor' : 'tema-aluno'))">
                         <div class="perfil-topo">
-                            <span class="menu-icone perfil-icone" aria-hidden="true"><i class="bi" th:classappend="${admin} ? 'bi-shield-lock-fill' : (${bibliotecario} ? 'bi-book-half' : (${professor} ? 'bi-person-badge-fill' : 'bi-people-fill'))"></i></span>
+                            <span class="menu-icone perfil-icone" aria-hidden="true"><i class="bi" th:classappend="${admin} ? 'bi-shield-lock-fill' : (${bibliotecario} ? 'bi-person-workspace' : (${professor} ? 'bi-person-badge-fill' : 'bi-people-fill'))"></i></span>
                             <div class="perfil-identidade">
                                 <p class="perfil-nome" th:text="${pessoa.nome != null ? pessoa.nome : pessoa.username}">Nome</p>
                                 <span class="perfil-papel" th:text="${admin} ? 'Administrador' : (${bibliotecario} ? 'Bibliotecário' : (${professor} ? 'Professor' : 'Aluno'))">Aluno</span>
@@ -74,10 +75,6 @@
                             <div th:if="${pessoa.email != null}">
                                 <dt>E-mail</dt>
                                 <dd th:text="${pessoa.email}">email</dd>
-                            </div>
-                            <div>
-                                <dt>Permissões</dt>
-                                <dd th:text="${admin} ? 'Acesso total' : (${bibliotecario} ? 'Tudo da biblioteca' : (${professor} ? 'Provas, ofertas e referências' : 'Matrícula, empréstimos e reservas próprios'))">Aluno</dd>
                             </div>
                         </dl>
                         <hr class="dropdown-divider">

@@ -45,7 +45,6 @@
         <div class="painel-corpo">
             <h2 class="h5 mb-1" id="titulo-estudos">Estudo para a prova</h2>
             <th:block th:if="${usuarioAluno}">
-                <p class="text-body-secondary mb-3">Você pode marcar a prova como estudada depois de pegar emprestado um livro da bibliografia desta disciplina.</p>
                 <div class="alert alert-danger" role="alert" th:if="${erroRegra != null}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span><strong>Não foi possível marcar.</strong> <span th:text="${erroRegra}"></span></span></div>
                 <div class="alert alert-sucesso" role="status" th:if="${estudoRegistrado}"><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Prova marcada como estudada.</span></div>
                 <form th:unless="${estudou}" th:action="@{/marcarProvaEstudada}" method="post">
@@ -59,7 +58,6 @@
                 </form>
             </th:block>
             <th:block th:unless="${usuarioAluno}">
-                <p class="text-body-secondary mb-3">Alunos que marcaram esta prova como estudada.</p>
                 <ul class="list-unstyled mb-0" th:unless="${#lists.isEmpty(prova.alunosQueEstudaram)}">
                     <li class="py-1" th:each="aluno : ${prova.alunosQueEstudaram}" th:text="${aluno.nome}"></li>
                 </ul>

@@ -40,7 +40,8 @@ public class WebSecurityConfig {
                 .requestMatchers(crud("DisciplinaLivro")).hasAnyRole("ADMIN", "PROFESSOR", "BIBLIOTECARIO")
                 .requestMatchers(crud("Livro", "Exemplar", "Emprestimo", "Reserva")).hasAnyRole("ADMIN", "BIBLIOTECARIO")
                 .requestMatchers("/devolverEmprestimo").hasAnyRole("ADMIN", "BIBLIOTECARIO")
-                .requestMatchers(crud("Curso", "Disciplina", "Professor", "Aluno", "Matricula")).hasRole("ADMIN")
+                .requestMatchers(crud("Curso", "Disciplina", "Professor", "Aluno", "Matricula", "Bibliotecario")).hasRole("ADMIN")
+                .requestMatchers("/listaBibliotecarios", "/detalhesBibliotecario").hasRole("ADMIN")
                 .requestMatchers("/listaAlunos", "/detalhesAluno").hasAnyRole("ADMIN", "PROFESSOR", "BIBLIOTECARIO")
                 .anyRequest().authenticated()// Exige autenticação para qualquer outra requisição
             )

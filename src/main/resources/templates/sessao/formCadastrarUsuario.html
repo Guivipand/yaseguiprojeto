@@ -15,6 +15,13 @@
                 <fieldset class="campo-papel">
                     <legend class="form-label">Tipo de perfil:</legend>
                     <div class="escolha-papel">
+                        <th:block th:if="${podeCadastrarAdmin}">
+                            <input type="radio" class="btn-check" name="role" id="perfilBibliotecario" value="BIBLIOTECARIO"
+                                   th:checked="${roleSelecionado != null and roleSelecionado.name() == 'BIBLIOTECARIO'}">
+                            <label class="opcao-papel tema-bibliotecario" for="perfilBibliotecario">
+                                <span class="menu-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>Bibliotecário
+                            </label>
+                        </th:block>
                         <input type="radio" class="btn-check" name="role" id="perfilProfessor" value="PROFESSOR" required
                                th:checked="${roleSelecionado != null and roleSelecionado.name() == 'PROFESSOR'}">
                         <label class="opcao-papel tema-professor" for="perfilProfessor">
@@ -31,25 +38,29 @@
                             <label class="opcao-papel tema-curso" for="perfilAdmin">
                                 <span class="menu-icone" aria-hidden="true"><i class="bi bi-shield-lock-fill"></i></span>Admin
                             </label>
-                            <input type="radio" class="btn-check" name="role" id="perfilBibliotecario" value="BIBLIOTECARIO"
-                                   th:checked="${roleSelecionado != null and roleSelecionado.name() == 'BIBLIOTECARIO'}">
-                            <label class="opcao-papel tema-livro" for="perfilBibliotecario">
-                                <span class="menu-icone" aria-hidden="true"><i class="bi bi-book-half"></i></span>Bibliotecário
-                            </label>
                         </th:block>
                     </div>
                 </fieldset>
                 <div class="row g-3">
+                    <div class="col-12" id="vinculoBibliotecario" th:if="${podeCadastrarAdmin}">
+                        <label class="form-label" for="bibliotecario">Bibliotecário ligado ao usuário:</label>
+                        <select class="form-select" id="bibliotecario" name="bibliotecario">
+                            <option value="">Selecione o bibliotecário</option>
+                            <option th:each="item : ${bibliotecariosSemUsuario}" th:value="${item.id}" th:text="${item.nome + ' - ' + item.prontuario}"
+                                    th:selected="${bibliotecarioSelecionado == item.id}"></option>
+                        </select>
+                    </div>
                     <div class="col-12" id="vinculoAluno">
                         <label class="form-label" for="aluno">Aluno ligado ao usuário:</label>
-                        <select class="form-select" id="aluno" name="aluno" aria-describedby="ajudaAluno">
+                        <select class="form-select" id="aluno" name="aluno">
                             <option value="">Selecione o aluno</option>
                             <option th:each="item : ${alunosSemUsuario}" th:value="${item.id}" th:text="${item.nome + ' - ' + item.idMatricula}"
                                     th:selected="${alunoSelecionado == item.id}"></option>
                         </select>
+                    </div>
                     <div class="col-12" id="vinculoProfessor">
                         <label class="form-label" for="professor">Professor ligado ao usuário:</label>
-                        <select class="form-select" id="professor" name="professor" aria-describedby="ajudaProfessor">
+                        <select class="form-select" id="professor" name="professor">
                             <option value="">Selecione o professor</option>
                             <option th:each="item : ${professoresSemUsuario}" th:value="${item.id}" th:text="${item.nome + ' - ' + item.prontuario}"
                                     th:selected="${professorSelecionado == item.id}"></option>
@@ -89,12 +100,13 @@
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 <script>
     const vinculos = {
+        BIBLIOTECARIO: document.getElementById("vinculoBibliotecario"),
         ALUNO: document.getElementById("vinculoAluno"),
         PROFESSOR: document.getElementById("vinculoProfessor")
     };
     const atualizarVinculo = () => {
         const papel = document.querySelector("input[name='role']:checked")?.value;
-        Object.entries(vinculos).forEach(([tipo, bloco]) => {
+        Object.entries(vinculos).filter(([, bloco]) => bloco).forEach(([tipo, bloco]) => {
             const ativo = tipo === papel;
             const campo = bloco.querySelector("select");
             bloco.hidden = !ativo;
