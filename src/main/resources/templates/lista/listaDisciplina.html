@@ -19,12 +19,13 @@
                     <p>Disciplinas da matriz curricular de cada curso.</p>
                 </div>
             </div>
-            <a th:href="@{/formularioDisciplina}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Nova disciplina</a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/formularioDisciplina}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Nova disciplina</a>
         </div>
     </header>
     <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
         <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
     </div>
+    <form th:replace="~{fragments/layout :: busca('/listaDisciplinas', 'Buscar por matéria ou curso')}"></form>
     <div class="painel-tabela">
         <div class="table-responsive">
             <table class="table table-hover align-middle tabela">
@@ -45,8 +46,8 @@
                     <td data-label="Curso" th:text="${disciplina.curso != null ? disciplina.curso.titulo : 'Sem curso'}"></td>
                     <td class="col-acoes">
                         <div class="acoes">
-                            <a th:href="@{/editarDisciplina(id=${disciplina.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-                            <a th:href="@{/excluirDisciplina(id=${disciplina.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/editarDisciplina(id=${disciplina.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/excluirDisciplina(id=${disciplina.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
                                onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
                         </div>
                     </td>
@@ -55,8 +56,9 @@
                     <td colspan="5">
                         <div class="vazio">
                             <span class="vazio-icone" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
-                            <p class="vazio-titulo">Nenhuma disciplina cadastrada ainda.</p>
-                            <p class="vazio-texto">Use o botão “Nova disciplina” para fazer o primeiro cadastro.</p>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhuma disciplina cadastrada ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                            <p class="vazio-texto" th:if="${#strings.isEmpty(q)}">Use o botão “Nova disciplina” para fazer o primeiro cadastro.</p>
                         </div>
                     </td>
                 </tr>
@@ -64,6 +66,7 @@
             </table>
         </div>
     </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaDisciplinas')}"></nav>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

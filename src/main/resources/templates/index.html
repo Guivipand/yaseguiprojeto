@@ -6,7 +6,7 @@
 <main id="conteudo" class="container conteudo">
     <header class="abertura">
         <h1>Painel Principal</h1>
-        <p>Selecione uma entidade para gerenciar seus cadastros.</p>
+        <p>Selecione um módulo para abrir.</p>
     </header>
 
     <section class="grupo" aria-labelledby="grupo-academico">
@@ -20,7 +20,7 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>
                     <h3>Cursos</h3>
                     <p>Cursos oferecidos e a duração de cada um em semestres.</p>
-                    <a th:href="@{/listaCursos}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> cursos</span></a>
+                    <a th:href="@{/listaCursos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> cursos</span></a>
                 </article>
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
@@ -28,7 +28,7 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
                     <h3>Disciplinas</h3>
                     <p>Matérias da matriz curricular, organizadas por curso e semestre.</p>
-                    <a th:href="@{/listaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> disciplinas</span></a>
+                    <a th:href="@{/listaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> disciplinas</span></a>
                 </article>
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
@@ -36,15 +36,15 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>
                     <h3>Professores</h3>
                     <p>Docentes com prontuário, formação e dados de contato.</p>
-                    <a th:href="@{/listaProfessores}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> professores</span></a>
+                    <a th:href="@{/listaProfessores}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> professores</span></a>
                 </article>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4">
+            <div class="col-12 col-sm-6 col-lg-4" sec:authorize="!hasRole('ALUNO')">
                 <article class="card-entidade tema-aluno">
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
                     <h3>Alunos</h3>
                     <p>Estudantes vinculados a um curso e ao semestre em que estão.</p>
-                    <a th:href="@{/listaAlunos}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> alunos</span></a>
+                    <a th:href="@{/listaAlunos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> alunos</span></a>
                 </article>
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
@@ -52,7 +52,7 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-calendar-week-fill"></i></span>
                     <h3>Ofertas de disciplina</h3>
                     <p>Qual professor ministra cada disciplina.</p>
-                    <a th:href="@{/listaOfertaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> ofertas de disciplina</span></a>
+                    <a th:href="@{/listaOfertaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> ofertas de disciplina</span></a>
                 </article>
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
@@ -60,7 +60,15 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>
                     <h3>Matrículas</h3>
                     <p>Inscrição de alunos nas ofertas de disciplina do seu curso.</p>
-                    <a th:href="@{/listaMatriculas}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> matrículas</span></a>
+                    <a th:href="@{/listaMatriculas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> matrículas</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-prova">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>
+                    <h3>Provas</h3>
+                    <p>Avaliações de cada oferta, com data, conteúdo e peso.</p>
+                    <a th:href="@{/listaProvas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> provas</span></a>
                 </article>
             </div>
         </div>
@@ -77,7 +85,7 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-book-fill"></i></span>
                     <h3>Livros</h3>
                     <p>Títulos do acervo com ISBN, edição e capa.</p>
-                    <a th:href="@{/listaLivros}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> livros</span></a>
+                    <a th:href="@{/listaLivros}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> livros</span></a>
                 </article>
             </div>
             <div class="col-12 col-md-6">
@@ -85,7 +93,7 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>
                     <h3>Exemplares</h3>
                     <p>Cópias físicas de cada livro, identificadas pelo tombo.</p>
-                    <a th:href="@{/listaExemplares}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> exemplares</span></a>
+                    <a th:href="@{/listaExemplares}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> exemplares</span></a>
                 </article>
             </div>
             <div class="col-12 col-md-6">
@@ -93,7 +101,7 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>
                     <h3>Referências</h3>
                     <p>Livros indicados como bibliografia de cada disciplina.</p>
-                    <a th:href="@{/listaDisciplinaLivros}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> referências</span></a>
+                    <a th:href="@{/listaDisciplinaLivros}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> referências</span></a>
                 </article>
             </div>
             <div class="col-12 col-md-6">
@@ -101,7 +109,15 @@
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>
                     <h3>Empréstimos</h3>
                     <p>Retirada, renovação e devolução de exemplares.</p>
-                    <a th:href="@{/listaEmprestimos}" class="btn btn-tema btn-sm stretched-link">Gerenciar<span class="visually-hidden"> empréstimos</span></a>
+                    <a th:href="@{/listaEmprestimos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> empréstimos</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-md-6">
+                <article class="card-entidade horizontal tema-reserva">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>
+                    <h3>Reservas</h3>
+                    <p>Fila de espera por títulos sem exemplar disponível.</p>
+                    <a th:href="@{/listaReservas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> reservas</span></a>
                 </article>
             </div>
         </div>

@@ -19,12 +19,13 @@
                     <p>Cópias físicas de cada livro, identificadas pelo tombo.</p>
                 </div>
             </div>
-            <a th:href="@{/formularioExemplar}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo exemplar</a>
+            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/formularioExemplar}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo exemplar</a>
         </div>
     </header>
     <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
         <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
     </div>
+    <form th:replace="~{fragments/layout :: busca('/listaExemplares', 'Buscar por tombo, livro ou status')}"></form>
     <div class="painel-tabela">
         <div class="table-responsive">
             <table class="table table-hover align-middle tabela">
@@ -45,9 +46,9 @@
                     <td data-label="Status"><span class="selo" th:classappend="${exemplar.status == 'Disponível'} ? 'selo-ok' : 'selo-neutro'" th:text="${exemplar.status}"></span></td>
                     <td class="col-acoes">
                         <div class="acoes">
-                            <a th:href="@{/editarExemplar(id=${exemplar.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/editarExemplar(id=${exemplar.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                             <a th:href="@{/detalhesExemplar(id=${exemplar.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                            <a th:href="@{/excluirExemplar(id=${exemplar.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/excluirExemplar(id=${exemplar.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
                                onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
                         </div>
                     </td>
@@ -56,8 +57,9 @@
                     <td colspan="5">
                         <div class="vazio">
                             <span class="vazio-icone" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>
-                            <p class="vazio-titulo">Nenhum exemplar cadastrado ainda.</p>
-                            <p class="vazio-texto">Use o botão “Novo exemplar” para fazer o primeiro cadastro.</p>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhum exemplar cadastrado ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                            <p class="vazio-texto" th:if="${#strings.isEmpty(q)}">Use o botão “Novo exemplar” para fazer o primeiro cadastro.</p>
                         </div>
                     </td>
                 </tr>
@@ -65,6 +67,7 @@
             </table>
         </div>
     </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaExemplares')}"></nav>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

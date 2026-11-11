@@ -42,7 +42,7 @@
         </div>
         <div class="painel-acoes">
             <a th:href="@{/listaAlunos}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
-            <a th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
         </div>
     </section>
 </main>

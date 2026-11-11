@@ -19,12 +19,13 @@
                     <p>Alunos cadastrados.</p>
                 </div>
             </div>
-            <a th:href="@{/formularioAluno}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo aluno</a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/formularioAluno}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo aluno</a>
         </div>
     </header>
     <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
         <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
     </div>
+    <form th:replace="~{fragments/layout :: busca('/listaAlunos', 'Buscar por nome, matrícula ou CPF')}"></form>
     <div class="painel-tabela">
         <div class="table-responsive">
             <table class="table table-hover align-middle tabela">
@@ -47,9 +48,9 @@
                     <td data-label="Curso" th:text="${aluno.curso != null ? aluno.curso.titulo : 'Sem curso'}"></td>
                     <td class="col-acoes">
                         <div class="acoes">
-                            <a th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/editarAluno(id=${aluno.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                             <a th:href="@{/detalhesAluno(id=${aluno.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                            <a th:href="@{/excluirAluno(id=${aluno.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/excluirAluno(id=${aluno.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
                                onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
                         </div>
                     </td>
@@ -58,8 +59,9 @@
                     <td colspan="6">
                         <div class="vazio">
                             <span class="vazio-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
-                            <p class="vazio-titulo">Nenhum aluno cadastrado ainda.</p>
-                            <p class="vazio-texto">Use o botão “Novo aluno” para fazer o primeiro cadastro.</p>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhum aluno cadastrado ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                            <p class="vazio-texto" th:if="${#strings.isEmpty(q)}">Use o botão “Novo aluno” para fazer o primeiro cadastro.</p>
                         </div>
                     </td>
                 </tr>
@@ -67,6 +69,7 @@
             </table>
         </div>
     </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaAlunos')}"></nav>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

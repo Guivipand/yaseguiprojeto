@@ -16,27 +16,37 @@
             <span class="selo-entidade" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>
             <div>
                 <h1>Cadastrar matrícula</h1>
-                <p>Preencha os dados abaixo. Todos os campos são obrigatórios.</p>
+                <p>Preencha os dados abaixo. Todos os campos são obrigatórios. A matrícula começa com status Ativa e a data de hoje.</p>
             </div>
         </div>
     </header>
     <form class="painel" th:action="@{/cadastrarMatricula}" th:object="${matricula}" method="post">
         <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroAluno != null}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span th:text="${erroAluno}"></span></div>
             <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione o aluno, o curso e a oferta de disciplina.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroDuplicada}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Este aluno já tem matrícula nesta oferta de disciplina.</span></div>
             <div class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-6" th:unless="${usuarioAluno}">
                     <label class="form-label" for="aluno">Aluno</label>
                     <select class="form-select" th:field="*{aluno}" required>
                         <option value="">Selecione o aluno</option>
                         <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" th:if="${usuarioAluno}">
+                    <span class="form-label d-block">Aluno</span>
+                    <p class="form-control-plaintext" th:text="${alunoLogado != null ? alunoLogado.nome : 'Usuário sem aluno ligado'}"></p>
+                </div>
+                <div class="col-md-6" th:unless="${usuarioAluno}">
                     <label class="form-label" for="curso">Curso</label>
                     <select class="form-select" th:field="*{curso}" required>
                         <option value="">Selecione o curso</option>
                         <option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.titulo}"></option>
                     </select>
+                </div>
+                <div class="col-md-6" th:if="${usuarioAluno}">
+                    <span class="form-label d-block">Curso</span>
+                    <p class="form-control-plaintext" th:text="${alunoLogado != null and alunoLogado.curso != null ? alunoLogado.curso.titulo : '-'}"></p>
                 </div>
                 <div class="col-12">
                     <label class="form-label" for="ofertaDisciplina">Oferta de Disciplina</label>

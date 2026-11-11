@@ -24,6 +24,7 @@
         <input type="hidden" th:field="*{id}">
         <div class="painel-corpo">
             <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione o aluno, o curso e a oferta de disciplina.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroDuplicada}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Este aluno já tem matrícula nesta oferta de disciplina.</span></div>
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label" for="aluno">Aluno</label>
@@ -45,6 +46,16 @@
                         <option value="">Selecione a oferta</option>
                         <option th:each="oferta : ${ofertasDisciplina}" th:value="${oferta.id}" th:text="${oferta.disciplina.materia + ' - ' + oferta.professor.nome}"></option>
                     </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="status">Status</label>
+                    <select class="form-select" th:field="*{status}" required>
+                        <option th:each="opcao : ${statusMatricula}" th:value="${opcao}" th:text="${opcao}"></option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <span class="form-label d-block">Data da matrícula</span>
+                    <p class="form-control-plaintext numero" th:text="${matricula.data_matricula != null ? #temporals.format(matricula.data_matricula, 'dd/MM/yyyy') : '-'}"></p>
                 </div>
             </div>
         </div>

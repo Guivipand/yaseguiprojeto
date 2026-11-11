@@ -22,9 +22,10 @@
     </header>
     <form class="painel" th:action="@{/cadastrarEmprestimo}" th:object="${emprestimo}" method="post">
         <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroRegra != null}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span><strong>Não foi possível concluir o empréstimo.</strong> <span th:text="${erroRegra}"></span> Nada foi gravado.</span></div>
             <div class="alert alert-danger" role="alert" th:if="${erroDataRetirada}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>A data de retirada deve ser hoje ou uma data futura.</span></div>
             <div class="alert alert-danger" role="alert" th:if="${erroDataPrevista}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>A devolução prevista deve ser entre a data de retirada e até uma semana depois.</span></div>
-            <div class="alert alert-danger" role="alert" th:if="${erroExemplarIndisponivel}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione um exemplar disponível.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroExemplarIndisponivel}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione um exemplar disponível. Exemplar reservado só pode ser retirado pelo aluno que está com a reserva.</span></div>
             <div class="alert alert-danger" role="alert" th:if="${erroCamposEmprestimo}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe exemplar e aluno.</span></div>
             <fieldset class="grupo-campos">
                 <legend>Exemplar e aluno</legend>
@@ -33,15 +34,19 @@
                         <label class="form-label" for="exemplar">Exemplar</label>
                         <select class="form-select" th:field="*{exemplar}" required>
                             <option value="">Selecione o exemplar</option>
-                            <option th:each="exemplar : ${exemplares}" th:value="${exemplar.id}" th:text="${exemplar.tombo + ' - ' + exemplar.livro.titulo}"></option>
+                            <option th:each="exemplar : ${exemplares}" th:value="${exemplar.id}" th:text="${exemplar.tombo + ' - ' + exemplar.livro.titulo + (exemplar.status == 'Reservado' ? ' (reservado)' : '')}"></option>
                         </select>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12" th:unless="${usuarioAluno}">
                         <label class="form-label" for="aluno">Aluno</label>
                         <select class="form-select" th:field="*{aluno}" required>
                             <option value="">Selecione o aluno</option>
                             <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
                         </select>
+                    </div>
+                    <div class="col-12" th:if="${usuarioAluno}">
+                        <span class="form-label d-block">Aluno</span>
+                        <p class="form-control-plaintext" th:text="${alunoLogado != null ? alunoLogado.nome : 'Usuário sem aluno ligado'}"></p>
                     </div>
                 </div>
             </fieldset>

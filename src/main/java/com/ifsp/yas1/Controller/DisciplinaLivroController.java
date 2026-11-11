@@ -3,6 +3,9 @@ package com.ifsp.yas1.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,8 +49,12 @@ public class DisciplinaLivroController {
     }
 
     @GetMapping("/listaDisciplinaLivros")
-    public String listaDisciplinaLivros(Model model) {
-        List<DisciplinaLivro> disciplinaLivros = disciplinaLivroRepository.findAll();
+    public String listaDisciplinaLivros(@RequestParam(defaultValue = "") String q,
+            @RequestParam(defaultValue = "0") int pagina, Model model) {
+        Page<DisciplinaLivro> resultado = disciplinaLivroRepository.buscar(q.trim(), PageRequest.of(Math.max(pagina, 0), 10, Sort.by("id")));
+        List<DisciplinaLivro> disciplinaLivros = resultado.getContent();
+        model.addAttribute("pagina", resultado);
+        model.addAttribute("q", q);
         model.addAttribute("disciplinaLivros", disciplinaLivros);
         return "lista/listaDisciplinaLivros";
     }

@@ -39,7 +39,7 @@
         </div>
         <div class="painel-acoes">
             <a th:href="@{/listaDisciplinaLivros}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
-            <a th:href="@{/editarDisciplinaLivro(id=${disciplinaLivro.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR','BIBLIOTECARIO')" th:href="@{/editarDisciplinaLivro(id=${disciplinaLivro.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
         </div>
     </section>
 </main>

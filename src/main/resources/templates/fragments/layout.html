@@ -35,9 +35,10 @@
                         <li class="tema-curso"><a class="dropdown-item" th:href="@{/listaCursos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>Cursos</a></li>
                         <li class="tema-disciplina"><a class="dropdown-item" th:href="@{/listaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-journal-text"></i></span>Disciplinas</a></li>
                         <li class="tema-professor"><a class="dropdown-item" th:href="@{/listaProfessores}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>Professores</a></li>
-                        <li class="tema-aluno"><a class="dropdown-item" th:href="@{/listaAlunos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>Alunos</a></li>
+                        <li class="tema-aluno" sec:authorize="!hasRole('ALUNO')"><a class="dropdown-item" th:href="@{/listaAlunos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>Alunos</a></li>
                         <li class="tema-oferta"><a class="dropdown-item" th:href="@{/listaOfertaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-calendar-week-fill"></i></span>Ofertas de disciplina</a></li>
                         <li class="tema-matricula"><a class="dropdown-item" th:href="@{/listaMatriculas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>Matrículas</a></li>
+                        <li class="tema-prova"><a class="dropdown-item" th:href="@{/listaProvas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>Provas</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -49,19 +50,20 @@
                         <li class="tema-exemplar"><a class="dropdown-item" th:href="@{/listaExemplares}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>Exemplares</a></li>
                         <li class="tema-referencia"><a class="dropdown-item" th:href="@{/listaDisciplinaLivros}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>Referências</a></li>
                         <li class="tema-emprestimo"><a class="dropdown-item" th:href="@{/listaEmprestimos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>Empréstimos</a></li>
+                        <li class="tema-reserva"><a class="dropdown-item" th:href="@{/listaReservas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>Reservas</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()"
-                    th:with="pessoa=${#authentication.principal}, professor=${#authentication.principal.role?.name() == 'PROFESSOR'}">
+                    th:with="pessoa=${#authentication.principal}, professor=${#authentication.principal.role?.name() == 'PROFESSOR'}, admin=${#authentication.principal.role?.name() == 'ADMIN'}, bibliotecario=${#authentication.principal.role?.name() == 'BIBLIOTECARIO'}">
                     <a class="nav-link dropdown-toggle nav-perfil" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Perfil">
                         <span class="perfil-avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></span><span class="d-lg-none">Perfil</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end menu-entidades menu-perfil" th:classappend="${professor} ? 'tema-professor' : 'tema-aluno'">
+                    <div class="dropdown-menu dropdown-menu-end menu-entidades menu-perfil" th:classappend="${admin} ? 'tema-curso' : (${bibliotecario} ? 'tema-livro' : (${professor} ? 'tema-professor' : 'tema-aluno'))">
                         <div class="perfil-topo">
-                            <span class="menu-icone perfil-icone" aria-hidden="true"><i class="bi" th:classappend="${professor} ? 'bi-person-badge-fill' : 'bi-people-fill'"></i></span>
+                            <span class="menu-icone perfil-icone" aria-hidden="true"><i class="bi" th:classappend="${admin} ? 'bi-shield-lock-fill' : (${bibliotecario} ? 'bi-book-half' : (${professor} ? 'bi-person-badge-fill' : 'bi-people-fill'))"></i></span>
                             <div class="perfil-identidade">
                                 <p class="perfil-nome" th:text="${pessoa.nome != null ? pessoa.nome : pessoa.username}">Nome</p>
-                                <span class="perfil-papel" th:text="${professor} ? 'Professor' : 'Aluno'">Aluno</span>
+                                <span class="perfil-papel" th:text="${admin} ? 'Administrador' : (${bibliotecario} ? 'Bibliotecário' : (${professor} ? 'Professor' : 'Aluno'))">Aluno</span>
                             </div>
                         </div>
                         <dl class="perfil-dados">
@@ -75,7 +77,7 @@
                             </div>
                             <div>
                                 <dt>Permissões</dt>
-                                <dd th:text="${professor} ? 'Professor e aluno' : 'Aluno'">Aluno</dd>
+                                <dd th:text="${admin} ? 'Acesso total' : (${bibliotecario} ? 'Tudo da biblioteca' : (${professor} ? 'Provas, ofertas e referências' : 'Matrícula, empréstimos e reservas próprios'))">Aluno</dd>
                             </div>
                         </dl>
                         <hr class="dropdown-divider">
@@ -87,6 +89,32 @@
             </ul>
         </div>
     </div>
+</nav>
+<form th:fragment="busca(acao, dica)" class="barra-busca" th:action="@{${acao}}" method="get" role="search">
+    <label class="visually-hidden" for="busca" th:text="${dica}">Buscar</label>
+    <div class="barra-busca-campo">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="search" class="form-control" id="busca" name="q" th:value="${q}" th:placeholder="${dica}">
+    </div>
+    <button type="submit" class="btn btn-tema">Buscar</button>
+    <a th:unless="${#strings.isEmpty(q)}" th:href="@{${acao}}" class="btn btn-quieto">Limpar</a>
+</form>
+<nav th:fragment="paginacao(acao)" class="paginacao" th:if="${pagina != null and pagina.totalElements > 0}" aria-label="Paginação">
+    <p class="paginacao-resumo">
+        Mostrando <span class="numero" th:text="${pagina.number * pagina.size + 1}"></span>–<span class="numero" th:text="${pagina.number * pagina.size + pagina.numberOfElements}"></span>
+        de <span class="numero" th:text="${pagina.totalElements}"></span>
+    </p>
+    <ul class="pagination" th:if="${pagina.totalPages > 1}">
+        <li class="page-item" th:classappend="${pagina.first} ? 'disabled'">
+            <a class="page-link" th:href="@{${acao}(q=${q}, pagina=${pagina.number - 1})}" aria-label="Página anterior"><i class="bi bi-chevron-left" aria-hidden="true"></i></a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, pagina.totalPages - 1)}" th:classappend="${i == pagina.number} ? 'active'">
+            <a class="page-link" th:href="@{${acao}(q=${q}, pagina=${i})}" th:text="${i + 1}" th:attr="aria-current=${i == pagina.number ? 'page' : null}"></a>
+        </li>
+        <li class="page-item" th:classappend="${pagina.last} ? 'disabled'">
+            <a class="page-link" th:href="@{${acao}(q=${q}, pagina=${pagina.number + 1})}" aria-label="Próxima página"><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
+        </li>
+    </ul>
 </nav>
 <th:block th:fragment="scripts">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
