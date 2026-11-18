@@ -79,7 +79,7 @@ public class EmprestimoController {
             adicionarOpcoesEmprestimo(model);
             return "formulario/formularioEmprestimo";
         }
-        String impedimento = emprestimoService.verificarRegras(registro.getAluno(), registro.getExemplar().getLivro());
+        String impedimento = emprestimoService.verificarRegras(registro.getAluno());
         if (impedimento != null) {
             model.addAttribute("erroRegra", impedimento);
             adicionarOpcoesEmprestimo(model);

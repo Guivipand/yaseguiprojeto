@@ -13,7 +13,6 @@ import com.ifsp.yas1.Model.Exemplar;
 import com.ifsp.yas1.Model.Reserva;
 import com.ifsp.yas1.Repository.EmprestimoRepository;
 import com.ifsp.yas1.Repository.ExemplarRepository;
-import com.ifsp.yas1.Repository.MatriculaRepository;
 import com.ifsp.yas1.Repository.ReservaRepository;
 
 @Service
@@ -30,9 +29,6 @@ public class ReservaService {
     @Autowired
     private EmprestimoRepository emprestimoRepository;
 
-    @Autowired
-    private MatriculaRepository matriculaRepository;
-
     @Transactional
     public String reservar(Reserva reserva) {
         processarExpiradas();
@@ -44,9 +40,6 @@ public class ReservaService {
         }
         if (exemplarRepository.contarPorLivroEStatus(livro, "Disponível") > 0) {
             return "Há exemplar disponível deste livro: registre o empréstimo em vez de reservar.";
-        }
-        if (matriculaRepository.contarBibliografiaDoAluno(aluno, livro) == 0) {
-            return "O livro não está na bibliografia de nenhuma disciplina em que o aluno tem matrícula ativa (RN05).";
         }
         if (!reservaRepository.listarPendentesDoAluno(aluno, livro).isEmpty()) {
             return "O aluno já está na fila de reserva deste livro.";

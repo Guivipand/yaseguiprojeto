@@ -22,7 +22,4 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Integer>{
 
     @Query("select count(m) from Matricula m where m.aluno.id = :aluno and m.ofertaDisciplina.id = :oferta and m.status = 'Ativa'")
     long contarAtivasNaOferta(@Param("aluno") int aluno, @Param("oferta") int oferta);
-
-    @Query("select count(m) from Matricula m, DisciplinaLivro dl where m.aluno.id = :aluno and m.status = 'Ativa' and dl.disciplina = m.ofertaDisciplina.disciplina and dl.livro.id = :livro")
-    long contarBibliografiaDoAluno(@Param("aluno") int aluno, @Param("livro") int livro);
 }

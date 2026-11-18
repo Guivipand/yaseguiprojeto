@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ifsp.yas1.Model.Aluno;
 import com.ifsp.yas1.Model.Emprestimo;
-import com.ifsp.yas1.Model.Livro;
 import com.ifsp.yas1.Repository.EmprestimoRepository;
-import com.ifsp.yas1.Repository.MatriculaRepository;
 
 @Service
 public class EmprestimoService {
@@ -26,24 +24,18 @@ public class EmprestimoService {
     @Autowired
     private EmprestimoRepository emprestimoRepository;
 
-    @Autowired
-    private MatriculaRepository matriculaRepository;
-
-    public String verificarRegras(Aluno aluno, Livro livro) {
+    public String verificarRegras(Aluno aluno) {
         int idAluno = aluno.getId();
         if (emprestimoRepository.contarAtrasadosDoAluno(idAluno, LocalDate.now()) > 0) {
-            return "O aluno tem empréstimo em atraso. Regularize a devolução para liberar novas retiradas (RN04).";
+            return "O aluno tem empréstimo em atraso. Regularize a devolução para liberar novas retiradas.";
         }
         LocalDate suspensoAte = suspensoAte(idAluno);
         if (suspensoAte != null) {
             return "O aluno está suspenso até " + suspensoAte.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                    + " por ter devolvido um livro com atraso (RN09).";
+                    + " por ter devolvido um livro com atraso.";
         }
         if (emprestimoRepository.contarAtivosDoAluno(idAluno) >= LIMITE_EMPRESTIMOS) {
-            return "Limite de " + LIMITE_EMPRESTIMOS + " empréstimos ativos atingido. Devolva um livro e tente novamente (RN01).";
-        }
-        if (matriculaRepository.contarBibliografiaDoAluno(idAluno, livro.getId()) == 0) {
-            return "Este livro não está na bibliografia de nenhuma disciplina em que o aluno tem matrícula ativa (RN05).";
+            return "Limite de " + LIMITE_EMPRESTIMOS + " empréstimos ativos atingido. Devolva um livro e tente novamente.";
         }
         return null;
     }
