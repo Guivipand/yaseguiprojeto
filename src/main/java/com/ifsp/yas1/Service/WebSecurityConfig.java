@@ -37,7 +37,7 @@ public class WebSecurityConfig {
                         "/formularioReserva", "/cadastrarReserva", "/cancelarReserva").hasAnyRole("ADMIN", "BIBLIOTECARIO", "ALUNO")
                 .requestMatchers("/marcarProvaEstudada", "/desmarcarProvaEstudada").hasRole("ALUNO")
                 .requestMatchers(crud("Prova", "OfertaDisciplina")).hasAnyRole("ADMIN", "PROFESSOR")
-                .requestMatchers(crud("DisciplinaLivro")).hasAnyRole("ADMIN", "PROFESSOR", "BIBLIOTECARIO")
+                .requestMatchers(crud("DisciplinaLivro")).hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(crud("Livro", "Exemplar", "Emprestimo", "Reserva")).hasAnyRole("ADMIN", "BIBLIOTECARIO")
                 .requestMatchers("/devolverEmprestimo").hasAnyRole("ADMIN", "BIBLIOTECARIO")
                 .requestMatchers(crud("Curso", "Disciplina", "Professor", "Aluno", "Matricula", "Bibliotecario")).hasRole("ADMIN")

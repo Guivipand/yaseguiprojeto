@@ -19,7 +19,7 @@
                     <p>Livros de referência de cada disciplina.</p>
                 </div>
             </div>
-            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR','BIBLIOTECARIO')" th:href="@{/formularioDisciplinaLivro}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Nova referência</a>
+            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/formularioDisciplinaLivro}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Nova referência</a>
         </div>
     </header>
     <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
@@ -44,9 +44,9 @@
                     <td data-label="Livro" th:text="${relacao.livro.titulo}"></td>
                     <td class="col-acoes">
                         <div class="acoes">
-                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR','BIBLIOTECARIO')" th:href="@{/editarDisciplinaLivro(id=${relacao.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/editarDisciplinaLivro(id=${relacao.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                             <a th:href="@{/detalhesDisciplinaLivro(id=${relacao.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR','BIBLIOTECARIO')" th:href="@{/excluirDisciplinaLivro(id=${relacao.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/excluirDisciplinaLivro(id=${relacao.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
                                onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
                         </div>
                     </td>
