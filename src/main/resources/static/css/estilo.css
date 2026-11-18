@@ -47,6 +47,9 @@
 .tema-exemplar { --cor: #475569; --cor-suave: #e2e8f0; }
 .tema-referencia { --cor: #15803d; --cor-suave: #dcfce7; }
 .tema-emprestimo { --cor: #c2410c; --cor-suave: #ffedd5; }
+.tema-prova { --cor: #4d7c0f; --cor-suave: #ecfccb; }
+.tema-reserva { --cor: #0e7490; --cor-suave: #cffafe; }
+.tema-bibliotecario { --cor: #a21caf; --cor-suave: #fae8ff; }
 .tema-sucesso { --cor: #15803d; --cor-suave: #dcfce7; }
 
 :root,
@@ -60,6 +63,9 @@
 .tema-exemplar,
 .tema-referencia,
 .tema-emprestimo,
+.tema-prova,
+.tema-reserva,
+.tema-bibliotecario,
 .tema-sucesso {
     --cor-forte: color-mix(in oklch, var(--cor), #000 24%);
     --cor-borda: color-mix(in oklch, var(--cor) 32%, #fff);
@@ -187,14 +193,14 @@ h3,
 }
 
 .pagina-inicio .nav-inicio,
-body:is(.tema-curso, .tema-disciplina, .tema-professor, .tema-aluno, .tema-oferta, .tema-matricula) .nav-academico,
-body:is(.tema-livro, .tema-exemplar, .tema-referencia, .tema-emprestimo) .nav-biblioteca {
+body:is(.tema-curso, .tema-disciplina, .tema-professor, .tema-aluno, .tema-oferta, .tema-matricula, .tema-prova) .nav-academico,
+body:is(.tema-livro, .tema-exemplar, .tema-referencia, .tema-emprestimo, .tema-reserva, .tema-bibliotecario) .nav-biblioteca {
     color: #fff;
 }
 
 .pagina-inicio .nav-inicio::after,
-body:is(.tema-curso, .tema-disciplina, .tema-professor, .tema-aluno, .tema-oferta, .tema-matricula) .nav-academico::before,
-body:is(.tema-livro, .tema-exemplar, .tema-referencia, .tema-emprestimo) .nav-biblioteca::before {
+body:is(.tema-curso, .tema-disciplina, .tema-professor, .tema-aluno, .tema-oferta, .tema-matricula, .tema-prova) .nav-academico::before,
+body:is(.tema-livro, .tema-exemplar, .tema-referencia, .tema-emprestimo, .tema-reserva, .tema-bibliotecario) .nav-biblioteca::before {
     content: "";
     position: absolute;
     left: 0.8rem;
@@ -260,7 +266,10 @@ body.tema-matricula .menu-entidades .tema-matricula > .dropdown-item,
 body.tema-livro .menu-entidades .tema-livro > .dropdown-item,
 body.tema-exemplar .menu-entidades .tema-exemplar > .dropdown-item,
 body.tema-referencia .menu-entidades .tema-referencia > .dropdown-item,
-body.tema-emprestimo .menu-entidades .tema-emprestimo > .dropdown-item {
+body.tema-emprestimo .menu-entidades .tema-emprestimo > .dropdown-item,
+body.tema-prova .menu-entidades .tema-prova > .dropdown-item,
+body.tema-reserva .menu-entidades .tema-reserva > .dropdown-item,
+body.tema-bibliotecario .menu-entidades .tema-bibliotecario > .dropdown-item {
     background: var(--cor-suave);
     color: var(--cor-forte);
     font-weight: 600;
@@ -1336,15 +1345,20 @@ textarea.form-control {
 
 .escolha-papel {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.6rem;
 }
 
 .opcao-papel {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.65rem;
-    padding: 0.6rem 0.75rem;
+    justify-content: center;
+    gap: 0.45rem;
+    height: 100%;
+    padding: 0.85rem 0.5rem 0.75rem;
+    text-align: center;
+    font-size: 0.925rem;
     border: 1px solid var(--borda-campo);
     border-radius: 8px;
     background: var(--superficie);
@@ -1371,10 +1385,117 @@ textarea.form-control {
     outline-offset: 2px;
 }
 
+@media (max-width: 399.98px) {
+    .escolha-papel {
+        grid-template-columns: 1fr;
+    }
+
+    .opcao-papel {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 0.6rem 0.75rem;
+    }
+}
+
 .alert-sucesso {
     --bs-alert-color: #166534;
     --bs-alert-bg: #eaf7ee;
     --bs-alert-border-color: #bfe3ca;
+}
+
+.barra-busca {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.barra-busca-campo {
+    position: relative;
+    flex: 1 1 18rem;
+    max-width: 30rem;
+}
+
+.barra-busca-campo .bi {
+    position: absolute;
+    top: 50%;
+    left: 0.85rem;
+    transform: translateY(-50%);
+    color: var(--apagado);
+    pointer-events: none;
+}
+
+.barra-busca-campo .form-control {
+    padding-left: 2.35rem;
+}
+
+.paginacao {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.paginacao-resumo {
+    margin: 0;
+    color: var(--apagado);
+    font-size: 0.875rem;
+}
+
+.paginacao .pagination {
+    --bs-pagination-color: var(--tinta-2);
+    --bs-pagination-bg: var(--superficie);
+    --bs-pagination-border-color: var(--linha-forte);
+    --bs-pagination-hover-color: var(--cor-forte);
+    --bs-pagination-hover-bg: var(--cor-lavada);
+    --bs-pagination-hover-border-color: var(--cor-borda);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.2rem var(--cor-foco);
+    --bs-pagination-active-bg: var(--cor);
+    --bs-pagination-active-border-color: var(--cor);
+    --bs-pagination-disabled-color: #a3aab6;
+    --bs-pagination-disabled-bg: var(--superficie-2);
+    --bs-pagination-disabled-border-color: var(--linha);
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.fila-reservas {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.fila-reservas li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--linha);
+}
+
+.fila-reservas li:last-child {
+    border-bottom: 0;
+}
+
+.fila-posicao {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--cor-suave);
+    color: var(--cor-forte);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.fila-reservas .atual {
+    font-weight: 600;
+    color: var(--cor-forte);
 }
 
 .perfil-avatar {

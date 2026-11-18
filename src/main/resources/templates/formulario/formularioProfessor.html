@@ -23,6 +23,7 @@
     <form class="painel" th:action="@{/cadastrarProfessor}" th:object="${professor}" method="post">
         <div class="painel-corpo">
             <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Verifique os campos: todos são obrigatórios e o CPF e o e-mail precisam ser válidos.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroIdade}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>O professor deve ter pelo menos 18 anos. Confira a data de nascimento.</span></div>
             <fieldset class="grupo-campos">
                 <legend>Identificação</legend>
                 <div class="row g-3">

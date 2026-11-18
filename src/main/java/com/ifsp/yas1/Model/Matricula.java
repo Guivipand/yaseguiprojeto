@@ -1,5 +1,10 @@
 package com.ifsp.yas1.Model;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +17,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table (name = "Matricula")
 public class Matricula {
+    public static final List<String> STATUS = List.of("Ativa", "Trancada", "Concluída", "Cancelada");
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "id")
@@ -28,6 +35,13 @@ public class Matricula {
     @ManyToOne
     @JoinColumn (name = "ofertaDisciplina")
     private OfertaDisciplina ofertaDisciplina;
+
+    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE)
+    @Column (name = "data_matricula")
+    private LocalDate data_matricula;
+
+    @Column (name = "status", columnDefinition = "varchar(20) default 'Ativa'")
+    private String status;
 
     public Matricula() {
     }
@@ -70,6 +84,22 @@ public class Matricula {
         this.ofertaDisciplina = ofertaDisciplina;
     }
 
+    public LocalDate getData_matricula() {
+        return data_matricula;
+    }
+
+    public void setData_matricula(LocalDate data_matricula) {
+        this.data_matricula = data_matricula;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public boolean validarAluno() {
         return aluno != null;
     }
@@ -82,9 +112,14 @@ public class Matricula {
         return ofertaDisciplina != null;
     }
 
+    public boolean validarStatus() {
+        return STATUS.contains(status);
+    }
+
     public boolean validar() {
         return validarAluno()
             && validarCurso()
-            && validarOfertaDisciplina();
+            && validarOfertaDisciplina()
+            && validarStatus();
     }
 }

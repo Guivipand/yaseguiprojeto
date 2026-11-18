@@ -3,6 +3,9 @@ package com.ifsp.yas1.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +38,8 @@ public class AlunoController {
     @PostMapping("/cadastrarAluno")
     public String saveAlunos(@ModelAttribute Aluno aluno, Model model) {
         if (!aluno.validar()) {
-            model.addAttribute("erroValidacao", true);
+            model.addAttribute("erroValidacao", !aluno.validarDados());
+            model.addAttribute("erroIdade", !aluno.validarIdade());
             model.addAttribute("cursos", cursoRepository.findAll());
             return "formulario/formularioAluno";
         }
@@ -44,8 +48,12 @@ public class AlunoController {
     }
 
     @GetMapping("/listaAlunos")
-    public String lAluno(Model model) {
-        List<Aluno> listaAluno = alunoRepository.findAll();
+    public String lAluno(@RequestParam(defaultValue = "") String q,
+            @RequestParam(defaultValue = "0") int pagina, Model model) {
+        Page<Aluno> resultado = alunoRepository.buscar(q.trim(), PageRequest.of(Math.max(pagina, 0), 10, Sort.by("id")));
+        List<Aluno> listaAluno = resultado.getContent();
+        model.addAttribute("pagina", resultado);
+        model.addAttribute("q", q);
         model.addAttribute("alunos", listaAluno);
         return "lista/listaAluno";
     }
@@ -67,8 +75,13 @@ public class AlunoController {
 
     @PostMapping("/atualizarAluno")
     public String atualizarAluno(@ModelAttribute Aluno aluno, Model model) {
+        Aluno existente = alunoRepository.findById(aluno.getId()).orElseThrow();
+        aluno.setUsername(existente.getUsername());
+        aluno.setPassword(existente.getPassword());
+        aluno.setRole(existente.getRole());
         if (!aluno.validar()) {
-            model.addAttribute("erroValidacao", true);
+            model.addAttribute("erroValidacao", !aluno.validarDados());
+            model.addAttribute("erroIdade", !aluno.validarIdade());
             model.addAttribute("cursos", cursoRepository.findAll());
             return "editar/editarAluno";
         }

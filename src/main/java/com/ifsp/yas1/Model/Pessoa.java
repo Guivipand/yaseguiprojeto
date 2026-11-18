@@ -80,8 +80,12 @@ public class Pessoa implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == PessoaRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if(this.role == PessoaRole.BIBLIOTECARIO)
+            return List.of(new SimpleGrantedAuthority("ROLE_BIBLIOTECARIO"));
         if(this.role == PessoaRole.PROFESSOR)
-            return List.of(new SimpleGrantedAuthority("ROLE_PROFESSOR"), new SimpleGrantedAuthority("ROLE_ALUNO"));
+            return List.of(new SimpleGrantedAuthority("ROLE_PROFESSOR"));
         else
             return List.of(new SimpleGrantedAuthority("ROLE_ALUNO"));
     }
@@ -225,6 +229,10 @@ public class Pessoa implements UserDetails {
 
     public boolean validarDataNasc() {
         return dataNasc != null;
+    }
+
+    public boolean validarIdadeMinima(int anos) {
+        return dataNasc != null && !dataNasc.isAfter(LocalDate.now().minusYears(anos));
     }
 
     public boolean validarEndereco() {

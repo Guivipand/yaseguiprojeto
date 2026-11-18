@@ -19,12 +19,13 @@
                     <p>Acervo de títulos da biblioteca.</p>
                 </div>
             </div>
-            <a th:href="@{/formularioLivro}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo livro</a>
+            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/formularioLivro}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo livro</a>
         </div>
     </header>
     <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
         <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
     </div>
+    <form th:replace="~{fragments/layout :: busca('/listaLivros', 'Buscar por título, autor, editora ou ISBN')}"></form>
     <div class="painel-tabela">
         <div class="table-responsive">
             <table class="table table-hover align-middle tabela">
@@ -47,9 +48,9 @@
                     <td data-label="ISBN" class="numero" th:text="${livro.isbn}"></td>
                     <td class="col-acoes">
                         <div class="acoes">
-                            <a th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                             <a th:href="@{/detalhesLivro(id=${livro.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                            <a th:href="@{/excluirLivro(id=${livro.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/excluirLivro(id=${livro.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
                                onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
                         </div>
                     </td>
@@ -58,8 +59,9 @@
                     <td colspan="6">
                         <div class="vazio">
                             <span class="vazio-icone" aria-hidden="true"><i class="bi bi-book-fill"></i></span>
-                            <p class="vazio-titulo">Nenhum livro cadastrado ainda.</p>
-                            <p class="vazio-texto">Use o botão “Novo livro” para fazer o primeiro cadastro.</p>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhum livro cadastrado ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                            <p class="vazio-texto" th:if="${#strings.isEmpty(q)}">Use o botão “Novo livro” para fazer o primeiro cadastro.</p>
                         </div>
                     </td>
                 </tr>
@@ -67,6 +69,7 @@
             </table>
         </div>
     </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaLivros')}"></nav>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

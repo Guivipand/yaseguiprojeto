@@ -19,12 +19,13 @@
                     <p>Retiradas e devoluções de exemplares.</p>
                 </div>
             </div>
-            <a th:href="@{/formularioEmprestimo}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo empréstimo</a>
+            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO','ALUNO')" th:href="@{/formularioEmprestimo}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo empréstimo</a>
         </div>
     </header>
     <div class="alert alert-danger" role="alert" th:if="${erroExclusao}">
         <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Não foi possível excluir: existem outros registros vinculados a este item.</span>
     </div>
+    <form th:replace="~{fragments/layout :: busca('/listaEmprestimos', 'Buscar por aluno, livro, tombo ou status')}"></form>
     <div class="painel-tabela">
         <div class="table-responsive">
             <table class="table table-hover align-middle tabela">
@@ -49,9 +50,9 @@
                     <td data-label="Status"><span class="selo selo-alerta" th:if="${emprestimo.data_devolucao == null and emprestimo.data_prevista != null and emprestimo.data_prevista.isBefore(#temporals.createToday())}">Atrasado</span><span class="selo" th:unless="${emprestimo.data_devolucao == null and emprestimo.data_prevista != null and emprestimo.data_prevista.isBefore(#temporals.createToday())}" th:classappend="${emprestimo.data_devolucao == null} ? 'selo-ativo' : 'selo-ok'" th:text="${emprestimo.status}"></span></td>
                     <td class="col-acoes">
                         <div class="acoes">
-                            <a th:href="@{/editarEmprestimo(id=${emprestimo.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/editarEmprestimo(id=${emprestimo.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                             <a th:href="@{/detalhesEmprestimo(id=${emprestimo.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                            <a th:href="@{/excluirEmprestimo(id=${emprestimo.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/excluirEmprestimo(id=${emprestimo.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
                                onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
                         </div>
                     </td>
@@ -60,8 +61,9 @@
                     <td colspan="7">
                         <div class="vazio">
                             <span class="vazio-icone" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>
-                            <p class="vazio-titulo">Nenhum empréstimo cadastrado ainda.</p>
-                            <p class="vazio-texto">Use o botão “Novo empréstimo” para fazer o primeiro cadastro.</p>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhum empréstimo cadastrado ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                            <p class="vazio-texto" th:if="${#strings.isEmpty(q)}">Use o botão “Novo empréstimo” para fazer o primeiro cadastro.</p>
                         </div>
                     </td>
                 </tr>
@@ -69,6 +71,7 @@
             </table>
         </div>
     </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaEmprestimos')}"></nav>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

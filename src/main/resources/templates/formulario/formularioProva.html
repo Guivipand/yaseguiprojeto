@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cadastrar prova')}"></head>
+<body class="pagina-form tema-prova">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaProvas}">Provas</a></li>
+                <li aria-current="page">Cadastrar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>
+            <div>
+                <h1>Cadastrar prova</h1>
+                <p>Preencha os dados abaixo. Todos os campos são obrigatórios.</p>
+            </div>
+        </div>
+    </header>
+    <form class="painel" th:action="@{/cadastrarProva}" th:object="${prova}" method="post">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroOferta}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione a oferta de disciplina.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroData}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe a data da prova.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroConteudo}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe o conteúdo cobrado (até 255 caracteres).</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroPeso}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>O peso deve ser maior que 0 e no máximo 10.</span></div>
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="ofertaDisciplina">Oferta de disciplina</label>
+                    <select class="form-select" th:field="*{ofertaDisciplina}" required>
+                        <option value="">Selecione a oferta</option>
+                        <option th:each="oferta : ${ofertasDisciplina}" th:value="${oferta.id}" th:text="${oferta.disciplina.materia + ' - ' + oferta.professor.nome}"></option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="data">Data</label>
+                    <input type="date" class="form-control" th:field="*{data}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="peso">Peso</label>
+                    <input type="number" class="form-control" th:field="*{peso}" min="0.01" max="10" step="0.01" required>
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="conteudo">Conteúdo cobrado</label>
+                    <textarea class="form-control" th:field="*{conteudo}" rows="3" maxlength="255" required placeholder="Ex.: Árvores binárias e grafos"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaProvas}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar</button>
+        </div>
+    </form>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,8 +53,12 @@ public class LivroController {
     }
 
     @GetMapping("/listaLivros")
-    public String livro(Model model) {
-        List<Livro> listaLivros = livroRepository.findAll();
+    public String livro(@RequestParam(defaultValue = "") String q,
+            @RequestParam(defaultValue = "0") int pagina, Model model) {
+        Page<Livro> resultado = livroRepository.buscar(q.trim(), PageRequest.of(Math.max(pagina, 0), 10, Sort.by("id")));
+        List<Livro> listaLivros = resultado.getContent();
+        model.addAttribute("pagina", resultado);
+        model.addAttribute("q", q);
         model.addAttribute("livros", listaLivros);
         return "lista/listaLivros";
     }

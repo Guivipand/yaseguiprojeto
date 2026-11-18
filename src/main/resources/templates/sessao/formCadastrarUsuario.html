@@ -12,20 +12,53 @@
         </header>
         <form class="painel" th:action="@{/register}" method="post">
             <div class="painel-corpo">
+                <div class="alert alert-sucesso" role="status" th:if="${mensagemSucesso}"><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span th:text="${mensagemSucesso}"></span> <a th:href="@{/login}">Entrar agora</a></div>
+                <div class="alert alert-danger" role="alert" th:if="${erroUsuario}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span th:text="${erroUsuario}"></span></div>
                 <fieldset class="campo-papel">
                     <legend class="form-label">Tipo de perfil:</legend>
                     <div class="escolha-papel">
-                        <input type="radio" class="btn-check" name="role" id="perfilProfessor" value="PROFESSOR" required>
+                        <input type="radio" class="btn-check" name="role" id="perfilProfessor" value="PROFESSOR" required
+                               th:checked="${roleSelecionado != null and roleSelecionado.name() == 'PROFESSOR'}">
                         <label class="opcao-papel tema-professor" for="perfilProfessor">
                             <span class="menu-icone" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>Professor
                         </label>
-                        <input type="radio" class="btn-check" name="role" id="perfilAluno" value="ALUNO" checked>
+                        <input type="radio" class="btn-check" name="role" id="perfilAluno" value="ALUNO"
+                               th:checked="${roleSelecionado == null or roleSelecionado.name() == 'ALUNO'}">
                         <label class="opcao-papel tema-aluno" for="perfilAluno">
                             <span class="menu-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>Aluno
+                        </label>
+                        <input type="radio" class="btn-check" name="role" id="perfilBibliotecario" value="BIBLIOTECARIO"
+                               th:checked="${roleSelecionado != null and roleSelecionado.name() == 'BIBLIOTECARIO'}">
+                        <label class="opcao-papel tema-bibliotecario" for="perfilBibliotecario">
+                            <span class="menu-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>Bibliotecário
                         </label>
                     </div>
                 </fieldset>
                 <div class="row g-3">
+                    <div class="col-12" id="vinculoBibliotecario">
+                        <label class="form-label" for="bibliotecario">Bibliotecário ligado ao usuário:</label>
+                        <select class="form-select" id="bibliotecario" name="bibliotecario">
+                            <option value="">Selecione o bibliotecário</option>
+                            <option th:each="item : ${bibliotecariosSemUsuario}" th:value="${item.id}" th:text="${item.nome + ' - ' + item.prontuario}"
+                                    th:selected="${bibliotecarioSelecionado == item.id}"></option>
+                        </select>
+                    </div>
+                    <div class="col-12" id="vinculoAluno">
+                        <label class="form-label" for="aluno">Aluno ligado ao usuário:</label>
+                        <select class="form-select" id="aluno" name="aluno">
+                            <option value="">Selecione o aluno</option>
+                            <option th:each="item : ${alunosSemUsuario}" th:value="${item.id}" th:text="${item.nome + ' - ' + item.idMatricula}"
+                                    th:selected="${alunoSelecionado == item.id}"></option>
+                        </select>
+                    </div>
+                    <div class="col-12" id="vinculoProfessor">
+                        <label class="form-label" for="professor">Professor ligado ao usuário:</label>
+                        <select class="form-select" id="professor" name="professor">
+                            <option value="">Selecione o professor</option>
+                            <option th:each="item : ${professoresSemUsuario}" th:value="${item.id}" th:text="${item.nome + ' - ' + item.prontuario}"
+                                    th:selected="${professorSelecionado == item.id}"></option>
+                        </select>
+                    </div>
                     <div class="col-12">
                         <label class="form-label" for="username">Login:</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Digite o login" autocomplete="username" required>
@@ -34,19 +67,6 @@
                         <label class="form-label" for="password">Senha:</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Digite a senha" autocomplete="new-password" required>
                     </div>
-                </div>
-
-                <!-- ✅ Alertas de sucesso ou erro -->
-                <div th:if="${mensagemSucesso}"
-                     style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
-                            padding: 10px; border-radius: 5px; margin-top: 15px;">
-                    <p th:text="${mensagemSucesso}"></p>
-                </div>
-
-                <div th:if="${erroUsuario}"
-                     style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
-                            padding: 10px; border-radius: 5px; margin-top: 15px;">
-                    <p th:text="${erroUsuario}"></p>
                 </div>
             </div>
             <div class="painel-acoes">
@@ -58,5 +78,24 @@
     </section>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+    const vinculos = {
+        BIBLIOTECARIO: document.getElementById("vinculoBibliotecario"),
+        ALUNO: document.getElementById("vinculoAluno"),
+        PROFESSOR: document.getElementById("vinculoProfessor")
+    };
+    const atualizarVinculo = () => {
+        const papel = document.querySelector("input[name='role']:checked")?.value;
+        Object.entries(vinculos).filter(([, bloco]) => bloco).forEach(([tipo, bloco]) => {
+            const ativo = tipo === papel;
+            const campo = bloco.querySelector("select");
+            bloco.hidden = !ativo;
+            campo.disabled = !ativo;
+            campo.required = ativo;
+        });
+    };
+    document.querySelectorAll("input[name='role']").forEach(opcao => opcao.addEventListener("change", atualizarVinculo));
+    atualizarVinculo();
+</script>
 </body>
 </html>

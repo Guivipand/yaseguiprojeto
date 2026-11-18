@@ -8,8 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ifsp.yas1.Model.Aluno;
+import com.ifsp.yas1.Model.Bibliotecario;
 import com.ifsp.yas1.Model.Pessoa;
+import com.ifsp.yas1.Model.Professor;
+import com.ifsp.yas1.Repository.AlunoRepository;
+import com.ifsp.yas1.Repository.BibliotecarioRepository;
 import com.ifsp.yas1.Repository.PessoaRepository;
+import com.ifsp.yas1.Repository.ProfessorRepository;
 import com.ifsp.yas1.Service.PessoaRole;
 
 @Controller
@@ -17,6 +23,15 @@ public class PessoaController {
 
     @Autowired
     private PessoaRepository repositorio;
+
+    @Autowired
+    private AlunoRepository alunoRepository;
+
+    @Autowired
+    private ProfessorRepository professorRepository;
+
+    @Autowired
+    private BibliotecarioRepository bibliotecarioRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -27,14 +42,52 @@ public class PessoaController {
     }
 
     @GetMapping("/register")
-    public String formCadastrarUsuario() {
+    public String formCadastrarUsuario(Model model) {
+        adicionarOpcoes(model);
         return "sessao/formCadastrarUsuario.html";
     }
 
     @PostMapping("/register")
-    public String cadastrar(@RequestParam String username, @RequestParam String password, @RequestParam PessoaRole role, Model model) throws Exception{
-        if (repositorio.findByUsername(username)==null) {
-            Pessoa pessoa = new Pessoa();
+    public String cadastrar(@RequestParam String username, @RequestParam String password, @RequestParam PessoaRole role,
+            @RequestParam(required = false) Integer aluno, @RequestParam(required = false) Integer professor,
+            @RequestParam(required = false) Integer bibliotecario,
+            Model model) throws Exception{
+        String erro = null;
+        Pessoa pessoa = null;
+        if (repositorio.findByUsername(username) != null) {
+            erro = "Já existe um usuário com esse nome!";
+        } else if (role == PessoaRole.ADMIN) {
+            erro = "Não é possível cadastrar administradores.";
+        } else if (role == PessoaRole.BIBLIOTECARIO) {
+            Bibliotecario vinculado = bibliotecario == null ? null : bibliotecarioRepository.findById(bibliotecario).orElse(null);
+            if (vinculado == null) {
+                erro = "Selecione o bibliotecário ligado a este usuário.";
+            } else if (vinculado.getUsername() != null) {
+                erro = "Este bibliotecário já tem um usuário cadastrado.";
+            } else {
+                pessoa = vinculado;
+            }
+        } else if (role == PessoaRole.ALUNO) {
+            Aluno vinculado = aluno == null ? null : alunoRepository.findById(aluno).orElse(null);
+            if (vinculado == null) {
+                erro = "Selecione o aluno ligado a este usuário.";
+            } else if (vinculado.getUsername() != null) {
+                erro = "Este aluno já tem um usuário cadastrado.";
+            } else {
+                pessoa = vinculado;
+            }
+        } else {
+            Professor vinculado = professor == null ? null : professorRepository.findById(professor).orElse(null);
+            if (vinculado == null) {
+                erro = "Selecione o professor ligado a este usuário.";
+            } else if (vinculado.getUsername() != null) {
+                erro = "Este professor já tem um usuário cadastrado.";
+            } else {
+                pessoa = vinculado;
+            }
+        }
+
+        if (erro == null) {
             pessoa.setUsername(username);
             pessoa.setPassword(passwordEncoder.encode(password));
             pessoa.setRole(role);
@@ -42,8 +95,19 @@ public class PessoaController {
             System.out.println("Usuário " + username + " criado com sucesso!");
             model.addAttribute("mensagemSucesso", "Usuário criado com sucesso!");
         } else {
-            model.addAttribute("erroUsuario", "Já existe um usuário com esse nome!");
+            model.addAttribute("erroUsuario", erro);
+            model.addAttribute("roleSelecionado", role);
+            model.addAttribute("alunoSelecionado", aluno);
+            model.addAttribute("professorSelecionado", professor);
+            model.addAttribute("bibliotecarioSelecionado", bibliotecario);
         }
+        adicionarOpcoes(model);
         return "sessao/formCadastrarUsuario.html";
+    }
+
+    private void adicionarOpcoes(Model model) {
+        model.addAttribute("alunosSemUsuario", alunoRepository.findByUsernameIsNullOrderByNomeAsc());
+        model.addAttribute("professoresSemUsuario", professorRepository.findByUsernameIsNullOrderByNomeAsc());
+        model.addAttribute("bibliotecariosSemUsuario", bibliotecarioRepository.findByUsernameIsNullOrderByNomeAsc());
     }
 }

@@ -3,6 +3,9 @@ package com.ifsp.yas1.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +33,8 @@ public class ProfessorController {
     @PostMapping("/cadastrarProfessor")
     public String saveProfessor(@ModelAttribute Professor professor, Model model) {
         if (!professor.validar()) {
-            model.addAttribute("erroValidacao", true);
+            model.addAttribute("erroValidacao", !professor.validarDados());
+            model.addAttribute("erroIdade", !professor.validarIdade());
             return "formulario/formularioProfessor";
         }
         professorRepository.save(professor);
@@ -38,8 +42,12 @@ public class ProfessorController {
     }
 
     @GetMapping("/listaProfessores")
-    public String lProfessor(Model model) {
-        List<Professor> listaProfessores = professorRepository.findAll();
+    public String lProfessor(@RequestParam(defaultValue = "") String q,
+            @RequestParam(defaultValue = "0") int pagina, Model model) {
+        Page<Professor> resultado = professorRepository.buscar(q.trim(), PageRequest.of(Math.max(pagina, 0), 10, Sort.by("id")));
+        List<Professor> listaProfessores = resultado.getContent();
+        model.addAttribute("pagina", resultado);
+        model.addAttribute("q", q);
         model.addAttribute("professores", listaProfessores);
         return "lista/listaProfessores";
     }
@@ -60,8 +68,13 @@ public class ProfessorController {
 
     @PostMapping("/atualizarProfessor")
     public String atualizarProfessor(@ModelAttribute Professor professor, Model model) {
+        Professor existente = professorRepository.findById(professor.getId()).orElseThrow();
+        professor.setUsername(existente.getUsername());
+        professor.setPassword(existente.getPassword());
+        professor.setRole(existente.getRole());
         if (!professor.validar()) {
-            model.addAttribute("erroValidacao", true);
+            model.addAttribute("erroValidacao", !professor.validarDados());
+            model.addAttribute("erroIdade", !professor.validarIdade());
             return "editar/editarProfessor";
         }
         professorRepository.save(professor);

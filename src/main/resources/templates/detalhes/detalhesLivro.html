@@ -46,7 +46,7 @@
         </div>
         <div class="painel-acoes">
             <a th:href="@{/listaLivros}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
-            <a th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/editarLivro(id=${livro.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
         </div>
     </section>
 </main>

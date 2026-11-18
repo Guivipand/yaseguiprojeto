@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Reservas')}"></head>
+<body class="pagina-lista tema-reserva">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li aria-current="page">Reservas</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-linha">
+            <div class="cabecalho-titulo">
+                <span class="selo-entidade" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>
+                <div>
+                    <h1>Reservas</h1>
+                    <p>Fila de espera por títulos sem exemplar disponível (ordem de chegada).</p>
+                </div>
+            </div>
+            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO','ALUNO')" th:href="@{/formularioReserva}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Nova reserva</a>
+        </div>
+    </header>
+    <form th:replace="~{fragments/layout :: busca('/listaReservas', 'Buscar por aluno, livro ou status')}"></form>
+    <div class="painel-tabela">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle tabela">
+                <thead>
+                <tr>
+                    <th scope="col" class="col-id">#</th>
+                    <th scope="col">Livro</th>
+                    <th scope="col">Aluno</th>
+                    <th scope="col">Reservado em</th>
+                    <th scope="col">Fila</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="col-acoes text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reserva : ${reservas}">
+                    <td data-label="Nº" class="col-id" th:text="${reserva.id}"></td>
+                    <td data-label="Livro" class="celula-principal" th:text="${reserva.livro.titulo}"></td>
+                    <td data-label="Aluno" th:text="${reserva.aluno.nome}"></td>
+                    <td data-label="Reservado em" class="numero" th:text="${#temporals.format(reserva.data_reserva, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td data-label="Fila" class="numero" th:text="${reserva.posicao_fila != null ? reserva.posicao_fila + 'º' : '-'}"></td>
+                    <td data-label="Status">
+                        <span class="selo" th:classappend="${reserva.status == 'Notificada'} ? 'selo-ok' : (${reserva.status == 'Aguardando'} ? 'selo-ativo' : (${reserva.status == 'Expirada'} ? 'selo-alerta' : 'selo-neutro'))" th:text="${reserva.status}"></span>
+                        <span class="celula-sec" th:if="${reserva.status == 'Notificada'}" th:text="${'Retirar até ' + #temporals.format(reserva.prazo_retirada, 'dd/MM HH:mm')}"></span>
+                    </td>
+                    <td class="col-acoes">
+                        <div class="acoes">
+                            <a th:href="@{/detalhesReserva(id=${reserva.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/excluirReserva(id=${reserva.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
+                               onclick="return confirm('Deseja realmente excluir esta reserva? Se ela estiver na fila, o aluno perde a posição.')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="linha-vazia" th:if="${#lists.isEmpty(reservas)}">
+                    <td colspan="7">
+                        <div class="vazio">
+                            <span class="vazio-icone" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhuma reserva registrada ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                            <p class="vazio-texto" th:if="${#strings.isEmpty(q)}">Use o botão “Nova reserva” quando um título estiver sem exemplar disponível.</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaReservas')}"></nav>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

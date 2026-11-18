@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Editar bibliotecário')}"></head>
+<body class="pagina-form tema-bibliotecario">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaBibliotecarios}">Bibliotecários</a></li>
+                <li aria-current="page">Editar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>
+            <div>
+                <h1>Editar bibliotecário</h1>
+                <p>Atualize os dados e salve as alterações.</p>
+            </div>
+        </div>
+    </header>
+    <form class="painel" th:action="@{/atualizarBibliotecario}" th:object="${bibliotecario}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Verifique os campos: todos são obrigatórios e o CPF e o e-mail precisam ser válidos.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroIdade}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>O bibliotecário deve ter pelo menos 18 anos. Confira a data de nascimento.</span></div>
+            <fieldset class="grupo-campos">
+                <legend>Identificação</legend>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label" for="prontuario">Prontuário</label>
+                        <input type="text" class="form-control" th:field="*{prontuario}" placeholder="Digite o prontuário" required>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label" for="nome">Nome</label>
+                        <input type="text" class="form-control" th:field="*{nome}" placeholder="Digite o nome completo" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="cpf">CPF</label>
+                        <input type="text" class="form-control" th:field="*{cpf}" placeholder="000.000.000-00" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="dataNasc">Data de Nascimento</label>
+                        <input type="date" class="form-control" th:field="*{dataNasc}" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="crb">Registro CRB</label>
+                        <input type="text" class="form-control" th:field="*{crb}" placeholder="Digite o registro CRB" required>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="grupo-campos">
+                <legend>Contato</legend>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="email">E-mail</label>
+                        <input type="email" class="form-control" th:field="*{email}" placeholder="nome@exemplo.com" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="telefone">Telefone</label>
+                        <input type="tel" class="form-control" th:field="*{telefone}" placeholder="(00) 00000-0000" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="endereco">Endereço</label>
+                        <input type="text" class="form-control" th:field="*{endereco}" placeholder="Digite o endereço" required>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaBibliotecarios}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar alterações</button>
+        </div>
+    </form>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

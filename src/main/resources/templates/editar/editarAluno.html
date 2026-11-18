@@ -24,6 +24,7 @@
         <input type="hidden" th:field="*{id}">
         <div class="painel-corpo">
             <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Verifique os campos: todos são obrigatórios, o CPF e o e-mail precisam ser válidos e o semestre deve estar entre 1 e 12.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroIdade}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>O aluno deve ter pelo menos 10 anos. Confira a data de nascimento.</span></div>
             <fieldset class="grupo-campos">
                 <legend>Identificação</legend>
                 <div class="row g-3">

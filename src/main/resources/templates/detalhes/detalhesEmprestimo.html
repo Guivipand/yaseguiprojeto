@@ -47,12 +47,12 @@
         </div>
         <div class="painel-acoes">
             <a th:href="@{/listaEmprestimos}" class="btn btn-quieto acao-esquerda"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
-            <a th:href="@{/editarEmprestimo(id=${emprestimo.id})}" class="btn btn-quieto" th:if="${emprestimo.data_devolucao == null}"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+            <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/editarEmprestimo(id=${emprestimo.id})}" class="btn btn-quieto" th:if="${emprestimo.data_devolucao == null}"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
             <form th:if="${emprestimo.podeRenovar()}" th:action="@{/renovarEmprestimo}" method="post">
                 <input type="hidden" name="id" th:value="${emprestimo.id}">
                 <button type="submit" class="btn btn-contorno-tema"><i class="bi bi-arrow-clockwise me-2" aria-hidden="true"></i>Renovar prazo</button>
             </form>
-            <form th:if="${emprestimo.data_devolucao == null}" th:action="@{/devolverEmprestimo}" method="post">
+            <form sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:if="${emprestimo.data_devolucao == null}" th:action="@{/devolverEmprestimo}" method="post">
                 <input type="hidden" name="id" th:value="${emprestimo.id}">
                 <button type="submit" class="btn btn-tema"><i class="bi bi-box-arrow-in-down me-2" aria-hidden="true"></i>Registrar devolução</button>
             </form>

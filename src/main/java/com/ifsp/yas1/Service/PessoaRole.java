@@ -2,7 +2,9 @@ package com.ifsp.yas1.Service;
 
 public enum PessoaRole {
     PROFESSOR("professor"),
-    ALUNO("aluno");
+    ALUNO("aluno"),
+    ADMIN("admin"),
+    BIBLIOTECARIO("bibliotecario");
     private String role;
 
     PessoaRole (String role){

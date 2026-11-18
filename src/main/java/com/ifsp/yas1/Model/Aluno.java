@@ -11,6 +11,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table (name = "Aluno")
 public class Aluno extends Pessoa {
+    public static final int IDADE_MINIMA = 10;
+
     @Column (name = "idMatricula")
     private String idMatricula;
 
@@ -75,11 +77,20 @@ public class Aluno extends Pessoa {
         return curso != null;
     }
 
-    @Override
-    public boolean validar() {
+    public boolean validarIdade() {
+        return validarIdadeMinima(IDADE_MINIMA);
+    }
+
+    public boolean validarDados() {
         return super.validar()
             && validarIdMatricula()
             && validarSemestre()
             && validarCurso();
+    }
+
+    @Override
+    public boolean validar() {
+        return validarDados()
+            && validarIdade();
     }
 }
