@@ -12,16 +12,11 @@
         </header>
         <form class="painel" th:action="@{/register}" method="post">
             <div class="painel-corpo">
+                <div class="alert alert-sucesso" role="status" th:if="${mensagemSucesso}"><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span th:text="${mensagemSucesso}"></span> <a th:href="@{/login}">Entrar agora</a></div>
+                <div class="alert alert-danger" role="alert" th:if="${erroUsuario}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span th:text="${erroUsuario}"></span></div>
                 <fieldset class="campo-papel">
                     <legend class="form-label">Tipo de perfil:</legend>
                     <div class="escolha-papel">
-                        <th:block th:if="${podeCadastrarAdmin}">
-                            <input type="radio" class="btn-check" name="role" id="perfilBibliotecario" value="BIBLIOTECARIO"
-                                   th:checked="${roleSelecionado != null and roleSelecionado.name() == 'BIBLIOTECARIO'}">
-                            <label class="opcao-papel tema-bibliotecario" for="perfilBibliotecario">
-                                <span class="menu-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>Bibliotecário
-                            </label>
-                        </th:block>
                         <input type="radio" class="btn-check" name="role" id="perfilProfessor" value="PROFESSOR" required
                                th:checked="${roleSelecionado != null and roleSelecionado.name() == 'PROFESSOR'}">
                         <label class="opcao-papel tema-professor" for="perfilProfessor">
@@ -32,17 +27,15 @@
                         <label class="opcao-papel tema-aluno" for="perfilAluno">
                             <span class="menu-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>Aluno
                         </label>
-                        <th:block th:if="${podeCadastrarAdmin}">
-                            <input type="radio" class="btn-check" name="role" id="perfilAdmin" value="ADMIN"
-                                   th:checked="${roleSelecionado != null and roleSelecionado.name() == 'ADMIN'}">
-                            <label class="opcao-papel tema-curso" for="perfilAdmin">
-                                <span class="menu-icone" aria-hidden="true"><i class="bi bi-shield-lock-fill"></i></span>Admin
-                            </label>
-                        </th:block>
+                        <input type="radio" class="btn-check" name="role" id="perfilBibliotecario" value="BIBLIOTECARIO"
+                               th:checked="${roleSelecionado != null and roleSelecionado.name() == 'BIBLIOTECARIO'}">
+                        <label class="opcao-papel tema-bibliotecario" for="perfilBibliotecario">
+                            <span class="menu-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>Bibliotecário
+                        </label>
                     </div>
                 </fieldset>
                 <div class="row g-3">
-                    <div class="col-12" id="vinculoBibliotecario" th:if="${podeCadastrarAdmin}">
+                    <div class="col-12" id="vinculoBibliotecario">
                         <label class="form-label" for="bibliotecario">Bibliotecário ligado ao usuário:</label>
                         <select class="form-select" id="bibliotecario" name="bibliotecario">
                             <option value="">Selecione o bibliotecário</option>
@@ -74,19 +67,6 @@
                         <label class="form-label" for="password">Senha:</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Digite a senha" autocomplete="new-password" required>
                     </div>
-                </div>
-
-                <!-- ✅ Alertas de sucesso ou erro -->
-                <div th:if="${mensagemSucesso}"
-                     style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
-                            padding: 10px; border-radius: 5px; margin-top: 15px;">
-                    <p th:text="${mensagemSucesso}"></p>
-                </div>
-
-                <div th:if="${erroUsuario}"
-                     style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
-                            padding: 10px; border-radius: 5px; margin-top: 15px;">
-                    <p th:text="${erroUsuario}"></p>
                 </div>
             </div>
             <div class="painel-acoes">

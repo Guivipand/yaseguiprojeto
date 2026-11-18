@@ -1,7 +1,6 @@
 package com.ifsp.yas1.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,8 +42,8 @@ public class PessoaController {
     }
 
     @GetMapping("/register")
-    public String formCadastrarUsuario(Authentication autenticacao, Model model) {
-        adicionarOpcoes(model, autenticacao);
+    public String formCadastrarUsuario(Model model) {
+        adicionarOpcoes(model);
         return "sessao/formCadastrarUsuario.html";
     }
 
@@ -52,16 +51,13 @@ public class PessoaController {
     public String cadastrar(@RequestParam String username, @RequestParam String password, @RequestParam PessoaRole role,
             @RequestParam(required = false) Integer aluno, @RequestParam(required = false) Integer professor,
             @RequestParam(required = false) Integer bibliotecario,
-            Authentication autenticacao, Model model) throws Exception{
+            Model model) throws Exception{
         String erro = null;
         Pessoa pessoa = null;
         if (repositorio.findByUsername(username) != null) {
             erro = "Já existe um usuário com esse nome!";
-        } else if ((role == PessoaRole.ADMIN || role == PessoaRole.BIBLIOTECARIO) && !ehAdmin(autenticacao)) {
-            erro = "Somente um administrador logado pode cadastrar administradores e bibliotecários.";
         } else if (role == PessoaRole.ADMIN) {
-            pessoa = new Pessoa();
-            pessoa.setNome(username);
+            erro = "Não é possível cadastrar administradores.";
         } else if (role == PessoaRole.BIBLIOTECARIO) {
             Bibliotecario vinculado = bibliotecario == null ? null : bibliotecarioRepository.findById(bibliotecario).orElse(null);
             if (vinculado == null) {
@@ -105,19 +101,13 @@ public class PessoaController {
             model.addAttribute("professorSelecionado", professor);
             model.addAttribute("bibliotecarioSelecionado", bibliotecario);
         }
-        adicionarOpcoes(model, autenticacao);
+        adicionarOpcoes(model);
         return "sessao/formCadastrarUsuario.html";
     }
 
-    private void adicionarOpcoes(Model model, Authentication autenticacao) {
+    private void adicionarOpcoes(Model model) {
         model.addAttribute("alunosSemUsuario", alunoRepository.findByUsernameIsNullOrderByNomeAsc());
         model.addAttribute("professoresSemUsuario", professorRepository.findByUsernameIsNullOrderByNomeAsc());
         model.addAttribute("bibliotecariosSemUsuario", bibliotecarioRepository.findByUsernameIsNullOrderByNomeAsc());
-        model.addAttribute("podeCadastrarAdmin", ehAdmin(autenticacao));
-    }
-
-    private boolean ehAdmin(Authentication autenticacao) {
-        return autenticacao != null && autenticacao.getAuthorities().stream()
-                .anyMatch(permissao -> "ROLE_ADMIN".equals(permissao.getAuthority()));
     }
 }
