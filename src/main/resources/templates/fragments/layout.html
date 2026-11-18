@@ -32,10 +32,11 @@
                         <i class="bi bi-building" aria-hidden="true"></i>Acadêmico
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end menu-entidades">
-                        <li class="tema-curso"><a class="dropdown-item" th:href="@{/listaCursos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>Cursos</a></li>
-                        <li class="tema-disciplina"><a class="dropdown-item" th:href="@{/listaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-journal-text"></i></span>Disciplinas</a></li>
                         <li class="tema-professor"><a class="dropdown-item" th:href="@{/listaProfessores}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>Professores</a></li>
                         <li class="tema-aluno" sec:authorize="!hasRole('ALUNO')"><a class="dropdown-item" th:href="@{/listaAlunos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>Alunos</a></li>
+                        <li class="tema-bibliotecario" sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/listaBibliotecarios}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>Bibliotecários</a></li>
+                        <li class="tema-curso"><a class="dropdown-item" th:href="@{/listaCursos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>Cursos</a></li>
+                        <li class="tema-disciplina"><a class="dropdown-item" th:href="@{/listaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-journal-text"></i></span>Disciplinas</a></li>
                         <li class="tema-oferta"><a class="dropdown-item" th:href="@{/listaOfertaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-calendar-week-fill"></i></span>Ofertas de disciplina</a></li>
                         <li class="tema-matricula"><a class="dropdown-item" th:href="@{/listaMatriculas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>Matrículas</a></li>
                         <li class="tema-prova"><a class="dropdown-item" th:href="@{/listaProvas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>Provas</a></li>
@@ -51,7 +52,6 @@
                         <li class="tema-referencia"><a class="dropdown-item" th:href="@{/listaDisciplinaLivros}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>Referências</a></li>
                         <li class="tema-emprestimo"><a class="dropdown-item" th:href="@{/listaEmprestimos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>Empréstimos</a></li>
                         <li class="tema-reserva"><a class="dropdown-item" th:href="@{/listaReservas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>Reservas</a></li>
-                        <li class="tema-bibliotecario" sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/listaBibliotecarios}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>Bibliotecários</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()"
@@ -78,6 +78,7 @@
                             </div>
                         </dl>
                         <hr class="dropdown-divider">
+                        <a th:if="${admin}" class="dropdown-item" th:href="@{/register}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-plus-fill"></i></span>Cadastrar usuário</a>
                         <form th:action="@{/logout}" method="post">
                             <button type="submit" class="dropdown-item item-sair"><span class="menu-icone" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>Sair</button>
                         </form>

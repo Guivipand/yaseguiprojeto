@@ -12,25 +12,9 @@
     <section class="grupo" aria-labelledby="grupo-academico">
         <div class="grupo-cabecalho">
             <h2 id="grupo-academico"><i class="bi bi-building" aria-hidden="true"></i>Gestão acadêmica</h2>
-            <p>Cursos, pessoas e a organização das turmas.</p>
+            <p>Pessoas, cursos e a organização das turmas.</p>
         </div>
         <div class="row g-3 g-lg-4">
-            <div class="col-12 col-sm-6 col-lg-4">
-                <article class="card-entidade tema-curso">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>
-                    <h3>Cursos</h3>
-                    <p>Cursos oferecidos e a duração de cada um em semestres.</p>
-                    <a th:href="@{/listaCursos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> cursos</span></a>
-                </article>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <article class="card-entidade tema-disciplina">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
-                    <h3>Disciplinas</h3>
-                    <p>Matérias da matriz curricular, organizadas por curso e semestre.</p>
-                    <a th:href="@{/listaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> disciplinas</span></a>
-                </article>
-            </div>
             <div class="col-12 col-sm-6 col-lg-4">
                 <article class="card-entidade tema-professor">
                     <span class="icon-wrap" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>
@@ -45,6 +29,30 @@
                     <h3>Alunos</h3>
                     <p>Estudantes vinculados a um curso e ao semestre em que estão.</p>
                     <a th:href="@{/listaAlunos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> alunos</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4" sec:authorize="hasRole('ADMIN')">
+                <article class="card-entidade tema-bibliotecario">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>
+                    <h3>Bibliotecários</h3>
+                    <p>Equipe da biblioteca, com prontuário e registro CRB.</p>
+                    <a th:href="@{/listaBibliotecarios}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> bibliotecários</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-curso">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>
+                    <h3>Cursos</h3>
+                    <p>Cursos oferecidos e a duração de cada um em semestres.</p>
+                    <a th:href="@{/listaCursos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> cursos</span></a>
+                </article>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <article class="card-entidade tema-disciplina">
+                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
+                    <h3>Disciplinas</h3>
+                    <p>Matérias da matriz curricular, organizadas por curso e semestre.</p>
+                    <a th:href="@{/listaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> disciplinas</span></a>
                 </article>
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
@@ -118,14 +126,6 @@
                     <h3>Reservas</h3>
                     <p>Fila de espera por títulos sem exemplar disponível.</p>
                     <a th:href="@{/listaReservas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> reservas</span></a>
-                </article>
-            </div>
-            <div class="col-12 col-md-6" sec:authorize="hasRole('ADMIN')">
-                <article class="card-entidade horizontal tema-bibliotecario">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>
-                    <h3>Bibliotecários</h3>
-                    <p>Equipe da biblioteca, com prontuário e registro CRB.</p>
-                    <a th:href="@{/listaBibliotecarios}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> bibliotecários</span></a>
                 </article>
             </div>
         </div>
