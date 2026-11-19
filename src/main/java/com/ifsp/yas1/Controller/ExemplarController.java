@@ -93,7 +93,7 @@ public class ExemplarController {
 		return "redirect:/listaExemplares";
 	}
 
-	@GetMapping("/excluirExemplar")
+	@PostMapping("/excluirExemplar")
 	public String excluirExemplar(@RequestParam int id, RedirectAttributes redirect) {
 		Exemplar exemplar = exemplarRepository.findById(id).orElseThrow();
 		try {

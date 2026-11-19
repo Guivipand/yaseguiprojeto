@@ -1,135 +1,64 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/layout :: head('Painel Principal')}"></head>
 <body class="pagina-inicio">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <main id="conteudo" class="container conteudo">
-    <header class="abertura">
-        <h1>Painel Principal</h1>
-        <p>Selecione um módulo para abrir.</p>
+    <header class="saudacao" th:with="pessoa=${#authentication.principal}, role=${pessoa.role?.name()},
+            primeiroNome=${#strings.arraySplit(pessoa.nome ?: pessoa.username, ' ')[0]},
+            papel=${role == 'ADMIN'} ? 'Administrador' : (${role == 'BIBLIOTECARIO'} ? 'Bibliotecário' : (${role == 'PROFESSOR'} ? 'Professor' : 'Aluno'))">
+        <h1>Olá, <span th:text="${primeiroNome}">Nome</span></h1>
+        <p><span class="saudacao-papel" th:unless="${papel == primeiroNome}" th:text="${papel}">Papel</span><span class="saudacao-data" th:text="${#temporals.format(#temporals.createToday(), 'EEEE, d ''de'' MMMM')}">data</span></p>
     </header>
 
-    <section class="grupo" aria-labelledby="grupo-academico">
-        <div class="grupo-cabecalho">
-            <h2 id="grupo-academico"><i class="bi bi-building" aria-hidden="true"></i>Gestão acadêmica</h2>
-            <p>Pessoas, cursos e a organização das turmas.</p>
-        </div>
-        <div class="row g-3 g-lg-4">
-            <div class="col-12 col-sm-6 col-lg-4">
-                <article class="card-entidade tema-professor">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>
-                    <h3>Professores</h3>
-                    <p>Docentes com prontuário, formação e dados de contato.</p>
-                    <a th:href="@{/listaProfessores}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> professores</span></a>
-                </article>
+    <div class="areas">
+        <section class="area" aria-labelledby="area-academico">
+            <h2 id="area-academico"><i class="bi bi-building" aria-hidden="true"></i><span>Acadêmico</span></h2>
+            <div class="area-grupo">
+                <h3>Pessoas</h3>
+                <ul class="modulo-lista">
+                    <th:block sec:authorize="hasRole('ADMIN')"><li th:replace="~{fragments/layout :: modulo('Usuários', 'Acessos, senhas e fotos de perfil.', 'bi-person-lock', 'tema-curso', '/listaUsuarios')}"></li></th:block>
+                    <th:block sec:authorize="hasAnyRole('ADMIN', 'PROFESSOR', 'BIBLIOTECARIO')"><li th:replace="~{fragments/layout :: modulo('Alunos', 'Estudantes, curso e semestre atual.', 'bi-people-fill', 'tema-aluno', '/listaAlunos')}"></li></th:block>
+                    <th:block sec:authorize="hasAnyRole('ADMIN', 'PROFESSOR', 'ALUNO')"><li th:replace="~{fragments/layout :: modulo('Professores', 'Docentes, formação e contato.', 'bi-person-badge-fill', 'tema-professor', '/listaProfessores')}"></li></th:block>
+                    <th:block sec:authorize="hasRole('ADMIN')"><li th:replace="~{fragments/layout :: modulo('Bibliotecários', 'Equipe da biblioteca e registro CRB.', 'bi-person-workspace', 'tema-bibliotecario', '/listaBibliotecarios')}"></li></th:block>
+                </ul>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4" sec:authorize="!hasRole('ALUNO')">
-                <article class="card-entidade tema-aluno">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
-                    <h3>Alunos</h3>
-                    <p>Estudantes vinculados a um curso e ao semestre em que estão.</p>
-                    <a th:href="@{/listaAlunos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> alunos</span></a>
-                </article>
+            <div class="area-grupo" sec:authorize="hasAnyRole('ADMIN', 'PROFESSOR', 'ALUNO')">
+                <h3>Estrutura acadêmica</h3>
+                <ul class="modulo-lista">
+                    <li th:replace="~{fragments/layout :: modulo('Cursos', 'Cursos oferecidos e duração em semestres.', 'bi-mortarboard-fill', 'tema-curso', '/listaCursos')}"></li>
+                    <li th:replace="~{fragments/layout :: modulo('Disciplinas', 'Matriz curricular por curso e semestre.', 'bi-journal-text', 'tema-disciplina', '/listaDisciplinas')}"></li>
+                    <li th:replace="~{fragments/layout :: modulo('Ofertas de disciplina', 'Qual professor ministra cada disciplina.', 'bi-calendar-week-fill', 'tema-oferta', '/listaOfertaDisciplinas')}"></li>
+                </ul>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4" sec:authorize="hasRole('ADMIN')">
-                <article class="card-entidade tema-bibliotecario">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>
-                    <h3>Bibliotecários</h3>
-                    <p>Equipe da biblioteca, com prontuário e registro CRB.</p>
-                    <a th:href="@{/listaBibliotecarios}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> bibliotecários</span></a>
-                </article>
+            <div class="area-grupo" sec:authorize="hasAnyRole('ADMIN', 'PROFESSOR', 'ALUNO')">
+                <h3>Turmas e avaliações</h3>
+                <ul class="modulo-lista">
+                    <li th:replace="~{fragments/layout :: modulo('Matrículas', 'Inscrições nas ofertas de disciplina.', 'bi-clipboard2-check-fill', 'tema-matricula', '/listaMatriculas')}"></li>
+                    <li th:replace="~{fragments/layout :: modulo('Provas', 'Data, conteúdo e peso das avaliações.', 'bi-pencil-square', 'tema-prova', '/listaProvas')}"></li>
+                </ul>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <article class="card-entidade tema-curso">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>
-                    <h3>Cursos</h3>
-                    <p>Cursos oferecidos e a duração de cada um em semestres.</p>
-                    <a th:href="@{/listaCursos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> cursos</span></a>
-                </article>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <article class="card-entidade tema-disciplina">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-journal-text"></i></span>
-                    <h3>Disciplinas</h3>
-                    <p>Matérias da matriz curricular, organizadas por curso e semestre.</p>
-                    <a th:href="@{/listaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> disciplinas</span></a>
-                </article>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <article class="card-entidade tema-oferta">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-calendar-week-fill"></i></span>
-                    <h3>Ofertas de disciplina</h3>
-                    <p>Qual professor ministra cada disciplina.</p>
-                    <a th:href="@{/listaOfertaDisciplinas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> ofertas de disciplina</span></a>
-                </article>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <article class="card-entidade tema-matricula">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>
-                    <h3>Matrículas</h3>
-                    <p>Inscrição de alunos nas ofertas de disciplina do seu curso.</p>
-                    <a th:href="@{/listaMatriculas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> matrículas</span></a>
-                </article>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <article class="card-entidade tema-prova">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>
-                    <h3>Provas</h3>
-                    <p>Avaliações de cada oferta, com data, conteúdo e peso.</p>
-                    <a th:href="@{/listaProvas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> provas</span></a>
-                </article>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="grupo" aria-labelledby="grupo-biblioteca">
-        <div class="grupo-cabecalho">
-            <h2 id="grupo-biblioteca"><i class="bi bi-bookshelf" aria-hidden="true"></i>Biblioteca</h2>
-            <p>Acervo, bibliografia das disciplinas e circulação de exemplares.</p>
-        </div>
-        <div class="row g-3 g-lg-4">
-            <div class="col-12 col-md-6">
-                <article class="card-entidade horizontal tema-livro">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-book-fill"></i></span>
-                    <h3>Livros</h3>
-                    <p>Títulos do acervo com ISBN, edição e capa.</p>
-                    <a th:href="@{/listaLivros}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> livros</span></a>
-                </article>
+        <section class="area" aria-labelledby="area-biblioteca">
+            <h2 id="area-biblioteca"><i class="bi bi-bookshelf" aria-hidden="true"></i><span>Biblioteca</span></h2>
+            <div class="area-grupo">
+                <h3>Acervo</h3>
+                <ul class="modulo-lista">
+                    <li th:replace="~{fragments/layout :: modulo('Livros', 'Títulos do acervo com ISBN e capa.', 'bi-book-fill', 'tema-livro', '/listaLivros')}"></li>
+                    <th:block sec:authorize="hasAnyRole('ADMIN', 'BIBLIOTECARIO')"><li th:replace="~{fragments/layout :: modulo('Exemplares', 'Cópias físicas identificadas pelo tombo.', 'bi-upc-scan', 'tema-exemplar', '/listaExemplares')}"></li></th:block>
+                    <li th:replace="~{fragments/layout :: modulo('Referências', 'Bibliografia indicada por disciplina.', 'bi-bookmark-star-fill', 'tema-referencia', '/listaDisciplinaLivros')}"></li>
+                </ul>
             </div>
-            <div class="col-12 col-md-6">
-                <article class="card-entidade horizontal tema-exemplar">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>
-                    <h3>Exemplares</h3>
-                    <p>Cópias físicas de cada livro, identificadas pelo tombo.</p>
-                    <a th:href="@{/listaExemplares}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> exemplares</span></a>
-                </article>
+            <div class="area-grupo" sec:authorize="hasAnyRole('ADMIN', 'ALUNO', 'BIBLIOTECARIO')">
+                <h3>Circulação</h3>
+                <ul class="modulo-lista">
+                    <li th:replace="~{fragments/layout :: modulo('Empréstimos', 'Retiradas, renovações e devoluções.', 'bi-arrow-left-right', 'tema-emprestimo', '/listaEmprestimos')}"></li>
+                    <li th:replace="~{fragments/layout :: modulo('Reservas', 'Fila de espera por títulos indisponíveis.', 'bi-hourglass-split', 'tema-reserva', '/listaReservas')}"></li>
+                </ul>
             </div>
-            <div class="col-12 col-md-6">
-                <article class="card-entidade horizontal tema-referencia">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>
-                    <h3>Referências</h3>
-                    <p>Livros indicados como bibliografia de cada disciplina.</p>
-                    <a th:href="@{/listaDisciplinaLivros}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> referências</span></a>
-                </article>
-            </div>
-            <div class="col-12 col-md-6">
-                <article class="card-entidade horizontal tema-emprestimo">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>
-                    <h3>Empréstimos</h3>
-                    <p>Retirada, renovação e devolução de exemplares.</p>
-                    <a th:href="@{/listaEmprestimos}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> empréstimos</span></a>
-                </article>
-            </div>
-            <div class="col-12 col-md-6">
-                <article class="card-entidade horizontal tema-reserva">
-                    <span class="icon-wrap" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>
-                    <h3>Reservas</h3>
-                    <p>Fila de espera por títulos sem exemplar disponível.</p>
-                    <a th:href="@{/listaReservas}" class="btn btn-tema btn-sm stretched-link">Abrir<span class="visually-hidden"> reservas</span></a>
-                </article>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 </main>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>

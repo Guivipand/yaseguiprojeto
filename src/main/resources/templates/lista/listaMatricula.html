@@ -51,8 +51,7 @@
                     <td class="col-acoes">
                         <div class="acoes">
                             <a sec:authorize="hasRole('ADMIN')" th:href="@{/editarMatricula(id=${matricula.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/excluirMatricula(id=${matricula.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
-                               onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
+                            <form sec:authorize="hasRole('ADMIN')" th:action="@{/excluirMatricula}" method="post" onsubmit="return confirm('Deseja realmente excluir este registro?')"><input type="hidden" name="id" th:value="${matricula.id}"><button type="submit" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"><i class="bi bi-trash3" aria-hidden="true"></i></button></form>
                         </div>
                     </td>
                 </tr>

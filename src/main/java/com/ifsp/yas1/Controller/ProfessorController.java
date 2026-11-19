@@ -81,7 +81,7 @@ public class ProfessorController {
         return "redirect:/listaProfessores";
     }
 
-    @GetMapping("/excluirProfessor")
+    @PostMapping("/excluirProfessor")
     public String excluirProfessor(@RequestParam int id, RedirectAttributes redirect) {
         Professor professor = professorRepository.findById(id).orElseThrow();
         try {

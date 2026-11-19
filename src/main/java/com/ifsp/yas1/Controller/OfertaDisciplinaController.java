@@ -84,7 +84,7 @@ public class OfertaDisciplinaController {
         return "redirect:/listaOfertaDisciplinas";
     }
 
-    @GetMapping("/excluirOfertaDisciplina")
+    @PostMapping("/excluirOfertaDisciplina")
     public String excluirOfertaDisciplina(@RequestParam int id, RedirectAttributes redirect) {
         OfertaDisciplina ofertaDisciplina = ofertaDisciplinaRepository.findById(id).orElseThrow();
         try {

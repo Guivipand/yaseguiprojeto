@@ -27,41 +27,41 @@
         <div class="collapse navbar-collapse" id="menuPrincipal">
             <ul class="navbar-nav ms-auto gap-lg-1">
                 <li class="nav-item"><a class="nav-link nav-inicio" th:href="@{/}"><i class="bi bi-house-door" aria-hidden="true"></i>Início</a></li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle nav-academico" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-building" aria-hidden="true"></i>Acadêmico
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end menu-entidades">
-                        <li class="tema-professor"><a class="dropdown-item" th:href="@{/listaProfessores}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>Professores</a></li>
+                        <li class="tema-professor" sec:authorize="!hasRole('BIBLIOTECARIO')"><a class="dropdown-item" th:href="@{/listaProfessores}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-badge-fill"></i></span>Professores</a></li>
                         <li class="tema-aluno" sec:authorize="!hasRole('ALUNO')"><a class="dropdown-item" th:href="@{/listaAlunos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-people-fill"></i></span>Alunos</a></li>
                         <li class="tema-bibliotecario" sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/listaBibliotecarios}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-workspace"></i></span>Bibliotecários</a></li>
-                        <li class="tema-curso"><a class="dropdown-item" th:href="@{/listaCursos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>Cursos</a></li>
-                        <li class="tema-disciplina"><a class="dropdown-item" th:href="@{/listaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-journal-text"></i></span>Disciplinas</a></li>
-                        <li class="tema-oferta"><a class="dropdown-item" th:href="@{/listaOfertaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-calendar-week-fill"></i></span>Ofertas de disciplina</a></li>
-                        <li class="tema-matricula"><a class="dropdown-item" th:href="@{/listaMatriculas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>Matrículas</a></li>
-                        <li class="tema-prova"><a class="dropdown-item" th:href="@{/listaProvas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>Provas</a></li>
+                        <li class="tema-curso" sec:authorize="!hasRole('BIBLIOTECARIO')"><a class="dropdown-item" th:href="@{/listaCursos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></span>Cursos</a></li>
+                        <li class="tema-disciplina" sec:authorize="!hasRole('BIBLIOTECARIO')"><a class="dropdown-item" th:href="@{/listaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-journal-text"></i></span>Disciplinas</a></li>
+                        <li class="tema-oferta" sec:authorize="!hasRole('BIBLIOTECARIO')"><a class="dropdown-item" th:href="@{/listaOfertaDisciplinas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-calendar-week-fill"></i></span>Ofertas de disciplina</a></li>
+                        <li class="tema-matricula" sec:authorize="!hasRole('BIBLIOTECARIO')"><a class="dropdown-item" th:href="@{/listaMatriculas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-clipboard2-check-fill"></i></span>Matrículas</a></li>
+                        <li class="tema-prova" sec:authorize="!hasRole('BIBLIOTECARIO')"><a class="dropdown-item" th:href="@{/listaProvas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-pencil-square"></i></span>Provas</a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle nav-biblioteca" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-bookshelf" aria-hidden="true"></i>Biblioteca
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end menu-entidades">
                         <li class="tema-livro"><a class="dropdown-item" th:href="@{/listaLivros}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-book-fill"></i></span>Livros</a></li>
-                        <li class="tema-exemplar"><a class="dropdown-item" th:href="@{/listaExemplares}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>Exemplares</a></li>
+                        <li class="tema-exemplar" sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')"><a class="dropdown-item" th:href="@{/listaExemplares}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>Exemplares</a></li>
                         <li class="tema-referencia"><a class="dropdown-item" th:href="@{/listaDisciplinaLivros}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-bookmark-star-fill"></i></span>Referências</a></li>
-                        <li class="tema-emprestimo"><a class="dropdown-item" th:href="@{/listaEmprestimos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>Empréstimos</a></li>
-                        <li class="tema-reserva"><a class="dropdown-item" th:href="@{/listaReservas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>Reservas</a></li>
+                        <li class="tema-emprestimo" sec:authorize="!hasRole('PROFESSOR')"><a class="dropdown-item" th:href="@{/listaEmprestimos}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span>Empréstimos</a></li>
+                        <li class="tema-reserva" sec:authorize="!hasRole('PROFESSOR')"><a class="dropdown-item" th:href="@{/listaReservas}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>Reservas</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()"
                     th:with="pessoa=${#authentication.principal}, professor=${#authentication.principal.role?.name() == 'PROFESSOR'}, admin=${#authentication.principal.role?.name() == 'ADMIN'}, bibliotecario=${#authentication.principal.role?.name() == 'BIBLIOTECARIO'}">
                     <a class="nav-link dropdown-toggle nav-perfil" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Perfil">
-                        <span class="perfil-avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></span><span class="d-lg-none">Perfil</span>
+                        <span class="perfil-avatar" aria-hidden="true"><img th:if="${pessoa.foto != null}" th:src="@{'/' + ${pessoa.foto}}" alt=""><i th:unless="${pessoa.foto != null}" class="bi" th:classappend="${admin} ? 'bi-person-fill-gear' : 'bi-person-fill'"></i></span><span class="d-lg-none">Perfil</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end menu-entidades menu-perfil" th:classappend="${admin} ? 'tema-curso' : (${bibliotecario} ? 'tema-bibliotecario' : (${professor} ? 'tema-professor' : 'tema-aluno'))">
                         <div class="perfil-topo">
-                            <span class="menu-icone perfil-icone" aria-hidden="true"><i class="bi" th:classappend="${admin} ? 'bi-shield-lock-fill' : (${bibliotecario} ? 'bi-person-workspace' : (${professor} ? 'bi-person-badge-fill' : 'bi-people-fill'))"></i></span>
+                            <span class="menu-icone perfil-icone" aria-hidden="true"><img th:if="${pessoa.foto != null}" th:src="@{'/' + ${pessoa.foto}}" alt=""><i th:unless="${pessoa.foto != null}" class="bi" th:classappend="${admin} ? 'bi-shield-lock-fill' : (${bibliotecario} ? 'bi-person-workspace' : (${professor} ? 'bi-person-badge-fill' : 'bi-people-fill'))"></i></span>
                             <div class="perfil-identidade">
                                 <p class="perfil-nome" th:text="${pessoa.nome != null ? pessoa.nome : pessoa.username}">Nome</p>
                                 <span class="perfil-papel" th:text="${admin} ? 'Administrador' : (${bibliotecario} ? 'Bibliotecário' : (${professor} ? 'Professor' : 'Aluno'))">Aluno</span>
@@ -78,7 +78,7 @@
                             </div>
                         </dl>
                         <hr class="dropdown-divider">
-                        <a th:if="${admin}" class="dropdown-item" th:href="@{/register}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-plus-fill"></i></span>Cadastrar usuário</a>
+                        <a th:if="${admin}" class="dropdown-item" th:href="@{/listaUsuarios}"><span class="menu-icone" aria-hidden="true"><i class="bi bi-person-lock"></i></span>Usuários</a>
                         <form th:action="@{/logout}" method="post">
                             <button type="submit" class="dropdown-item item-sair"><span class="menu-icone" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>Sair</button>
                         </form>
@@ -114,6 +114,16 @@
         </li>
     </ul>
 </nav>
+<li th:fragment="modulo(nome, descricao, icone, tema, url)" th:class="${tema}">
+    <a class="modulo" th:href="@{${url}}">
+        <span class="menu-icone modulo-icone" aria-hidden="true"><i class="bi" th:classappend="${icone}"></i></span>
+        <span class="modulo-texto">
+            <span class="modulo-nome" th:text="${nome}">Módulo</span>
+            <span class="modulo-descricao" th:text="${descricao}">Descrição</span>
+        </span>
+        <i class="bi bi-chevron-right modulo-seta" aria-hidden="true"></i>
+    </a>
+</li>
 <th:block th:fragment="scripts">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </th:block>

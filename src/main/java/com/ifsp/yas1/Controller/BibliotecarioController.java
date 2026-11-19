@@ -81,7 +81,7 @@ public class BibliotecarioController {
         return "redirect:/listaBibliotecarios";
     }
 
-    @GetMapping("/excluirBibliotecario")
+    @PostMapping("/excluirBibliotecario")
     public String excluirBibliotecario(@RequestParam int id, RedirectAttributes redirect) {
         Bibliotecario bibliotecario = bibliotecarioRepository.findById(id).orElseThrow();
         try {

@@ -76,7 +76,7 @@ public class DisciplinaController {
         return "redirect:/listaDisciplinas";
     }
 
-    @GetMapping("/excluirDisciplina")
+    @PostMapping("/excluirDisciplina")
     public String excluirDisciplina(@RequestParam int id, RedirectAttributes redirect) {
         Disciplina disciplina = disciplinaRepository.findById(id).orElseThrow();
         try {

@@ -68,7 +68,7 @@ public class CursoController {
         return "redirect:/listaCursos";
     }
 
-    @GetMapping("/excluirCurso")
+    @PostMapping("/excluirCurso")
     public String excluirCurso(@RequestParam int id, RedirectAttributes redirect) {
         Curso curso = cursoRepository.findById(id).orElseThrow();
         try {

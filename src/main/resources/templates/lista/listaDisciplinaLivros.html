@@ -46,8 +46,7 @@
                         <div class="acoes">
                             <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/editarDisciplinaLivro(id=${relacao.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
                             <a th:href="@{/detalhesDisciplinaLivro(id=${relacao.id})}" class="btn btn-icon" title="Detalhes" aria-label="Detalhes"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/excluirDisciplinaLivro(id=${relacao.id})}" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"
-                               onclick="return confirm('Deseja realmente excluir este registro?')"><i class="bi bi-trash3" aria-hidden="true"></i></a>
+                            <form sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:action="@{/excluirDisciplinaLivro}" method="post" onsubmit="return confirm('Deseja realmente excluir este registro?')"><input type="hidden" name="id" th:value="${relacao.id}"><button type="submit" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"><i class="bi bi-trash3" aria-hidden="true"></i></button></form>
                         </div>
                     </td>
                 </tr>

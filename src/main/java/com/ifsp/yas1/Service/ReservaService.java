@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,11 +86,6 @@ public class ReservaService {
         }
     }
 
-    @Scheduled(cron = "0 */15 * * * *")
-    public void rotinaExpiracao() {
-        processarExpiradas();
-    }
-
     public boolean reservadoPara(Exemplar exemplar, Aluno aluno) {
         return reservaRepository.buscarNotificadaDoExemplar(exemplar.getId())
                 .map(reserva -> reserva.getAluno().getId() == aluno.getId())
@@ -118,7 +112,7 @@ public class ReservaService {
         if (!reserva.isPendente()) {
             return;
         }
-        Exemplar separado = Reserva.NOTIFICADA.equals(reserva.getStatus()) ? reserva.getExemplar() : null;
+        Exemplar separado = reserva.getExemplar();
         reserva.setStatus(Reserva.CANCELADA);
         reserva.setPosicao_fila(null);
         reservaRepository.save(reserva);

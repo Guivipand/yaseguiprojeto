@@ -85,7 +85,7 @@ public class DisciplinaLivroController {
         return "redirect:/listaDisciplinaLivros";
     }
 
-    @GetMapping("/excluirDisciplinaLivro")
+    @PostMapping("/excluirDisciplinaLivro")
     public String excluirDisciplinaLivro(@RequestParam int id) {
         DisciplinaLivro disciplinaLivro = disciplinaLivroRepository.findById(id).orElseThrow();
         disciplinaLivroRepository.delete(disciplinaLivro);

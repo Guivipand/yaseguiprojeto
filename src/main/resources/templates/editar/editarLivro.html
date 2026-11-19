@@ -25,6 +25,7 @@
         <div class="painel-corpo">
             <div class="alert alert-danger" role="alert" th:if="${erroIsbn}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Informe um ISBN-10 ou ISBN-13 válido.</span></div>
             <div class="alert alert-danger" role="alert" th:if="${erroAno}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>O ano deve ser maior que zero e não pode ser futuro.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroImagem}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span th:text="${erroImagem}"></span></div>
             <fieldset class="grupo-campos">
                 <legend>Obra</legend>
                 <div class="row g-3">
@@ -63,7 +64,7 @@
                     </div>
                     <div class="col-12">
                         <label class="form-label" for="imagem">Capa</label>
-                        <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
+                        <input type="file" class="form-control" id="imagem" name="imagem" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
                     </div>
                 </div>
             </fieldset>

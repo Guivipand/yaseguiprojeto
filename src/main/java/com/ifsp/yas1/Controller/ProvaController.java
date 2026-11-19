@@ -94,7 +94,7 @@ public class ProvaController {
         return "redirect:/listaProvas";
     }
 
-    @GetMapping("/excluirProva")
+    @PostMapping("/excluirProva")
     public String excluirProva(@RequestParam int id, RedirectAttributes redirect) {
         Prova prova = provaRepository.findById(id).orElseThrow();
         try {

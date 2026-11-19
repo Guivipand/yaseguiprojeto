@@ -107,7 +107,7 @@ public class MatriculaController {
         return "redirect:/listaMatriculas";
     }
 
-    @GetMapping("/excluirMatricula")
+    @PostMapping("/excluirMatricula")
     public String excluirMatricula(@RequestParam int id) {
         Matricula matricula = matriculaRepository.findById(id).orElseThrow();
         matriculaRepository.delete(matricula);

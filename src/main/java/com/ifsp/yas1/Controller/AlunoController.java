@@ -89,7 +89,7 @@ public class AlunoController {
         return "redirect:/listaAlunos";
     }
 
-    @GetMapping("/excluirAluno")
+    @PostMapping("/excluirAluno")
     public String excluirAluno(@RequestParam int id, RedirectAttributes redirect) {
         Aluno aluno = alunoRepository.findById(id).orElseThrow();
         try {

@@ -114,6 +114,8 @@ public class EmprestimoController {
         Emprestimo registro = repository.findById(id).orElseThrow();
         usuarioLogado.exigirDono(registro.getAluno());
         model.addAttribute("emprestimo", registro);
+        model.addAttribute("podeRenovar", emprestimoService.podeRenovar(registro));
+        model.addAttribute("livroReservado", registro.podeRenovar() && emprestimoService.livroReservado(registro));
         return "detalhes/detalhesEmprestimo";
     }
 
@@ -147,7 +149,7 @@ public class EmprestimoController {
     public String renovarEmprestimo(@RequestParam int id) {
         Emprestimo registro = repository.findById(id).orElseThrow();
         usuarioLogado.exigirDono(registro.getAluno());
-        if (registro.renovar()) {
+        if (emprestimoService.podeRenovar(registro) && registro.renovar()) {
             repository.save(registro);
         }
         return "redirect:/detalhesEmprestimo?id=" + id;
@@ -166,7 +168,7 @@ public class EmprestimoController {
         return "redirect:/detalhesEmprestimo?id=" + id;
     }
 
-    @GetMapping("/excluirEmprestimo")
+    @PostMapping("/excluirEmprestimo")
     @Transactional
     public String excluirEmprestimo(@RequestParam int id) {
         Emprestimo registro = repository.findById(id).orElseThrow();

@@ -19,13 +19,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ifsp.yas1.Model.Livro;
 import com.ifsp.yas1.Repository.LivroRepository;
-import com.ifsp.yas1.Service.LivroService;
+import com.ifsp.yas1.Service.UploadService;
 
 @Controller
 public class LivroController {
 
-    @Autowired 
-    private LivroService livroService;
+    @Autowired
+    private UploadService uploadService;
 
     @Autowired
     private LivroRepository livroRepository;
@@ -43,11 +43,12 @@ public class LivroController {
             adicionarErrosValidacao(model, livro);
             return "formulario/formularioLivro";
         }
-        if (imagem == null || imagem.isEmpty()) {
-            model.addAttribute("erroImagem", true);
+        try {
+            livro.setCapa_imagem(uploadService.salvar(imagem, "capas"));
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("erroImagem", e.getMessage());
             return "formulario/formularioLivro";
         }
-        livro.setCapa_imagem(livroService.salvarImagem(imagem));
         livroRepository.save(livro);
         return "redirect:/sucessCad";
     }
@@ -87,13 +88,18 @@ public class LivroController {
             return "editar/editarLivro";
         }
         if (imagem != null && !imagem.isEmpty()) {
-            livro.setCapa_imagem(livroService.salvarImagem(imagem));
+            try {
+                livro.setCapa_imagem(uploadService.salvar(imagem, "capas"));
+            } catch (IllegalArgumentException e) {
+                model.addAttribute("erroImagem", e.getMessage());
+                return "editar/editarLivro";
+            }
         }
         livroRepository.save(livro);
         return "redirect:/listaLivros";
     }
 
-    @GetMapping("/excluirLivro")
+    @PostMapping("/excluirLivro")
     public String excluirLivro(@RequestParam int id, RedirectAttributes redirect) {
         Livro livro = livroRepository.findById(id).orElseThrow();
         try {

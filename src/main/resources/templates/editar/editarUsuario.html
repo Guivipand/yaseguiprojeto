@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Editar usuário')}"></head>
+<body class="pagina-form tema-curso">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo conteudo-estreito">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li><a th:href="@{/listaUsuarios}">Usuários</a></li>
+                <li aria-current="page">Editar</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-titulo">
+            <span class="selo-entidade" aria-hidden="true"><i class="bi bi-person-gear"></i></span>
+            <div>
+                <h1>Editar usuário</h1>
+                <p>Atualize os dados e salve as alterações.</p>
+            </div>
+        </div>
+    </header>
+    <form class="painel" th:action="@{/atualizarUsuario}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${usuario.id}">
+        <div class="painel-corpo">
+            <div class="alert alert-danger" role="alert" th:if="${erroUsuario}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span th:text="${erroUsuario}"></span></div>
+            <div class="usuario-identidade">
+                <span class="usuario-avatar usuario-avatar-grande">
+                    <img th:if="${usuario.foto != null}" th:src="@{'/' + ${usuario.foto}}" alt="">
+                    <i th:unless="${usuario.foto != null}" class="bi bi-person-fill" aria-hidden="true"></i>
+                </span>
+                <div>
+                    <p class="usuario-nome" th:text="${usuario.nome}">Nome</p>
+                    <span class="selo selo-neutro" th:text="${usuario.role.name() == 'PROFESSOR'} ? 'Professor' : (${usuario.role.name() == 'BIBLIOTECARIO'} ? 'Bibliotecário' : 'Aluno')">Aluno</span>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="username">Login</label>
+                    <input type="text" class="form-control" id="username" name="username" th:value="${usuario.username}" autocomplete="off" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="password">Nova senha</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Manter a senha atual" autocomplete="new-password">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="foto">Foto de perfil</label>
+                    <input type="file" class="form-control" id="foto" name="foto" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+                </div>
+            </div>
+        </div>
+        <div class="painel-acoes">
+            <a th:href="@{/listaUsuarios}" class="btn btn-quieto"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
+            <button type="submit" class="btn btn-tema"><i class="bi bi-check-lg me-2" aria-hidden="true"></i>Salvar alterações</button>
+        </div>
+    </form>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

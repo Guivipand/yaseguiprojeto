@@ -41,6 +41,7 @@
                     <dd class="renovacoes">
                         <span class="renovacoes-trilho" aria-hidden="true"><span th:each="i : ${#numbers.sequence(1, 3)}" th:classappend="${i le emprestimo.renovacoes} ? 'usada'"></span></span>
                         <span class="numero" th:text="${emprestimo.renovacoes + ' de 3'}"></span>
+                        <span class="selo selo-alerta" th:if="${livroReservado}">Livro reservado</span>
                     </dd>
                 </div>
             </dl>
@@ -48,7 +49,7 @@
         <div class="painel-acoes">
             <a th:href="@{/listaEmprestimos}" class="btn btn-quieto acao-esquerda"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
             <a sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/editarEmprestimo(id=${emprestimo.id})}" class="btn btn-quieto" th:if="${emprestimo.data_devolucao == null}"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
-            <form th:if="${emprestimo.podeRenovar()}" th:action="@{/renovarEmprestimo}" method="post">
+            <form th:if="${podeRenovar}" th:action="@{/renovarEmprestimo}" method="post">
                 <input type="hidden" name="id" th:value="${emprestimo.id}">
                 <button type="submit" class="btn btn-contorno-tema"><i class="bi bi-arrow-clockwise me-2" aria-hidden="true"></i>Renovar prazo</button>
             </form>

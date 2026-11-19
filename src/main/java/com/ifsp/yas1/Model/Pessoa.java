@@ -52,6 +52,9 @@ public class Pessoa implements UserDetails {
     @Column (name = "endereco")
     private String endereco;
 
+    @Column (name = "foto")
+    private String foto;
+
     public Pessoa() {
     }
 
@@ -174,6 +177,14 @@ public class Pessoa implements UserDetails {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public boolean validarNome() {

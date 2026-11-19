@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Usuários')}"></head>
+<body class="pagina-lista tema-curso">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main id="conteudo" class="container conteudo">
+    <header class="cabecalho-pagina">
+        <nav aria-label="Trilha de navegação">
+            <ol class="trilha">
+                <li><a th:href="@{/}">Início</a></li>
+                <li aria-current="page">Usuários</li>
+            </ol>
+        </nav>
+        <div class="cabecalho-linha">
+            <div class="cabecalho-titulo">
+                <span class="selo-entidade" aria-hidden="true"><i class="bi bi-person-lock"></i></span>
+                <div>
+                    <h1>Usuários</h1>
+                    <p>Acessos de professores, alunos e bibliotecários.</p>
+                </div>
+            </div>
+            <a th:href="@{/formularioUsuario}" class="btn btn-tema"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Novo usuário</a>
+        </div>
+    </header>
+    <form th:replace="~{fragments/layout :: busca('/listaUsuarios', 'Buscar por login ou nome')}"></form>
+    <div class="painel-tabela">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle tabela">
+                <thead>
+                <tr>
+                    <th scope="col" class="col-foto"><span class="visually-hidden">Foto</span></th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Perfil</th>
+                    <th scope="col" class="col-acoes text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td class="col-foto">
+                        <span class="usuario-avatar">
+                            <img th:if="${usuario.foto != null}" th:src="@{'/' + ${usuario.foto}}" alt="" loading="lazy">
+                            <i th:unless="${usuario.foto != null}" class="bi bi-person-fill" aria-hidden="true"></i>
+                        </span>
+                    </td>
+                    <td data-label="Login" class="celula-principal" th:text="${usuario.username}"></td>
+                    <td data-label="Nome" th:text="${usuario.nome}"></td>
+                    <td data-label="Perfil">
+                        <span class="selo selo-neutro" th:text="${usuario.role.name() == 'PROFESSOR'} ? 'Professor' : (${usuario.role.name() == 'BIBLIOTECARIO'} ? 'Bibliotecário' : 'Aluno')"></span>
+                    </td>
+                    <td class="col-acoes">
+                        <div class="acoes">
+                            <a th:href="@{/editarUsuario(id=${usuario.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <form th:action="@{/excluirUsuario}" method="post" onsubmit="return confirm('Deseja realmente excluir este usuário?')"><input type="hidden" name="id" th:value="${usuario.id}"><button type="submit" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"><i class="bi bi-trash3" aria-hidden="true"></i></button></form>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="linha-vazia" th:if="${#lists.isEmpty(usuarios)}">
+                    <td colspan="5">
+                        <div class="vazio">
+                            <span class="vazio-icone" aria-hidden="true"><i class="bi bi-person-lock"></i></span>
+                            <p class="vazio-titulo" th:if="${#strings.isEmpty(q)}">Nenhum usuário cadastrado ainda.</p>
+                            <p class="vazio-titulo" th:unless="${#strings.isEmpty(q)}">Nenhum resultado para a busca.</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <nav th:replace="~{fragments/layout :: paginacao('/listaUsuarios')}"></nav>
+</main>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

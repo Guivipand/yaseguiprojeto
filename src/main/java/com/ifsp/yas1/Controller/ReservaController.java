@@ -102,7 +102,7 @@ public class ReservaController {
         return "redirect:/detalhesReserva?id=" + id;
     }
 
-    @GetMapping("/excluirReserva")
+    @PostMapping("/excluirReserva")
     public String excluirReserva(@RequestParam int id) {
         Reserva reserva = reservaRepository.findById(id).orElseThrow();
         reservaService.excluir(reserva);
