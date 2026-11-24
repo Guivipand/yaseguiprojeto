@@ -24,6 +24,7 @@
         <input type="hidden" th:field="*{id}">
         <div class="painel-corpo">
             <div class="alert alert-danger" role="alert" th:if="${erroValidacao}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span>Selecione a disciplina e o professor.</span></div>
+            <div class="alert alert-danger" role="alert" th:if="${erroProfessor != null}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span th:text="${erroProfessor}"></span></div>
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label" for="disciplina">Disciplina</label>
@@ -32,7 +33,11 @@
                         <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.materia}"></option>
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" th:if="${usuarioProfessor}">
+                    <span class="form-label d-block">Professor</span>
+                    <p class="form-control-plaintext" th:text="${professorLogado != null ? professorLogado.nome : 'Usuário sem professor ligado'}"></p>
+                </div>
+                <div class="col-md-6" th:unless="${usuarioProfessor}">
                     <label class="form-label" for="professor">Professor</label>
                     <select class="form-select" th:field="*{professor}" required>
                         <option value="">Selecione o professor</option>

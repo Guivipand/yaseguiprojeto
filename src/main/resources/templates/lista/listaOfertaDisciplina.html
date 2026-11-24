@@ -44,8 +44,8 @@
                     <td data-label="Professor" th:text="${oferta.professor != null ? oferta.professor.nome : 'Sem professor'}"></td>
                     <td class="col-acoes">
                         <div class="acoes">
-                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/editarOfertaDisciplina(id=${oferta.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
-                            <form sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:action="@{/excluirOfertaDisciplina}" method="post" onsubmit="return confirm('Deseja realmente excluir este registro?')"><input type="hidden" name="id" th:value="${oferta.id}"><button type="submit" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"><i class="bi bi-trash3" aria-hidden="true"></i></button></form>
+                            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:if="${idProfessorLogado == null or oferta.professor?.id == idProfessorLogado}" th:href="@{/editarOfertaDisciplina(id=${oferta.id})}" class="btn btn-icon" title="Editar" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                            <form sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:if="${idProfessorLogado == null or oferta.professor?.id == idProfessorLogado}" th:action="@{/excluirOfertaDisciplina}" method="post" onsubmit="return confirm('Deseja realmente excluir este registro?')"><input type="hidden" name="id" th:value="${oferta.id}"><button type="submit" class="btn btn-icon btn-perigo" title="Excluir" aria-label="Excluir"><i class="bi bi-trash3" aria-hidden="true"></i></button></form>
                         </div>
                     </td>
                 </tr>
