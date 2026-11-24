@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.ifsp.yas1.Model.Disciplina;
 import com.ifsp.yas1.Model.OfertaDisciplina;
 
 @Repository
@@ -17,4 +18,7 @@ public interface OfertaDisciplinaRepository extends JpaRepository<OfertaDiscipli
     Page<OfertaDisciplina> buscar(@Param("q") String q, Pageable pageable);
 
     List<OfertaDisciplina> findByProfessorId(int id);
+
+    @Query("select distinct o.disciplina from OfertaDisciplina o where o.professor.id = :id")
+    List<Disciplina> disciplinasDoProfessor(@Param("id") int id);
 }
