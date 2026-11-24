@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ifsp.yas1.Model.Aluno;
+import com.ifsp.yas1.Model.OfertaDisciplina;
 import com.ifsp.yas1.Model.Prova;
 import com.ifsp.yas1.Repository.OfertaDisciplinaRepository;
 import com.ifsp.yas1.Repository.ProvaRepository;
@@ -40,12 +41,13 @@ public class ProvaController {
     @GetMapping("/formularioProva")
     public String formularioProva(Model model) {
         model.addAttribute("prova", new Prova());
-        model.addAttribute("ofertasDisciplina", ofertaDisciplinaRepository.findAll());
+        model.addAttribute("ofertasDisciplina", ofertasPermitidas());
         return "formulario/formularioProva";
     }
 
     @PostMapping("/cadastrarProva")
     public String cadastrarProva(@ModelAttribute Prova prova, Model model) {
+        exigirOfertaPropria(prova);
         if (!prova.validar()) {
             adicionarErrosValidacao(model, prova);
             return "formulario/formularioProva";
@@ -62,6 +64,7 @@ public class ProvaController {
         model.addAttribute("pagina", resultado);
         model.addAttribute("q", q);
         model.addAttribute("provas", provas);
+        model.addAttribute("idProfessorLogado", idProfessorLogado());
         return "lista/listaProvas";
     }
 
@@ -71,20 +74,24 @@ public class ProvaController {
         model.addAttribute("prova", prova);
         model.addAttribute("usuarioAluno", usuarioLogado.ehAluno());
         model.addAttribute("estudou", prova.foiEstudadaPor(usuarioLogado.aluno()));
+        model.addAttribute("idProfessorLogado", idProfessorLogado());
         return "detalhes/detalhesProva";
     }
 
     @GetMapping("/editarProva")
     public String editarProva(@RequestParam int id, Model model) {
         Prova prova = provaRepository.findById(id).orElseThrow();
+        exigirOfertaPropria(prova);
         model.addAttribute("prova", prova);
-        model.addAttribute("ofertasDisciplina", ofertaDisciplinaRepository.findAll());
+        model.addAttribute("ofertasDisciplina", ofertasPermitidas());
         return "editar/editarProva";
     }
 
     @PostMapping("/atualizarProva")
     public String atualizarProva(@ModelAttribute Prova prova, Model model) {
         Prova existente = provaRepository.findById(prova.getId()).orElseThrow();
+        exigirOfertaPropria(existente);
+        exigirOfertaPropria(prova);
         prova.setAlunosQueEstudaram(existente.getAlunosQueEstudaram());
         if (!prova.validar()) {
             adicionarErrosValidacao(model, prova);
@@ -97,6 +104,7 @@ public class ProvaController {
     @PostMapping("/excluirProva")
     public String excluirProva(@RequestParam int id, RedirectAttributes redirect) {
         Prova prova = provaRepository.findById(id).orElseThrow();
+        exigirOfertaPropria(prova);
         try {
             provaRepository.delete(prova);
         } catch (DataIntegrityViolationException e) {
@@ -128,9 +136,25 @@ public class ProvaController {
         return "redirect:/detalhesProva?id=" + id;
     }
 
+    private List<OfertaDisciplina> ofertasPermitidas() {
+        return usuarioLogado.ehProfessor()
+                ? ofertaDisciplinaRepository.findByProfessorId(usuarioLogado.idProfessor())
+                : ofertaDisciplinaRepository.findAll();
+    }
+
+    private Integer idProfessorLogado() {
+        return usuarioLogado.ehProfessor() ? usuarioLogado.idProfessor() : null;
+    }
+
+    private void exigirOfertaPropria(Prova prova) {
+        if (prova.getOfertaDisciplina() != null) {
+            usuarioLogado.exigirProfessorDono(prova.getOfertaDisciplina().getProfessor());
+        }
+    }
+
     private void adicionarErrosValidacao(Model model, Prova prova) {
         model.addAttribute("prova", prova);
-        model.addAttribute("ofertasDisciplina", ofertaDisciplinaRepository.findAll());
+        model.addAttribute("ofertasDisciplina", ofertasPermitidas());
         model.addAttribute("erroOferta", !prova.validarOfertaDisciplina());
         model.addAttribute("erroData", !prova.validarData());
         model.addAttribute("erroConteudo", !prova.validarConteudo());

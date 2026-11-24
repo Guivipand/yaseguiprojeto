@@ -37,7 +37,7 @@
         </div>
         <div class="painel-acoes">
             <a th:href="@{/listaProvas}" class="btn btn-quieto acao-esquerda"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Retornar</a>
-            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:href="@{/editarProva(id=${prova.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
+            <a sec:authorize="hasAnyRole('ADMIN','PROFESSOR')" th:if="${idProfessorLogado == null or prova.ofertaDisciplina?.professor?.id == idProfessorLogado}" th:href="@{/editarProva(id=${prova.id})}" class="btn btn-tema"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Editar</a>
         </div>
     </section>
 
